@@ -1,0 +1,7 @@
+[
+    {
+        "version" : "1.0",
+        "img"  : "http://localhost/si-ddie/server_assets/si-ddie/img/",
+        "servicios" : "http://localhost/si-ddie/webservices/si-ddie/"; 
+    }
+]
