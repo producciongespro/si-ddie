@@ -6,7 +6,7 @@ const Produccion = () => {
       <h1>Producción</h1>
       <form>
         <div className="form-group">
-        <label for="tipo_producto">Seleccione el tipo de producto:</label>
+        <label htmlFor="tipo_producto">Seleccione el tipo de producto:</label>
           <select className="form-control" id="tipo_producto" name="tipo_producto">
             <option></option>
             <option>Revista conexiones</option>
@@ -17,7 +17,7 @@ const Produccion = () => {
           </select>
         </div>
         <div className="form-group">
-          <label for="cantidad">Cantidad:</label>
+          <label htmlFor="cantidad">Cantidad:</label>
           <input type="number" className="form-control" id="cantidad" name="cantidad" />
         </div>
         <button type="submit" id="btnEnviar" className="btn btn-primary">Enviar</button>

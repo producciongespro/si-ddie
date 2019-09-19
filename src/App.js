@@ -55,7 +55,7 @@ class App extends Component {
       <React.Fragment> 
         <div className="jumbotron">
           <h1>SI-DDIE</h1>
-          {/* <img src={referencias.img + "logo.png"     } alt="logo"/>n */}
+          {/* <img src={referencias.img + "logo.png"     } alt="logo"/> */}
         </div>
         <div className="row">
           <div className="col-4 col-botonera">
