@@ -1,7 +1,7 @@
 import React from 'react';
 const Botones = (props) => {
     return (  
-        <button className="btn btn-success">Inicio</button>
+        <button onClick = {props.handlerCargarVistas} id={props.id} className="btn btn-success btn-lg btn-block">{props.etiqueta}</button>
     );
 }
  
