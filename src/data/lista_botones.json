@@ -1,0 +1,18 @@
+[
+    {
+        "etiqueta": "Inicio",
+        "ref": "inicio"
+    },
+    {
+        "etiqueta": "Productos",
+        "ref": "productos"
+    },
+    {
+        "etiqueta": "Pedidos",
+        "ref": "pedidos"
+    },
+    {
+        "etiqueta": "Acerca de",
+        "ref": "acerca_de"
+    }
+]
