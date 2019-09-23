@@ -4,7 +4,9 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 header("Content-Type: text/html; charset=utf-8");
 // $method = $_SERVER['REQUEST_METHOD'];
 
-$sql= $_GET['consulta'];
+$tabla= $_GET['tabla'];
+$sql="SELECT * FROM $tabla"; 
+//$sql="SELECT * FROM tipo_solicitante"; 
 include "conectar.php";
 
 sleep(1);

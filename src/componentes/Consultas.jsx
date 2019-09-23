@@ -12,21 +12,33 @@ class Consultas extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      solicitante : []
+      tipo_solicitud : [],
+      tipo_solicitante : [],
+      tipo_intervencion : []
      }
   }
 
   componentDidMount() {
-    //Obtener datos
-    let cons = 'SELECT%20*%20FROM%20tipo_solicitante';
-    // ELECT * FROM tipo_solicitante';
-    let url= referencias.consultageneral+"?consulta="+cons;
+    //Obtener datos  
+    this.obtenerJson("tipo_solicitud");
+    this.obtenerJson("tipo_solicitante");
+    this.obtenerJson("tipo_intervencion");
+ 
+  }
+
+
+  obtenerJson = (tabla) => {
+   let url= referencias.consultageneral+"?tabla=" + tabla;
     console.log("URL",url);
     axios.get(url)
-      .then(res => {
-        const solicitante = res.data;
-        this.setState({ solicitante });
-        console.log("DATAS",res.data);      
+      .then(res => {        
+        this.setState({ tabla : res.data  });
+        //console.log("DATAS",res.data); 
+        console.log(  "Estado", tabla   );
+        console.log( this.state.tipo_intervencion  );
+        
+        
+        
         // solicitante = res.data;
         // console.log("solicitante", solicitante);
         
@@ -39,6 +51,7 @@ class Consultas extends Component {
         //console.log("fin obtener paises");
       });
   }
+
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.id;
@@ -82,9 +95,7 @@ class Consultas extends Component {
             <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
             <select className="form-control"  id="tipo_solicitante" name="tipo_solicitante" onChange={this.obtenerDatosForm} >
             {
-              this.state.solicitante.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
+            
             }
             </select>
 
