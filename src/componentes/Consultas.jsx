@@ -14,7 +14,8 @@ class Consultas extends Component {
     this.state = { 
       tipo_solicitud : [],
       tipo_solicitante : [],
-      tipo_intervencion : []
+      tipo_intervencion : [],
+      tipo_respuesta: []
      }
   }
 
@@ -23,6 +24,7 @@ class Consultas extends Component {
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
     this.obtenerJson("tipo_intervencion");
+    this.obtenerJson("tipo_respuesta");
  
   }
 
@@ -31,31 +33,26 @@ class Consultas extends Component {
    let url= referencias.consultageneral+"?tabla=" + tabla;
     console.log("URL",url);
     axios.get(url)
-      .then(res => {        
-        this.setState({ tabla : res.data  });
-        //console.log("DATAS",res.data); 
+      .then(res => {     
+        this.setState({ [tabla] : res.data  });
+        console.log("DATAS",res.data); 
         console.log(  "Estado", tabla   );
         console.log( this.state.tipo_intervencion  );
-        
-        
-        
-        // solicitante = res.data;
-        // console.log("solicitante", solicitante);
-        
+        console.log( this.state.tipo_solicitud  );
+        console.log( this.state.tipo_solicitante );        
       })
 
       .catch(function (error) {
         console.log("error",error)
       })
       .finally(function () {
-        //console.log("fin obtener paises");
       });
   }
 
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.id;
-    console.log(e.target.value);
+    console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "tipo_solicitud":
@@ -87,24 +84,28 @@ class Consultas extends Component {
           <div className="form-group">
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
             <select className="form-control" id="tipo_intervencion" name="tipo_intervencion" onChange={this.obtenerDatosForm} >
-              <option></option>
-              <option>Presencial</option>
-              <option>Telefónica</option>
-              <option>Correo</option>
+            {
+                this.state.tipo_intervencion.map((item) => (
+                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+              ))
+            }
             </select>
             <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
             <select className="form-control"  id="tipo_solicitante" name="tipo_solicitante" onChange={this.obtenerDatosForm} >
             {
-            
+                  this.state.tipo_solicitante.map((item) => (
+                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+              ))
             }
             </select>
 
             <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
             <select className="form-control" id="tipo_solicitud" name="tipo_solicitud" onChange={this.obtenerDatosForm} >
-              <option></option>
-              <option>Presencial</option>
-              <option>Telefónica</option>
-              <option>Correo</option>
+            {
+                  this.state.tipo_solicitud.map((item) => (
+                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+              ))
+            }
             </select>
 
           </div>
@@ -121,10 +122,11 @@ class Consultas extends Component {
           <hr />
           <label htmlFor="respuesta">Tipo de respuesta:</label>
             <select className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
-              <option></option>
-              <option>Presencial</option>
-              <option>Telefónica</option>
-              <option>Correo</option>
+            {
+               this.state.tipo_respuesta.map((item) => (
+               <option key={item.id} value={item.id}>  {item.tipo}   </option>
+              ))
+            }
             </select>
           <div className="form-group">
             <label htmlFor="fecha_respuesta">Fecha de respuesta:</label>
