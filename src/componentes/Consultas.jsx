@@ -6,7 +6,7 @@ import referenciasJson from '../data/referencias.json';
 const referencias = referenciasJson[0];
 
 // var solicitante = []; // array de solicitante de la BD
-var solicitud, solicitante, intervencion, tema, respuesta;
+var solicitud, solicitante, intervencion, tema, respuesta, fecha_respuesta, fecha_solicitud, usuario = 1;
 
 class Consultas extends Component {
   constructor(props) {
@@ -49,6 +49,46 @@ class Consultas extends Component {
       });
   }
 
+  enviarDatosForm = () => {
+    let data =
+    {
+      "usuario": usuario,
+      "intervencion" : intervencion,
+      "solicitante" : solicitante,
+      "solicitud": solicitud,
+      "fecha_solicitud": fecha_solicitud,
+      "tema": tema,
+      "respuesta": respuesta, 
+      "fecha_respuesta": fecha_respuesta
+    };
+
+    console.log("data", data);
+
+    const me = this;
+    console.log("URL servicio", referencias.registroUsuario );
+    
+    axios.post(referencias.registroUsuario, data)    
+      .then(function (response) {
+        console.log("response.data",response.data);
+
+        // alertify
+        //   .alert( response.data.mensaje, function () {            
+        //     me.cerrarModal();                       
+        //   });
+      })
+      .catch(function (error) {
+        console.log("Este es el error en envío",error);
+        // alertify
+        // .alert( "Error de conexión al intentar registrarse", function () {            
+        //   me.cerrarModal();                       
+        // });
+
+      })
+      .finally(function () {
+
+      });
+
+  }
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.id;
@@ -61,7 +101,7 @@ class Consultas extends Component {
       case "tipo_solicitante":
         solicitante = e.target.value;
         break;
-      case "tipo_intervencia":
+      case "tipo_intervencion":
         intervencion = e.target.value;
         break;
       case "tema":
@@ -70,6 +110,12 @@ class Consultas extends Component {
       case "respuesta":
         respuesta = e.target.value;
         break;
+      case "fecha_solicitud":
+        fecha_solicitud = e.target.value;
+        break;
+      case "fecha_respuesta":
+        fecha_respuesta = e.target.value;
+          break;
       default:
         console.log("Opción fuera de rango");
         break;
@@ -115,7 +161,7 @@ class Consultas extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="fecha_solicitud">Fecha solicitud:</label>
-            <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" />
+            <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
           </div>
           <br />
           <h2>Atención a la consulta</h2>
@@ -130,10 +176,15 @@ class Consultas extends Component {
             </select>
           <div className="form-group">
             <label htmlFor="fecha_respuesta">Fecha de respuesta:</label>
-            <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" />
+            <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" onChange={this.obtenerDatosForm} />
           </div>
 
-          <button type="submit" id="btnEnviar" className="btn btn-primary">Enviar</button>
+          <div className="row">
+            <div className="col-md-4 center">
+              <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button>
+            </div>
+          </div>
+          {/* <button type="submit" id="btnEnviar" className="btn btn-primary">Enviar</button> */}
         </form>
       </React.Fragment>
         );
