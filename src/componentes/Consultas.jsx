@@ -5,6 +5,13 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
+const config = {
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+  }
+};
+
 // var solicitante = []; // array de solicitante de la BD
 var solicitud, solicitante, intervencion, tema, respuesta, fecha_respuesta, fecha_solicitud, usuario = 1;
 
@@ -35,11 +42,11 @@ class Consultas extends Component {
     axios.get(url)
       .then(res => {     
         this.setState({ [tabla] : res.data  });
-        console.log("DATAS",res.data); 
-        console.log(  "Estado", tabla   );
-        console.log( this.state.tipo_intervencion  );
-        console.log( this.state.tipo_solicitud  );
-        console.log( this.state.tipo_solicitante );        
+        // console.log("DATAS",res.data); 
+        // console.log(  "Estado", tabla   );
+        // console.log( this.state.tipo_intervencion  );
+        // console.log( this.state.tipo_solicitud  );
+        // console.log( this.state.tipo_solicitante );        
       })
 
       .catch(function (error) {
@@ -61,13 +68,19 @@ class Consultas extends Component {
       "respuesta": respuesta, 
       "fecha_respuesta": fecha_respuesta
     };
-
+    
     console.log("data", data);
 
-    const me = this;
-    console.log("URL servicio", referencias.registroUsuario );
-    
-    axios.post(referencias.registroUsuario, data)    
+    // const me = this;
+    console.log("URL servicio", referencias.guardaconsulta );
+    // const response = axios.post(
+    //   referencias.guardaconsulta,
+    //   { 'example': 'claro que esto es un ejemplo' },
+    //   { headers: { 'Content-Type': 'application/json' } }
+    // );
+    // console.log("response",response.data)
+
+    axios.post(referencias.guardaconsulta, data, config)    
       .then(function (response) {
         console.log("response.data",response.data);
 
