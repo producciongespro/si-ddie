@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+//componentes
 import Boton from './componentes/Boton';
 import Consultas from './componentes/Consultas';
 import Basededatos  from './componentes/Basededatos';
@@ -6,6 +8,13 @@ import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion';
 import Respuestas  from './componentes/Respuestas';
+
+//CSS
+// import './css/animate.css';
+import "./css/master.css";
+
+//json
+
 import referenciasJson from './data/referencias.json';
 import paginas from './data/paginas.json';
 
@@ -53,10 +62,12 @@ class App extends Component {
   render() { 
     return ( 
       <React.Fragment> 
-        <div className="jumbotron">
-          <h1>SI-DDIE</h1>
+        <div className="jumbotron jumbotron-fluid ">
+          <h1 className="h1text" >SI-DDIE</h1>
+          <hr className="my-4"></hr>
           {/* <img src={referencias.img + "logo.png"     } alt="logo"/> */}
         </div>
+
         <div className="row">
           <div className="col-4 col-botonera">
             {              

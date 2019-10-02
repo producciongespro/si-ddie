@@ -37,36 +37,65 @@ class Consultas extends Component {
      }
   }
 
-  componentDidMount() {
+  // componentWillMount() {
+    UNSAFE_componentWillMount() {
     //Obtener datos  
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
     this.obtenerJson("tipo_intervencion");
     this.obtenerJson("tipo_respuesta");
- 
   }
 
 
   obtenerJson = (tabla) => {
     console.log("tabla nombre", tabla);
-    
+    var arreglo = [];
    let url= referencias.consultageneral+"?tabla=" + tabla;
     console.log("URL",url);
     axios.get(url)
       .then(res => {     
-       this['tabla'] = res.data;
-       
-        console.log("res.data", res.data);
-        console.log("tabla", this['tabla']);
-        console.log("tipo_solicitud", this.tipo_solicitud);
+      //ESTE CÓDIGO DEBERIA FUNCIONAR, pero como creí que esto podía ser el error lo cambié por un switch
+      // no debería el switch, porque es más largo el código
+      //  this['tabla'] = res.data;       
+      //   console.log("res.data", res.data);
+      //   console.log("tabla", this['tabla']);
+      // console.log("tipo_solicitud", tipo_solicitud);
+
+
+      
+      arreglo  = res.data;      
+      console.log("arreglo", arreglo);
         
-        
+      switch (tabla) {
+        case 'tipo_solicitud':
+           tipo_solicitud = arreglo;
+           console.log("solicitud", tipo_solicitud);
+           
+          break;
+          case 'tipo_intervencion':
+            tipo_intervencion = arreglo;
+            console.log("intervencion", tipo_intervencion);            
+           break;
+           case 'tipo_solicitante':
+            tipo_solicitante = arreglo;
+            console.log("solicitante", tipo_solicitante);
+            
+           break;
+           case 'tipo_respuesta':
+            tipo_respuesta = arreglo;
+            console.log("tipo_respuesta", tipo_respuesta);
+            
+           break;
+        default:
+          break;
+      }
       })
 
       .catch(function (error) {
         console.log("error",error)
       })
       .finally(function () {
+        console.log("tipo_solicitud", tipo_solicitud);
       });
   }
 
@@ -128,7 +157,7 @@ class Consultas extends Component {
           <div className="form-group">
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
             <select className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
-            {
+            {             
                 tipo_intervencion.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))

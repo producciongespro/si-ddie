@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "myfont";
+  src: url("../fonts/lena/Lena.ttf");
+}
+
+/* Cover Area style */
+.jumbotron
+{
+	background: url('../images/bg.png') no-repeat center center;
+	background-position: 0% 25%;
+	background-size: cover;
+  color: white; 
+}
+.container .jumbotron, .container-fluid .jumbotron {
+  border-radius: 0px;
+}
+
+.h1text {
+  padding-left: 2%;
+  font-family: myfont;
+}
