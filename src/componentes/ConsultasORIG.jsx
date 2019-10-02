@@ -16,24 +16,23 @@ const referencias = referenciasJson[0];
 var consulta = {
     "solicitud" :  "",
     "solicitante" : "",
-    "intervencion": 0,
+    "id_intervencion": 0,
     "tema": "",
     "respuesta": "",
     "fecha_respuesta": "",
     "fecha_solicitud": "",
     "usuario": "1"
-};
-var tipo_solicitud = [], tipo_solicitante = [], tipo_intervencion = [], tipo_respuesta = [];
+}
 
 
 class Consultas extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      // tipo_solicitud : [],
-      // tipo_solicitante : [],
-      // tipo_intervencion : [],
-      // tipo_respuesta: []
+      tipo_solicitud : [],
+      tipo_solicitante : [],
+      tipo_intervencion : [],
+      tipo_respuesta: []
      }
   }
 
@@ -52,12 +51,7 @@ class Consultas extends Component {
     console.log("URL",url);
     axios.get(url)
       .then(res => {     
-        // this.setState({ [tabla] : res.data  }); 
-        let t = res.data; 
-        tabla[] = t;
-        console.log("t", t);
-        console.log("tabla", res.data);
-        
+        this.setState({ [tabla] : res.data  }); 
       })
 
       .catch(function (error) {
@@ -126,7 +120,7 @@ class Consultas extends Component {
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
             <select className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
             {
-                tipo_intervencion.map((item) => (
+                this.state.tipo_intervencion.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -135,7 +129,7 @@ class Consultas extends Component {
             <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
             <select className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
             {
-                tipo_solicitante.map((item) => (
+                  this.state.tipo_solicitante.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -144,7 +138,7 @@ class Consultas extends Component {
             <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
             <select className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
             {
-                tipo_solicitud.map((item) => (
+                  this.state.tipo_solicitud.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -165,7 +159,7 @@ class Consultas extends Component {
           <label htmlFor="respuesta">Tipo de respuesta:</label>
             <select className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
             {
-               tipo_respuesta.map((item) => (
+               this.state.tipo_respuesta.map((item) => (
                <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
