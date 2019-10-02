@@ -5,40 +5,30 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
-// const config = {
-//   headers: {
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-//   }
-// };
-
-// var solicitante = []; // array de solicitante de la BD
-var consulta = {
-    "solicitud" :  "",
-    "solicitante" : "",
-    "intervencion": 0,
-    "tema": "",
-    "respuesta": "",
-    "fecha_respuesta": "",
-    "fecha_solicitud": "",
-    "usuario": "1"
-};
-var tipo_solicitud = [], tipo_solicitante = [], tipo_intervencion = [], tipo_respuesta = [];
-
 
 class Consultas extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      // tipo_solicitud : [],
-      // tipo_solicitante : [],
-      // tipo_intervencion : [],
-      // tipo_respuesta: []
+    this.state = {				
+				arrayTipoSolicitud :  "",
+				arrayTipoSolicitante : "",
+        arrayTipoIntervencion: "",
+        arrayTipoRespuesta: ""				
      }
   }
-
-  // componentWillMount() {
-    UNSAFE_componentWillMount() {
+  
+  consulta = {
+    "id_usuario": "1",
+    "id_solicitud" :  "",
+    "id_solicitante" : "",
+    "id_intervencion": 0,
+    "id_respuesta": "",
+    "tema": "",    
+    "fecha_solicitud": "",
+    "fecha_respuesta": ""    
+  }
+ 
+  componentDidMount() {    
     //Obtener datos  
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
@@ -48,10 +38,10 @@ class Consultas extends Component {
 
 
   obtenerJson = (tabla) => {
-    console.log("tabla nombre", tabla);
-    var arreglo = [];
+    //console.log("tabla nombre", tabla);
+    
    let url= referencias.consultageneral+"?tabla=" + tabla;
-    console.log("URL",url);
+   // console.log("URL",url);
     axios.get(url)
       .then(res => {     
       //ESTE CÓDIGO DEBERIA FUNCIONAR, pero como creí que esto podía ser el error lo cambié por un switch
@@ -63,50 +53,49 @@ class Consultas extends Component {
 
 
       
-      arreglo  = res.data;      
-      console.log("arreglo", arreglo);
+      const arreglo  = res.data;      
+      //console.log("arreglo", arreglo);
         
       switch (tabla) {
-        case 'tipo_solicitud':
-           tipo_solicitud = arreglo;
-           console.log("solicitud", tipo_solicitud);
-           
-          break;
-          case 'tipo_intervencion':
-            tipo_intervencion = arreglo;
-            console.log("intervencion", tipo_intervencion);            
-           break;
-           case 'tipo_solicitante':
-            tipo_solicitante = arreglo;
-            console.log("solicitante", tipo_solicitante);
-            
-           break;
-           case 'tipo_respuesta':
-            tipo_respuesta = arreglo;
-            console.log("tipo_respuesta", tipo_respuesta);
-            
-           break;
+		case 'tipo_solicitud':
+			this.setState ({ arrayTipoSolicitud : arreglo   })                  
+        break;
+        case 'tipo_intervencion':
+			this.setState ({ arrayTipoIntervencion:  arreglo   })            
+        break;
+        case 'tipo_solicitante':
+			this.setState ({ arrayTipoSolicitante  : arreglo   })                                   
+        break;
+        case 'tipo_respuesta':
+			      this.setState ({ arrayTipoRespuesta : arreglo   })                                                          
+        break;
         default:
-          break;
+			console.log ("Opcion fuera de rango")
+        break;
       }
+	  
+	  
       })
 
       .catch(function (error) {
         console.log("error",error)
       })
       .finally(function () {
-        console.log("tipo_solicitud", tipo_solicitud);
+        console.log("Fin de consulta en ", tabla );            
       });
   }
+  
+  
+  
 
   enviarDatosForm = () => {    
-    console.log("data", consulta);
+    console.log("data", this.consulta);
     console.log("URL servicio", referencias.guardaconsulta );
     
-   
+   /*
     axios.post(referencias.guardaconsulta, consulta)    
       .then(function (response) {
-        console.log("response.data",response.data);
+        //console.log("response.data",response.data);
       })
       .catch(function (error) {
         console.log("Este es el error en envío",error);       
@@ -114,105 +103,56 @@ class Consultas extends Component {
       .finally(function () {
         console.log("TRansacción finalizada");        
       });
-
+*/
   }
 
+
+  /*
   obtenerDatosForm = (e) => {
     const opcion = e.target.name;
-    console.log("e.target.value",e.target.value);
+	const valor = e.target.value
+    //console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "tipo_solicitud":
-        consulta.solicitud = e.target.value;
+          
         break;
       case "tipo_solicitante":
-        consulta.solicitante = e.target.value;
+		this.setState ({tipo_solicitante : valor})		        
         break;
       case "tipo_intervencion":
-        consulta.intervencion = e.target.value;
+		this.setState ({tipo_intervencion : valor})		                
         break;
       case "tema":
-        consulta.tema = e.target.value;
+		this.setState ({tema : valor})		                        
         break;
       case "respuesta":
-        consulta.respuesta = e.target.value;
+		this.setState ({consulta.tipo_respuesta : valor})		                                
         break;
       case "fecha_solicitud":
-        consulta.fecha_solicitud = e.target.value;
+		this.setState ({consulta.fecha_solicitud : valor})        
         break;
       case "fecha_respuesta":
-        consulta.fecha_respuesta = e.target.value;
-          break;
+		this.setState ({consulta.fecha_respuesta : valor})                
+        break;
       default:
        // console.log("Opción fuera de rango");
         break;
     }
   }
 
+  */
+
     render() { 
       return (
         <React.Fragment>
-        <h1>Consultas</h1>
+      
+      <h1>prueba</h1>
+      {
+        console.log( "Tipo respuesta", this.state.arrayTipoRespuesta)
         
-          <div className="form-group">
-            <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <select className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
-            {             
-                tipo_intervencion.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            <option  defaultValue  disabled  value="default">Seleccione la opcion</option>
-            </select>
-            <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
-            <select className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
-            {
-                tipo_solicitante.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            </select>
-
-            <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
-            <select className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
-            {
-                tipo_solicitud.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            </select>
-
-          </div>
-          <div className="form-group">
-            <label htmlFor="tema">Tema:</label>
-            <input type="text" className="form-control" id="tema" name="tema" onChange={this.obtenerDatosForm} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="fecha_solicitud">Fecha solicitud:</label>
-            <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
-          </div>
-          <br />
-          <h2>Atención a la consulta</h2>
-          <hr />
-          <label htmlFor="respuesta">Tipo de respuesta:</label>
-            <select className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
-            {
-               tipo_respuesta.map((item) => (
-               <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            </select>
-          <div className="form-group">
-            <label htmlFor="fecha_respuesta">Fecha de respuesta:</label>
-            <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" onChange={this.obtenerDatosForm} />
-          </div>
-
-          <div className="row">
-            <div className="col-md-4 center">
-              <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button>
-              
-            </div>
-          </div>          
+      }
+                 
       </React.Fragment>
         );
     }

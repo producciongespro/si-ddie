@@ -1,0 +1,9 @@
+[
+    {
+        "version" : "1.0",
+        "img"  : "http://localhost/si-ddie/server_assets/si-ddie/img/",
+        "servicios" : "http://localhost/si-ddie/webservices/si-ddie/",   
+       "consultageneral": "http://localhost/projects/si-ddie/webservices/si-ddie/consultas_generales.php",
+       "guardaconsulta" : "http://localhost/projects/si-ddie/webservices/si-ddie/registro_consulta.php"
+    }
+]
