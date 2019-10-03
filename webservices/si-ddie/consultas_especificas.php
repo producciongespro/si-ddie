@@ -5,7 +5,19 @@ header("Content-Type: text/html; charset=utf-8");
 // $method = $_SERVER['REQUEST_METHOD'];
 
 $tabla= $_GET['tabla'];
-$sql="SELECT * FROM $tabla"; 
+$id= $_GET['id_u'];
+$sql = '';
+switch ($tabla) {
+    case 'consultas':
+        $sql = "SELECT * FROM $tabla WHERE id_usuario = $id";
+        break;
+    
+    default:
+        # code...
+        break;
+}
+// $sql="SELECT * FROM $tabla"; 
+
 include "conectar.php";
 
 sleep(1);

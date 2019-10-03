@@ -5,40 +5,30 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
-// const config = {
-//   headers: {
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-//   }
-// };
-
-// var solicitante = []; // array de solicitante de la BD
 var consulta = {
     "solicitud" :  "",
     "solicitante" : "",
-    "intervencion": 0,
+    "id_intervencion": 0,
     "tema": "",
     "respuesta": "",
     "fecha_respuesta": "",
     "fecha_solicitud": "",
     "usuario": "1"
-};
-var tipo_solicitud = [], tipo_solicitante = [], tipo_intervencion = [], tipo_respuesta = [];
+}
 
 
 class Consultas extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      // tipo_solicitud : [],
-      // tipo_solicitante : [],
-      // tipo_intervencion : [],
-      // tipo_respuesta: []
+      tipo_solicitud : [],
+      tipo_solicitante : [],
+      tipo_intervencion : [],
+      tipo_respuesta: []
      }
   }
 
-  // componentWillMount() {
-    UNSAFE_componentWillMount() {
+  componentDidMount() {
     //Obtener datos  
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
@@ -48,54 +38,17 @@ class Consultas extends Component {
 
 
   obtenerJson = (tabla) => {
-    console.log("tabla nombre", tabla);
-    var arreglo = [];
    let url= referencias.consultageneral+"?tabla=" + tabla;
     console.log("URL",url);
     axios.get(url)
       .then(res => {     
-      //ESTE CÓDIGO DEBERIA FUNCIONAR, pero como creí que esto podía ser el error lo cambié por un switch
-      // no debería el switch, porque es más largo el código
-      //  this['tabla'] = res.data;       
-      //   console.log("res.data", res.data);
-      //   console.log("tabla", this['tabla']);
-      // console.log("tipo_solicitud", tipo_solicitud);
-
-
-      
-      arreglo  = res.data;      
-      console.log("arreglo", arreglo);
-        
-      switch (tabla) {
-        case 'tipo_solicitud':
-           tipo_solicitud = arreglo;
-           console.log("solicitud", tipo_solicitud);
-           
-          break;
-          case 'tipo_intervencion':
-            tipo_intervencion = arreglo;
-            console.log("intervencion", tipo_intervencion);            
-           break;
-           case 'tipo_solicitante':
-            tipo_solicitante = arreglo;
-            console.log("solicitante", tipo_solicitante);
-            
-           break;
-           case 'tipo_respuesta':
-            tipo_respuesta = arreglo;
-            console.log("tipo_respuesta", tipo_respuesta);
-            
-           break;
-        default:
-          break;
-      }
+        this.setState({ [tabla] : res.data  }); 
       })
 
       .catch(function (error) {
         console.log("error",error)
       })
       .finally(function () {
-        console.log("tipo_solicitud", tipo_solicitud);
       });
   }
 
@@ -152,31 +105,33 @@ class Consultas extends Component {
     render() { 
       return (
         <React.Fragment>
-        <h1>Consultas</h1>
+        <h1 className="header-1">Consultas</h1>
         
           <div className="form-group">
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <select className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
-            {             
-                tipo_intervencion.map((item) => (
+            <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
+            <option  disabled value="DEFAULT">Seleccione la opción</option>
+            {
+                this.state.tipo_intervencion.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
-            <option  defaultValue  disabled  value="default">Seleccione la opcion</option>
             </select>
             <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
-            <select className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
+            <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
+            <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
-                tipo_solicitante.map((item) => (
+                  this.state.tipo_solicitante.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
             </select>
 
             <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
-            <select className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
+            <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
+            <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
-                tipo_solicitud.map((item) => (
+                  this.state.tipo_solicitud.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -192,12 +147,13 @@ class Consultas extends Component {
             <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
           </div>
           <br />
-          <h2>Atención a la consulta</h2>
+          <h2 className="header-2">Atención a la consulta</h2>
           <hr />
           <label htmlFor="respuesta">Tipo de respuesta:</label>
-            <select className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
+            <select defaultValue={'DEFAULT'} className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
+            <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
-               tipo_respuesta.map((item) => (
+               this.state.tipo_respuesta.map((item) => (
                <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -209,7 +165,7 @@ class Consultas extends Component {
 
           <div className="row">
             <div className="col-md-4 center">
-              <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button>
+              <button className="btn btn-main" onClick={this.enviarDatosForm} > Guardar registro </button>
               
             </div>
           </div>          

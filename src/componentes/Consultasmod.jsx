@@ -1,52 +1,45 @@
 import React, { Component } from 'react';
-
-import Llenaselects from './Llenaselects';
-
 import axios from 'axios';
 import referenciasJson from '../data/referencias.json';
 
 
 const referencias = referenciasJson[0];
 
+// const config = {
+//   headers: {
+//     "Access-Control-Allow-Origin": "*",
+//     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+//   }
+// };
+
+// var solicitante = []; // array de solicitante de la BD
 var consulta = {
-    "id" : "",
     "solicitud" :  "",
     "solicitante" : "",
-    "id_intervencion": 0,
+    "intervencion": 0,
     "tema": "",
     "respuesta": "",
     "fecha_respuesta": "",
     "fecha_solicitud": "",
     "usuario": "1"
-},
-  registro={
-    "id" : "",
-    "solicitud" :  "",
-    "solicitante" : "",
-    "id_intervencion": 0,
-    "tema": "",
-    "respuesta": "",
-    "fecha_respuesta": "",
-    "fecha_solicitud": "",
-    "usuario": "1"
-  };
+};
+var tipo_solicitud = [], tipo_solicitante = [], tipo_intervencion = [], tipo_respuesta = [];
 
 
-class Respuestas extends Component {
+class Consultas extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      consultas : [],
-      tipo_solicitud : [],
-      tipo_solicitante : [],
-      tipo_intervencion : [],
-      tipo_respuesta: []
+      // tipo_solicitud : [],
+      // tipo_solicitante : [],
+      // tipo_intervencion : [],
+      // tipo_respuesta: []
      }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    // UNSAFE_componentWillMount() {
     //Obtener datos  
-    this.obtenerJson("consultas");
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
     this.obtenerJson("tipo_intervencion");
@@ -55,20 +48,51 @@ class Respuestas extends Component {
 
 
   obtenerJson = (tabla) => {
-  console.log("tabla", tabla);
-  
-    var url="";
-    if (tabla ==="consultas") {
-      url= referencias.consultaespecifica+"?tabla=" + tabla+"&id_u="+consulta.usuario;
-    } else {
-      url= referencias.consultageneral+"?tabla=" + tabla;
-    }
-    // console.log("URL",url);
+    console.log("tabla nombre", tabla);
+    var arreglo = [];
+   let url= referencias.consultageneral+"?tabla=" + tabla;
+    console.log("URL",url);
     axios.get(url)
       .then(res => {     
-        this.setState({ [tabla] : res.data  }); 
-        console.log("tabla", tabla,"---res.data", res.data);
+      //ESTE CÓDIGO DEBERIA FUNCIONAR, pero como creí que esto podía ser el error lo cambié por un switch
+      // no debería el switch, porque es más largo el código
+      //  this['tabla'] = res.data;       
+      //   console.log("res.data", res.data);
+      //   console.log("tabla", this['tabla']);
+      // console.log("tipo_solicitud", tipo_solicitud);
+
+
+
+      arreglo  = res.data;      
+      console.log("arreglo", arreglo);
         
+      switch (tabla) {
+        case 'tipo_solicitud':
+           tipo_solicitud = arreglo;
+           tipo_solicitud.map((item) => (
+            console.log("tipo solicitud -----",item.id," ",item.tipo)
+             ))
+           
+           console.log("solicitud", tipo_solicitud);
+           
+          break;
+          case 'tipo_intervencion':
+            tipo_intervencion = arreglo;
+            console.log("intervencion", tipo_intervencion);            
+           break;
+           case 'tipo_solicitante':
+            tipo_solicitante = arreglo;
+            console.log("solicitante", tipo_solicitante);
+            
+           break;
+           case 'tipo_respuesta':
+            tipo_respuesta = arreglo;
+            console.log("tipo_respuesta", tipo_respuesta);
+            
+           break;
+        default:
+          break;
+      }
       })
 
       .catch(function (error) {
@@ -101,9 +125,6 @@ class Respuestas extends Component {
     console.log("e.target.value",e.target.value);
 
     switch (opcion) {
-      case "tipo_consulta":
-        consulta.id = e.target.value;
-        break;
       case "tipo_solicitud":
         consulta.solicitud = e.target.value;
         break;
@@ -131,54 +152,34 @@ class Respuestas extends Component {
     }
   }
 
-  obtenerDatosConsulta = (e) => {
-    console.log("consulta.id", e.target.value);
-    this.state.consultas.map((item,i) =>  {
-        if (item.id === e.target.value) {
-           registro = this.state.consultas[i];
-          console.log("registro", this.state.consultas[i]);
-          console.log("objeto registro", registro);
-    }
-  });
-     
-  }
-
     render() { 
       return (
         <React.Fragment>
-        <h1 className="header-1">Respuestas</h1>
+        <h1>Consultas</h1>
         
           <div className="form-group">
-            <label htmlFor="consultas">Seleccione la consulta:</label>
-            <select className="form-control"  name="consultas" onChange={this.obtenerDatosConsulta}>              
-            <option  selected disabled value="0">Seleccione la opción</option>
-              { 
-                  
-                  this.state.consultas.map((item) => (
-                  <option key={item.id} value={item.id}>{item.id} - {item.tema}   </option>
-                ))
-              }
-            </select>
-              
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <Llenaselects idintervencion={registro.id_intervencion} estado={this.state.tipo_intervencion}/>
-             {/* <Llenaselects estado={this.state.tipo_intervencion} dato={this.state.consulta} /> */}
-
+            <select className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
+            {             
+                tipo_intervencion.map((item) => (
+                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+              ))
+            }
+            <option  defaultValue  disabled  value="default">Seleccione la opcion</option>
+            </select>
             <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
-            <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
-            <option  disabled value="DEFAULT">Seleccione la opción</option>
+            <select className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
             {
-                  this.state.tipo_solicitante.map((item) => (
+                tipo_solicitante.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
             </select>
 
             <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
-            <select defaultValue={'DEFAULT'}   className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
-            <option  disabled value="DEFAULT">Seleccione la opción</option>
+            <select className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
             {
-                  this.state.tipo_solicitud.map((item) => (
+                tipo_solicitud.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -194,12 +195,12 @@ class Respuestas extends Component {
             <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
           </div>
           <br />
-          <h2 className="header-2">Atención a la consulta</h2>
+          <h2>Atención a la consulta</h2>
           <hr />
           <label htmlFor="respuesta">Tipo de respuesta:</label>
-            <select defaultValue={'DEFAULT'}  className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
+            <select className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
             {
-               this.state.tipo_respuesta.map((item) => (
+               tipo_respuesta.map((item) => (
                <option key={item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
@@ -211,7 +212,7 @@ class Respuestas extends Component {
 
           <div className="row">
             <div className="col-md-4 center">
-              <button className="btn btn-main" onClick={this.enviarDatosForm} > Guardar registro </button>
+              <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button>
               
             </div>
           </div>          
@@ -220,4 +221,4 @@ class Respuestas extends Component {
     }
 }
  
-export default Respuestas;
+export default Consultas;
