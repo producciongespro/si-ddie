@@ -109,7 +109,7 @@ class Consultas extends Component {
         
           <div className="form-group">
             <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
+            <select defaultValue={'DEFAULT'} className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                 this.state.tipo_intervencion.map((item) => (

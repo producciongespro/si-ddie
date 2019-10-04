@@ -9,7 +9,7 @@ $id= $_GET['id_u'];
 $sql = '';
 switch ($tabla) {
     case 'consultas':
-        $sql = "SELECT * FROM $tabla WHERE id_usuario = $id";
+        $sql = "SELECT * FROM $tabla WHERE id_usuario = $id  AND `id_respuesta`='0'";
         break;
     
     default:
