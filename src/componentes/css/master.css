@@ -1,7 +1,15 @@
+
+/*
 @font-face {
   font-family: "myfont";
   src: url("../fonts/lena/Lena.ttf");
 }
+*/
+/*@import url(https://fonts.googleapis.com/css?family=Livvic|Raleway&display=swap); */
+/* font-family: 'Raleway', sans-serif;
+font-family: 'Livvic', sans-serif; */
+
+
 
 body
 {
@@ -9,6 +17,16 @@ body
   background: url('../images/noisy2.png') repeat center center;
 
 }
+
+
+.fuente-livic {
+  /*font-family: 'Livvic', sans-serif!important; */
+  color: blue;
+  font-weight: bold;
+}
+
+
+
 /* Cover Area style */
  .jumbotron
 {
@@ -21,6 +39,7 @@ body
 .container .jumbotron, .container-fluid .jumbotron {
   border-radius: 0px;
 }
+
 
 .h1text {
   padding-left: 2%;
@@ -83,7 +102,7 @@ body
   border-radius: 0 5px 5px 0;  
 }
 
-.header-1 {
+.header-1, .header-2 {
   font: 400 40px 'Open Sans';
   text-transform: uppercase;
   color: #e74803;
@@ -91,13 +110,13 @@ body
   margin-bottom: 30px;
 } 
 
-.header-2 {
-  font: 400 1.5rem 'Open Sans';
+.pepito-1 {
+  font: 400 40px 'Open Sans';
   text-transform: uppercase;
   color: #e74803;
-  text-shadow: 2px 2px 2px #999;
-  margin-bottom: 30px;
-} 
+}
+
+
 .form-control {
   background-color: #40a6db14!important;
 }

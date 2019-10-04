@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import Llenaselects from './Llenaselects';
+
+//import "../css/master.css";
 
 import axios from 'axios';
 import referenciasJson from '../data/referencias.json';
@@ -186,11 +187,12 @@ class Respuestas extends Component {
                 ))
               }
             </select>
-            <p>Tipo de intervención: {this.state.registroactual.tipo_intervencion}</p>
-            <p>Tipo de solicitud: {this.state.registroactual.tipo_solicitud}</p>
-            <p>Tipo de solicitante: {this.state.registroactual.tipo_solicitante}</p>
-            <p>Tema: {this.state.registroactual.tema}</p>
-            <p>Tipo de solicitante: {this.state.registroactual.fecha_solicitud}</p>
+            
+            <p><span className="fuente-livic">Tipo de solicitud: </span>{this.state.registroactual.tipo_solicitud}</p>
+            <p className="pepito-1" > dfdfdf </p>
+            <p><span className="font-weight-bold">Tipo de solicitante:</span> {this.state.registroactual.tipo_solicitante}</p>
+            <p><span className="font-weight-bold">Tema: </span>{this.state.registroactual.tema}</p>
+            <p><span className="font-weight-bold">Tipo de solicitante:</span> {this.state.registroactual.fecha_solicitud}</p>
 
           </div>
           <h2 className="header-2">Atención a la consulta</h2>
