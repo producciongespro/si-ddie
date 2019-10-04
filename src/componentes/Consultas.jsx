@@ -6,14 +6,14 @@ import referenciasJson from '../data/referencias.json';
 const referencias = referenciasJson[0];
 
 var consulta = {
-    "solicitud" :  "",
-    "solicitante" : "",
+    "id_solicitud" :  "",
+    "id_solicitante" : "",
     "id_intervencion": 0,
     "tema": "",
-    "respuesta": "",
+    "id_respuesta": "",
     "fecha_respuesta": "",
     "fecha_solicitud": "",
-    "usuario": "1"
+    "id_usuario": "1"
 }
 
 
@@ -54,10 +54,10 @@ class Consultas extends Component {
 
   enviarDatosForm = () => {    
     console.log("data", consulta);
-    console.log("URL servicio", referencias.guardaconsulta );
+    console.log("URL servicio", referencias.guardaconsulta+"?tabla_destino=consultas" );
     
    
-    axios.post(referencias.guardaconsulta, consulta)    
+    axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", consulta)    
       .then(function (response) {
         console.log("response.data",response.data);
       })
@@ -76,19 +76,19 @@ class Consultas extends Component {
 
     switch (opcion) {
       case "tipo_solicitud":
-        consulta.solicitud = e.target.value;
+        consulta.id_solicitud = e.target.value;
         break;
       case "tipo_solicitante":
-        consulta.solicitante = e.target.value;
+        consulta.id_solicitante = e.target.value;
         break;
       case "tipo_intervencion":
-        consulta.intervencion = e.target.value;
+        consulta.id_intervencion = e.target.value;
         break;
       case "tema":
         consulta.tema = e.target.value;
         break;
       case "respuesta":
-        consulta.respuesta = e.target.value;
+        consulta.id_respuesta = e.target.value;
         break;
       case "fecha_solicitud":
         consulta.fecha_solicitud = e.target.value;

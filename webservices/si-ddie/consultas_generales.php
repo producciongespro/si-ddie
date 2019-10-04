@@ -1,55 +1,34 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-header("Content-Type: text/html; charset=utf-8");
-// $method = $_SERVER['REQUEST_METHOD'];
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    header("Content-Type: text/html; charset=utf-8");
 
-$tabla= $_GET['tabla'];
-$sql="SELECT * FROM $tabla"; 
-include "conectar.php";
-
-sleep(1);
-function desconectar($conexion){
-
-    $close = mysqli_close($conexion);
-
-        if($close){
-            echo '';
-        }else{
-            echo 'Ha sucedido un error inexperado en la desconexion de la base de datos
-';
-        }
-
-    return $close;
-}
-
-function obtenerArreglo($sql){
-    //Creamos la conexion con la funcion anterior
-  $conexion = conectarDB();
-
-    //generamos la consulta
-
-        mysqli_set_charset($conexion, "utf8"); //formato de datos utf8
-
-    if(!$resultado = mysqli_query($conexion, $sql)) die(); //si la conexión cancelar programa
-
-    $arreglo = array(); //creamos un array
-
-    //guardamos en un array todos los datos de la consulta
-    $i=0;
-
-    while($row = mysqli_fetch_assoc($resultado))
-    {
-        $arreglo[$i] = $row;
-        $i++;
+    require 'conectar.php';
+    $JSONData = file_get_contents("php://input");
+    $dataObject = json_decode($JSONData);
+   
+    $lista_campos = "";
+    $lista_valores  = "";
+    $errors = array();
+    $mjs = "";
+    $comando = "insert into ".$_GET['tabla_destino']." (";
+    foreach ($dataObject as $campo => $valor){
+        $lista_campos .= "$campo,";
+        $lista_valores  .= "'$valor',";
     }
-
-    desconectar($conexion); //desconectamos la base de datos
-
-    return $arreglo; //devolvemos el array
-}
-
-        $r = obtenerArreglo($sql);
-        echo json_encode($r);
-
+    $lista_campos = substr($lista_campos,0,-1);
+    $lista_valores = substr($lista_valores,0,-1);
+    $comando .= $lista_campos.") values (".$lista_valores.")";
+    $mysqli = conectarDB();
+    $registro = mysqli_query($mysqli,$comando) or die ("Problemas al insertar registro".mysqli_error($mysqli));
+    if($registro > 0 )
+    {
+        $mjs="Registro exitoso";
+        echo json_encode(array('error'=>false, 'mensaje'=>$mjs));
+        exit;
+    } else {
+            $errors[] = "Error al registrar";
+            echo json_encode(array('error'=>true, 'mensaje'=>$errors ));
+        } 
 ?>
