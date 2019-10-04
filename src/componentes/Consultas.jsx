@@ -10,10 +10,10 @@ var consulta = {
     "id_solicitante" : "",
     "id_intervencion": 0,
     "tema": "",
-    "id_respuesta": "",
-    "fecha_respuesta": "",
+    "id_respuesta": "0",
+    "fecha_respuesta": "0001-01-01",
     "fecha_solicitud": "",
-    "id_usuario": "1"
+    "id_usuario": "1",
 }
 
 
@@ -39,7 +39,7 @@ class Consultas extends Component {
 
   obtenerJson = (tabla) => {
    let url= referencias.consultageneral+"?tabla=" + tabla;
-    console.log("URL",url);
+    // console.log("URL",url);
     axios.get(url)
       .then(res => {     
         this.setState({ [tabla] : res.data  }); 
@@ -53,8 +53,8 @@ class Consultas extends Component {
   }
 
   enviarDatosForm = () => {    
-    console.log("data", consulta);
-    console.log("URL servicio", referencias.guardaconsulta+"?tabla_destino=consultas" );
+    // console.log("data", consulta);
+    // console.log("URL servicio", referencias.guardaconsulta+"?tabla_destino=consultas" );
     
    
     axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", consulta)    
@@ -72,7 +72,7 @@ class Consultas extends Component {
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.name;
-    console.log("e.target.value",e.target.value);
+    // console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "tipo_solicitud":

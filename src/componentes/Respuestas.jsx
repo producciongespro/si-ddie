@@ -17,7 +17,10 @@ var consulta = {
     "respuesta": "",
     "fecha_respuesta": "",
     "fecha_solicitud": "",
-    "usuario": "1"
+    "usuario": "1",
+    "tipo_intervencion": "",
+    "tipo_solicitante": "",
+    "tipo_solicitud": ""
 },
   registro={
     "id" : "",
@@ -45,7 +48,7 @@ class Respuestas extends Component {
       tipo_solicitante : [],
       tipo_intervencion : [],
       tipo_respuesta: [],
-      record : {}
+      registroactual : {}
      }
   }
 
@@ -66,9 +69,9 @@ class Respuestas extends Component {
   componentDidMount() {
     //Obtener datos  
     this.obtenerJson("consultas");
-    this.obtenerJson("tipo_solicitud");
-    this.obtenerJson("tipo_solicitante");
-    this.obtenerJson("tipo_intervencion");
+    // this.obtenerJson("tipo_solicitud");
+    // this.obtenerJson("tipo_solicitante");
+    // this.obtenerJson("tipo_intervencion");
     this.obtenerJson("tipo_respuesta");
   }
 
@@ -155,13 +158,16 @@ class Respuestas extends Component {
     // console.log("consulta.id", e.target.value);
     this.state.consultas.map((item,i) =>  {
         if (item.id === e.target.value) {
-          this.setState({ registro : this.state.consultas[i]});
-          //  this.setState({ [tabla] : res.data  }); 
-          // console.log("registro", this.state.consultas[i]);
-          console.log("objeto registro", this.state.registro);
+          console.log("item", item);
+          
+          this.setState( {registroactual: item }, ()=> {
+            console.log("Registro actual", this.state.registroactual); 
+          }  );
     }
   });
-     
+
+
+  
   }
 
     render() { 
@@ -180,41 +186,13 @@ class Respuestas extends Component {
                 ))
               }
             </select>
-              
-            <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <Llenaselects idintervencion={registro.id_intervencion} estado={this.state.tipo_intervencion}/>
-             {/* <Llenaselects estado={this.state.tipo_intervencion} dato={this.state.consulta} /> */}
-
-            <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
-            <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
-            <option  disabled value="DEFAULT">Seleccione la opción</option>
-            {
-                  this.state.tipo_solicitante.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            </select>
-
-            <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
-            <select defaultValue={'DEFAULT'}   className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
-            <option  disabled value="DEFAULT">Seleccione la opción</option>
-            {
-                  this.state.tipo_solicitud.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
-              ))
-            }
-            </select>
+            <p>Tipo de intervención: {this.state.registroactual.tipo_intervencion}</p>
+            <p>Tipo de solicitud: {this.state.registroactual.tipo_solicitud}</p>
+            <p>Tipo de solicitante: {this.state.registroactual.tipo_solicitante}</p>
+            <p>Tema: {this.state.registroactual.tema}</p>
+            <p>Tipo de solicitante: {this.state.registroactual.fecha_solicitud}</p>
 
           </div>
-          <div className="form-group">
-            <label htmlFor="tema">Tema:</label>
-            <input type="text" className="form-control" id="tema" name="tema" onChange={this.obtenerDatosForm} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="fecha_solicitud">Fecha solicitud:</label>
-            <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
-          </div>
-          <br />
           <h2 className="header-2">Atención a la consulta</h2>
           <hr />
           <label htmlFor="respuesta">Tipo de respuesta:</label>
