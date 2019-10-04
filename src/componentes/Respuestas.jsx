@@ -32,7 +32,11 @@ var consulta = {
   };
 
 
+
+//1 - Definicion de la clase
 class Respuestas extends Component {
+
+  //2 - Constructor
   constructor(props) {
     super(props);
     this.state = { 
@@ -40,9 +44,24 @@ class Respuestas extends Component {
       tipo_solicitud : [],
       tipo_solicitante : [],
       tipo_intervencion : [],
-      tipo_respuesta: []
+      tipo_respuesta: [],
+      record : {}
      }
   }
+
+  // 3 -Definicion de las propiedades
+
+  // registro = {
+  //   hghg : "gfgf"
+  // }
+
+
+  // Creacion de los metodos
+
+  // imprimirRegistro = () => {
+  //   console.log(this.registro);
+    
+  // }
 
   componentDidMount() {
     //Obtener datos  
@@ -78,7 +97,7 @@ class Respuestas extends Component {
       });
   }
 
-  enviarDatosForm = () => {    
+  enviarDatosForm = (     ) => {    
     console.log("data", consulta);
     console.log("URL servicio", referencias.guardaconsulta );
     
@@ -86,6 +105,7 @@ class Respuestas extends Component {
     axios.post(referencias.guardaconsulta, consulta)    
       .then(function (response) {
         console.log("response.data",response.data);
+        
       })
       .catch(function (error) {
         console.log("Este es el error en envío",error);       
@@ -132,12 +152,13 @@ class Respuestas extends Component {
   }
 
   obtenerDatosConsulta = (e) => {
-    console.log("consulta.id", e.target.value);
+    // console.log("consulta.id", e.target.value);
     this.state.consultas.map((item,i) =>  {
         if (item.id === e.target.value) {
-           registro = this.state.consultas[i];
-          console.log("registro", this.state.consultas[i]);
-          console.log("objeto registro", registro);
+          this.setState({ registro : this.state.consultas[i]});
+          //  this.setState({ [tabla] : res.data  }); 
+          // console.log("registro", this.state.consultas[i]);
+          console.log("objeto registro", this.state.registro);
     }
   });
      
