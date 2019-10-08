@@ -3,6 +3,16 @@
   src: url("../fonts/lena/Lena.ttf");
 }
 
+@font-face {
+  font-family: "myfontJun";
+  src: url("../fonts/junegull/junegull.ttf");
+}
+
+@font-face {
+  font-family: "myfontPoe";
+  src: url("../fonts/poetsen_one/PoetsenOne-Regular.ttf");
+}
+
 body
 {
   background-color: blanchedalmond;
@@ -84,7 +94,8 @@ body
 }
 
 .header-1 {
-  font: 400 40px 'Open Sans';
+  /* font: 400 40px 'Open Sans'; */
+  font-family: "myfontJun";
   text-transform: uppercase;
   color: #e74803;
   text-shadow: 2px 2px 2px #999;
@@ -92,7 +103,8 @@ body
 } 
 
 .header-2 {
-  font: 400 1.5rem 'Open Sans';
+  /* font: 400 1.5rem 'Open Sans'; */
+  font-family: "myfontJun";
   text-transform: uppercase;
   color: #e74803;
   text-shadow: 2px 2px 2px #999;
@@ -102,6 +114,21 @@ body
   background-color: #40a6db14!important;
 }
 
+.font-len
+{
+  color:black;
+  font-family: "myfontPoe";
+  font-size: 1.1rem;
+}
+
+.cuadro-texto {
+  -webkit-box-shadow:3px -1px 8px 0px #736b68 inset;
+  -moz-box-shadow:3px -1px 8px 0px #736b68 inset;
+  box-shadow:3px -1px 8px 0px #736b68 inset;
+  margin: 10px 0px 10px 0px;
+
+  padding: 10px;
+}
 @media only screen and (max-width: 550px) 
 {
   .btn-main{

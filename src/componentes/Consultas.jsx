@@ -108,7 +108,7 @@ class Consultas extends Component {
         <h1 className="header-1">Consultas</h1>
         
           <div className="form-group">
-            <label htmlFor="tipo_intervencion">Tipo de intervención:</label>
+            <label className="font-len" htmlFor="tipo_intervencion">Tipo de intervención:</label>
             <select defaultValue={'DEFAULT'} className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
@@ -117,7 +117,7 @@ class Consultas extends Component {
               ))
             }
             </select>
-            <label htmlFor="tipo_solicitante">Tipo de solicitante:</label>
+            <label className="font-len" htmlFor="tipo_solicitante">Tipo de solicitante:</label>
             <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
@@ -127,7 +127,7 @@ class Consultas extends Component {
             }
             </select>
 
-            <label htmlFor="tipo_solicitud">Tipo de solicitud:</label>
+            <label className="font-len" htmlFor="tipo_solicitud">Tipo de solicitud:</label>
             <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
@@ -139,17 +139,17 @@ class Consultas extends Component {
 
           </div>
           <div className="form-group">
-            <label htmlFor="tema">Tema:</label>
+            <label className="font-len" htmlFor="tema">Tema:</label>
             <input type="text" className="form-control" id="tema" name="tema" onChange={this.obtenerDatosForm} />
           </div>
           <div className="form-group">
-            <label htmlFor="fecha_solicitud">Fecha solicitud:</label>
+            <label className="font-len" htmlFor="fecha_solicitud">Fecha solicitud:</label>
             <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" onChange={this.obtenerDatosForm} />
           </div>
           <br />
           <h2 className="header-2">Atención a la consulta</h2>
           <hr />
-          <label htmlFor="respuesta">Tipo de respuesta:</label>
+          <label className="font-len" htmlFor="respuesta">Tipo de respuesta:</label>
             <select defaultValue={'DEFAULT'} className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
@@ -159,7 +159,7 @@ class Consultas extends Component {
             }
             </select>
           <div className="form-group">
-            <label htmlFor="fecha_respuesta">Fecha de respuesta:</label>
+            <label className="font-len" htmlFor="fecha_respuesta">Fecha de respuesta:</label>
             <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" onChange={this.obtenerDatosForm} />
           </div>
 

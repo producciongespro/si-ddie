@@ -9,7 +9,7 @@
 /* font-family: 'Raleway', sans-serif;
 font-family: 'Livvic', sans-serif; */
 
-
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
 
 body
 {
@@ -18,19 +18,8 @@ body
 
 }
 
-
-.fuente-livic {
-  /*font-family: 'Livvic', sans-serif!important; */
-  color: blue;
-  font-weight: bold;
-}
-
-
-
-/* Cover Area style */
  .jumbotron
 {
-  /* background: url('../images/bg1-768x313.png') no-repeat center center; */
   background: url('../images/bg2.jpg') no-repeat center center;
 	background-position: 0% 25%;
 	background-size: cover;
@@ -47,7 +36,7 @@ body
   color: white;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+
 
 /* General Buttons */
 .btn-main, btn-main:hover {
@@ -102,7 +91,7 @@ body
   border-radius: 0 5px 5px 0;  
 }
 
-.header-1, .header-2 {
+.header-1, .header-2, .fuente-1{
   font: 400 40px 'Open Sans';
   text-transform: uppercase;
   color: #e74803;
@@ -110,24 +99,21 @@ body
   margin-bottom: 30px;
 } 
 
-.pepito-1 {
-  font: 400 40px 'Open Sans';
-  text-transform: uppercase;
-  color: #e74803;
-}
-
-
 .form-control {
   background-color: #40a6db14!important;
 }
 
+/* .fuentelivic {
+  /*font-family: 'Livvic', sans-serif!important; */
+  /*color: blue;
+  font-weight: bold;
+} */
+
 @media only screen and (max-width: 550px) 
 {
-  .btn-main{
+  .btn-main {
     font-weight: 400;
     font-size: 1rem!important;
     overflow: hidden;
   }
-
-  
 }

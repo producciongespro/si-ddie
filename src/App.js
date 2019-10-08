@@ -69,7 +69,7 @@ class App extends Component {
         </div>
 
         <div className="row">
-          <div className="col-4 col-botonera">
+          <div className="col-3 col-botonera">
             {              
               paginas.map((item,i) => (
                 
@@ -79,7 +79,7 @@ class App extends Component {
             
             
           </div>
-          <div className="col-8 visor">
+          <div className="col-9 visor">
             {
                 this.state.componenteActual
             }
