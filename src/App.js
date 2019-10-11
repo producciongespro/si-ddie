@@ -12,6 +12,7 @@ import Respuestas  from './componentes/Respuestas';
 //CSS
 // import './css/animate.css';
 import "./css/master.css";
+// import "alertifyjs/build/css/alertify.min.css";
 
 //json
 

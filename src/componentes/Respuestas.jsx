@@ -158,7 +158,7 @@ class Respuestas extends Component {
               <p><span className="font-len">Tipo de solicitud: </span>{this.state.registroactual.tipo_solicitud}</p>
               <p><span className="font-len">Tipo de solicitante: </span> {this.state.registroactual.tipo_solicitante}</p>
               <p><span className="font-len">Tema: </span>{this.state.registroactual.tema}</p>
-              <p><span className="font-len">Tipo de solicitante: </span> {this.state.registroactual.fecha_solicitud}</p>
+              <p><span className="font-len">Fecha de solicitud: </span> {this.state.registroactual.fecha_solicitud}</p>
             </div>
           
           <h2 className="header-2">Atención a la consulta</h2>

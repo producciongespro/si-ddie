@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+
+// import alertify from 'alertifyjs';
 import axios from 'axios';
+
+import Alerta from 'Alerta'
+
 import referenciasJson from '../data/referencias.json';
+
+import LoadingSpinner from './spinner/LoadingSpinner';
 
 
 const referencias = referenciasJson[0];
@@ -16,6 +23,8 @@ var consulta = {
     "id_usuario": "1",
 }
 
+var  me;
+
 
 class Consultas extends Component {
   constructor(props) {
@@ -24,9 +33,12 @@ class Consultas extends Component {
       tipo_solicitud : [],
       tipo_solicitante : [],
       tipo_intervencion : [],
-      tipo_respuesta: []
+      tipo_respuesta: [],      
+      loading: false // will be true when ajax request is running
      }
   }
+
+ 
 
   componentDidMount() {
     //Obtener datos  
@@ -52,22 +64,37 @@ class Consultas extends Component {
       });
   }
 
-  enviarDatosForm = () => {    
-    // console.log("data", consulta);
-    // console.log("URL servicio", referencias.guardaconsulta+"?tabla_destino=consultas" );
-    
-   
-    axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", consulta)    
-      .then(function (response) {
-        console.log("response.data",response.data);
-      })
-      .catch(function (error) {
-        console.log("Este es el error en envío",error);       
-      })
-      .finally(function () {
-        console.log("TRansacción finalizada");        
-      });
+  enviarDatosForm = () => {
+      me = this;
+       this.setState({ loading: true }, () => {
 
+        axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", consulta)    
+          .then(function (response) {
+            console.log("response.data",response.data);
+             me.setState({loading: false});
+            //  me.mostrarAlerta(response.data);
+            <Alerta error={response.data}/>
+            //  <LoadingSpinner elementClass={"spinner-border"} />
+            //  , () => {console.log("response.data",response.data);
+             console.log("LOADING",me.state.loading);
+            // }); 
+          })
+          .catch(function (error) {
+            console.log("Este es el error en envío",error);       
+          })
+          .finally(function () {
+            console.log("Transacción finalizada");        
+          });
+        });
+
+  }
+
+
+  mostrarAlerta = (r) => {
+  //   alertify
+  // .alert("This is an alert dialog."+r.error+" "+r.mensaje, function(){
+  //   alertify.message('OK');
+  // });
   }
 
   obtenerDatosForm = (e) => {
@@ -103,9 +130,10 @@ class Consultas extends Component {
   }
 
     render() { 
+      const  loading  = this.state.loading;
       return (
         <React.Fragment>
-        <h1 className="header-1">Consultas</h1>
+          <h1 className="header-1">Consultas</h1>
         
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_intervencion">Tipo de intervención:</label>
@@ -166,10 +194,14 @@ class Consultas extends Component {
           <div className="row">
             <div className="col-md-4 center">
               <button className="btn btn-main" onClick={this.enviarDatosForm} > Guardar registro </button>
+              <div className="spinner"></div>
               
             </div>
-          </div>          
-      </React.Fragment>
+          </div>        
+            
+          {loading ? <LoadingSpinner elementClass={"spinner-border"} /> : <LoadingSpinner elementClass={"d-none"}/> }
+          {/* </div> */}
+        </React.Fragment>
         );
     }
 }

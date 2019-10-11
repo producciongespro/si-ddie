@@ -3,7 +3,7 @@
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header("Content-Type: text/html; charset=utf-8");
-
+    sleep(1);
     require 'conectar.php';
     $JSONData = file_get_contents("php://input");
     $dataObject = json_decode($JSONData);
