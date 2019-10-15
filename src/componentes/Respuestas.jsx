@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import referenciasJson from '../data/referencias.json';
 
-
 const referencias = referenciasJson[0];
 
 var consulta = {  //guarda los registros del usuario actual
@@ -153,8 +152,8 @@ class Respuestas extends Component {
                 ))
               }
             </select>
-            </div>
-            <div className="cuadro-texto">
+          </div>
+            <div className="form-group module">
               <p><span className="font-len">Tipo de solicitud: </span>{this.state.registroactual.tipo_solicitud}</p>
               <p><span className="font-len">Tipo de solicitante: </span> {this.state.registroactual.tipo_solicitante}</p>
               <p><span className="font-len">Tema: </span>{this.state.registroactual.tema}</p>

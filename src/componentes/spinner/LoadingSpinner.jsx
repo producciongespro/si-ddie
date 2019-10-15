@@ -2,9 +2,7 @@ import React from 'react';
 
 const LoadingSpinner = (props) => {
 return ( 
-        <div className={props.elementClass} role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
+    <span className= {props.elementClass}>Espere</span>
 );
 };
 

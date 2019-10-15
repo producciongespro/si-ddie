@@ -67,6 +67,20 @@ body
   overflow: hidden;
 }
 
+.module {
+  /* max-width: 250px; */
+  padding: 1rem;
+  color: black;
+  border-width: 3px;
+  border-style: solid;
+  border-image: 
+    linear-gradient(
+      to bottom, 
+      rgb(30, 116, 228),
+      rgba(0, 0, 0, 0)      
+    ) 1 100%;
+}
+
 .btn-main:hover {
   text-shadow: 1px 1px 1px black;
   background: linear-gradient(to bottom, #60bde9 0%,#3581aa 100%); 
