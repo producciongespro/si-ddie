@@ -3,22 +3,14 @@ import axios from 'axios';
 
 import referenciasJson from '../data/referencias.json';
 
+import LoadingSpinner from './spinner/LoadingSpinner';
+
+import mostrarAlerta from './Alerta.js'
+
 const referencias = referenciasJson[0];
 
-var consulta = {  //guarda los registros del usuario actual
-    "id" : "",
-    "solicitud" :  "",
-    "solicitante" : "",
-    "id_intervencion": 0,
-    "tema": "",
-    "respuesta": "",
-    "fecha_respuesta": "",
-    "fecha_solicitud": "",
-    "usuario": "1",
-    "tipo_intervencion": "",
-    "tipo_solicitante": "",
-    "tipo_solicitud": ""
-},
+var usuario = 1,
+    me,
     datos = { };
 
 
@@ -32,23 +24,10 @@ class Respuestas extends Component {
     this.state = { 
       consultas : [],
       tipo_respuesta: [],
+      loading: false, // will be true when ajax request is running
       registroactual : {}  //guarda información de registro a actualizar
      }
   }
-
-  // 3 -Definicion de las propiedades
-
-  // registro = {
-  //   hghg : "gfgf"
-  // }
-
-
-  // Creacion de los metodos
-
-  // imprimirRegistro = () => {
-  //   console.log(this.registro);
-    
-  // }
 
   componentDidMount() {
     //Obtener datos  
@@ -57,21 +36,17 @@ class Respuestas extends Component {
   }
 
 
-  obtenerJson = (tabla) => {    
-  console.log("tabla", tabla);
+  obtenerJson = (tabla) => {  
   
     var url="";
     if (tabla ==="consultas") {
-      url= referencias.consultaespecifica+"?tabla=" + tabla+"&id_u="+consulta.usuario;
+      url= referencias.consultaespecifica+"?tabla=" + tabla+"&id_u="+usuario;
     } else {
       url= referencias.consultageneral+"?tabla=" + tabla;
     }
-    // console.log("URL",url);
     axios.get(url)
       .then(res => {     
-        this.setState({ [tabla] : res.data  }); 
-        console.log("tabla", tabla,"---res.data", res.data);
-        
+        this.setState({ [tabla] : res.data  });         
       })
 
       .catch(function (error) {
@@ -81,63 +56,60 @@ class Respuestas extends Component {
       });
   }
 
-  enviarDatosForm = (     ) => {    
-    console.log("data", consulta);
-    console.log("URL servicio", referencias.actualizaconsulta );
-    
-    axios.post(referencias.actualizaconsulta+"?tabla_destino=consultas", datos)  
-    // axios.post(referencias.guardaconsulta, consulta)    
-      .then(function (response) {
-        console.log("response.data",response.data);
-        
-      })
-      .catch(function (error) {
-        console.log("Este es el error en envío",error);       
-      })
-      .finally(function () {
-        console.log("TRansacción finalizada");        
-      });
+    enviarDatosForm = (     ) => {    
+      me = this;
+      this.setState({ loading: true }, () => {
 
-  }
+      var id_consulta = this.state.registroactual.id;
+
+      console.log("URL servicio", referencias.actualizaconsulta+"?tabla_destino=consultas&id="+id_consulta);
+      axios.post(referencias.actualizaconsulta+"?tabla_destino=consultas&id="+id_consulta, datos)     
+        .then(function (response) {
+          console.log("response.data",response.data);
+          me.setState({loading: false});   
+          mostrarAlerta( "Alerta", response.data['mensaje']  );
+          
+        })
+        .catch(function (error) {
+          console.log("Este es el error en envío",error);       
+        })
+        .finally(function () {
+          console.log("Transacción finalizada");        
+        });
+      });
+    }
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.name;
-    console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "respuesta":
-        datos.respuesta = e.target.value;
+        datos.id_respuesta = e.target.value;
         break;
       case "fecha_respuesta":
         datos.fecha_respuesta = e.target.value;
           break;
       default:
-       // console.log("Opción fuera de rango");
+        console.log("Opción fuera de rango");
         break;
-    }
-    console.log("datos", datos);
-    
+    }    
   }
 
   obtenerDatosConsulta = (e) => {
-    // console.log("consulta.id", e.target.value);
+
     // eslint-disable-next-line array-callback-return
     this.state.consultas.map((item) =>  {
         if (item.id === e.target.value) {
-          console.log("item", item);
-          
           this.setState( {registroactual: item }, ()=> {
-            datos.id = item.id;
+            // datos.id = item.id;
             console.log("Registro actual", this.state.registroactual); 
-            console.log("id del registro", datos.id);
-            
           }  );
     }
   });
-
   }
 
     render() { 
+      const  loading  = this.state.loading;
       return (
         <React.Fragment>
         <h1 className="header-1">Respuestas</h1>
@@ -156,7 +128,7 @@ class Respuestas extends Component {
             <div className="form-group module">
               <p><span className="font-len">Tipo de solicitud: </span>{this.state.registroactual.tipo_solicitud}</p>
               <p><span className="font-len">Tipo de solicitante: </span> {this.state.registroactual.tipo_solicitante}</p>
-              <p><span className="font-len">Tema: </span>{this.state.registroactual.tema}</p>
+              {/* <p><span className="font-len">Tema: </span>{this.state.registroactual.tema}</p> */}
               <p><span className="font-len">Fecha de solicitud: </span> {this.state.registroactual.fecha_solicitud}</p>
             </div>
           
@@ -164,6 +136,7 @@ class Respuestas extends Component {
           <hr />
           <label className="font-len" htmlFor="respuesta">Tipo de respuesta:</label>
             <select defaultValue={'DEFAULT'}  className="form-control" id="respuesta" name="respuesta" onChange={this.obtenerDatosForm} >
+            <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                this.state.tipo_respuesta.map((item) => (
                <option key={item.id} value={item.id}>  {item.tipo}   </option>
@@ -176,8 +149,8 @@ class Respuestas extends Component {
           </div>
 
           <div className="row">
-            <div className="col-md-4 center">
-              <button className="btn btn-main" onClick={this.enviarDatosForm} > Guardar registro </button>
+            <div className="col-md-6 center">
+            <button className="btn btn-block btn-main" onClick={this.enviarDatosForm} > Actualizar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
             </div>
           </div>          
       </React.Fragment>
