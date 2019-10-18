@@ -30,7 +30,7 @@ class Consultas extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      tipo_solicitud : [],
+      tipo_solicitud : ['Seleccione una opción'],
       tipo_solicitante : [],
       tipo_intervencion : [],
       tipo_respuesta: [],      
@@ -126,7 +126,8 @@ class Consultas extends Component {
           <h1 className="header-1">Consultas</h1>        
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_intervencion">Tipo de intervención:</label>
-            <select defaultValue={'DEFAULT'} className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >              
+            {/* <select className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >               */}
+            <select defaultValue={'DEFAULT'} className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >               */}
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                 this.state.tipo_intervencion.map((item) => (
@@ -182,7 +183,9 @@ class Consultas extends Component {
 
           <div className="row">
             <div className="col-md-6 center">
-              <button className="btn btn-block btn-main" onClick={this.enviarDatosForm} > Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
+              <button className="btn btn-block btn-main" onClick={this.enviarDatosForm} > 
+              {/* {this.state.showWarning ? 'Hide' : 'Show'} */}
+              Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
               
               
             </div>
