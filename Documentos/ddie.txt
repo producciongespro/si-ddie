@@ -1,0 +1,20 @@
+Producción-----
+tipo Producto: 
+Población meta: (check - multiple)
+Cantidad de beneficiarios:
+Fecha de envío:
+---
+Tenddrá una caja de texto con el número en caso de "DDIE informa"
+
+Agregar en el select:
+Revista Conexiones - Divulgación
+
+En la opción revista conexiones se desaparece el campo beneficiarios.
+
+Se debe agregar otra opción: video de divulgación y activar una caja de texto  para que el funcionario escriba el tema del video
+
+
+
+
+
+
