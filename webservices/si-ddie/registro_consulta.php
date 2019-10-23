@@ -21,6 +21,7 @@
     $lista_valores = substr($lista_valores,0,-1);
     $comando .= $lista_campos.") values (".$lista_valores.")";
     $mysqli = conectarDB();
+    mysqli_set_charset($mysqli, "utf8"); //formato de datos utf8
     $registro = mysqli_query($mysqli,$comando) or die ("Problemas al insertar registro".mysqli_error($mysqli));
     if($registro > 0 )
     {

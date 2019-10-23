@@ -15,6 +15,7 @@ const referencias = referenciasJson[0];
 var consulta = {
     "id_solicitud" :  "",
     "id_solicitante" : "",
+    "solicitante_otro" : "no aplica",
     "id_intervencion": 0,
     "tema": "",
     "id_respuesta": "0",
@@ -35,8 +36,8 @@ class Consultas extends Component {
       tipo_intervencion : [],
       tipo_respuesta: [],      
       alertaActiva : false,
+      classSuccess : false,
       loading: false // will be true when ajax request is running
-
      }
   }
 
@@ -44,6 +45,9 @@ class Consultas extends Component {
 
   componentDidMount() {
     //Obtener datos  
+    // this.state = {
+    // 	classSuccess: true
+	  // }
     this.obtenerJson("tipo_solicitud");
     this.obtenerJson("tipo_solicitante");
     this.obtenerJson("tipo_intervencion");
@@ -86,17 +90,28 @@ class Consultas extends Component {
 
   }
 
+  obtenerSolicitante = (e) => {
+    //ojo limpiar el valor si no es 5, en caso de más de un registro
+    console.log("Target obtener Solicitante", e.target.value);
+    e.target.value === '5'?this.setState({ classSuccess: true }):this.setState({ classSuccess: false });
+    this.obtenerDatosForm(e);    
+  }
+
   obtenerDatosForm = (e) => {
     const opcion = e.target.name;
-    // console.log("e.target.value",e.target.value);
+    console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "tipo_solicitud":
         consulta.id_solicitud = e.target.value;
         break;
       case "tipo_solicitante":
+        e.target.value !== '5' && (consulta.solicitante_otro = "no aplica"); 
         consulta.id_solicitante = e.target.value;
-        break;
+      break;
+      case "tipo_solicitante_otro":
+        consulta.solicitante_otro = e.target.value;  //ojo revisar, que guardo en id_tipo solicitante
+      break;
       case "tipo_intervencion":
         consulta.id_intervencion = e.target.value;
         break;
@@ -120,6 +135,7 @@ class Consultas extends Component {
 
     render() { 
       const  loading  = this.state.loading;
+      const  classSuccess  = this.state.classSuccess;
       return (
         <React.Fragment>
 
@@ -135,8 +151,9 @@ class Consultas extends Component {
               ))
             }
             </select>
+
             <label className="font-len" htmlFor="tipo_solicitante">Tipo de solicitante:</label>
-            <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerDatosForm} >
+           <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerSolicitante} >
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                   this.state.tipo_solicitante.map((item) => (
@@ -144,7 +161,11 @@ class Consultas extends Component {
               ))
             }
             </select>
-
+            <br/>
+            <div className={"form-group form-control-sm " + (classSuccess? "":"d-none")}>
+              <input type="text" className="form-control" placeholder="Escriba el nombre" name="tipo_solicitante_otro" onChange={this.obtenerDatosForm} />
+            </div>
+           
             <label className="font-len" htmlFor="tipo_solicitud">Tipo de solicitud:</label>
             <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} >
             <option  disabled value="DEFAULT">Seleccione la opción</option>

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Moment from 'react-moment';
+
 import axios from 'axios';
 
 import referenciasJson from '../data/referencias.json';
@@ -110,6 +112,8 @@ class Respuestas extends Component {
 
     render() { 
       const  loading  = this.state.loading;
+      const fechaOut = this.state.registroactual.fecha_solicitud;
+      // Moment().format('l'); 
       return (
         <React.Fragment>
         <h1 className="header-1">Respuestas</h1>
@@ -128,8 +132,9 @@ class Respuestas extends Component {
             <div className="form-group module">
               <p><span className="font-len">Tipo de solicitud: </span>{this.state.registroactual.tipo_solicitud}</p>
               <p><span className="font-len">Tipo de solicitante: </span> {this.state.registroactual.tipo_solicitante}</p>
-              {/* <p><span className="font-len">Tema: </span>{this.state.registroactual.tema}</p> */}
-              <p><span className="font-len">Fecha de solicitud: </span> {this.state.registroactual.fecha_solicitud}</p>
+              <p><span className="font-len">Fecha de solicitud: </span> {<Moment format="DD/MM/YYYY">{fechaOut}</Moment>}</p>
+
+
             </div>
           
           <h2 className="header-2">Atención a la consulta</h2>

@@ -17,6 +17,7 @@
     $comando = "UPDATE ".$_GET['tabla_destino']." SET `id_respuesta`='$respuesta', `fecha_respuesta`='$fecha_respuesta' WHERE `id`= '$id'";
 
     $mysqli = conectarDB();
+    mysqli_set_charset($mysqli, "utf8"); //formato de datos utf8
     $registro = mysqli_query($mysqli,$comando) or die ("Problemas al insertar registro".mysqli_error($mysqli));
     if($registro > 0 )
     {
