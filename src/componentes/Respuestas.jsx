@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ValidationForm, TextInput, SelectGroup, Checkbox, Radio } from 'react-bootstrap4-form-validation';
 import Moment from 'react-moment';
 
 import axios from 'axios';
@@ -27,6 +28,8 @@ class Respuestas extends Component {
       consultas : [],
       tipo_respuesta: [],
       loading: false, // will be true when ajax request is running
+      // isChecked: false,
+      isChecked: false,
       registroactual : {}  //guarda información de registro a actualizar
      }
   }
@@ -41,8 +44,15 @@ class Respuestas extends Component {
   obtenerJson = (tabla) => {  
   
     var url="";
+    var usuarioConsulta = usuario;  //usuario
     if (tabla ==="consultas") {
-      url= referencias.consultaespecifica+"?tabla=" + tabla+"&id_u="+usuario;
+      // console.log("isChecked antes if", this.state.isChecked);
+      
+      (this.state.isChecked)?usuarioConsulta = 0:usuarioConsulta = usuario; //0 todos
+      
+      url= referencias.consultaespecifica+"?tabla=" + tabla+"&id_u="+usuarioConsulta;
+      // console.log("URL", url);
+      
     } else {
       url= referencias.consultageneral+"?tabla=" + tabla;
     }
@@ -56,6 +66,13 @@ class Respuestas extends Component {
       })
       .finally(function () {
       });
+  }
+
+  toggleChange = () => {
+    this.setState({ isChecked: !this.state.isChecked}, ()=> {
+      // console.log("isChecked", this.state.isChecked); 
+      this.obtenerJson("consultas"); // obtiene listado de registros del usuario actual
+    });
   }
 
     enviarDatosForm = (     ) => {    
@@ -117,7 +134,17 @@ class Respuestas extends Component {
       return (
         <React.Fragment>
         <h1 className="header-1">Respuestas</h1>
-        
+        <div className="custom-control custom-checkbox mb-3 float-right">
+        {/* <Checkbox name="check2" label="Check #2" id="check2"
+                            required successMessage="Todos los registros!"
+                            value={this.state.check2}
+                            onChange={this.handleChange}
+                        /> */}
+              <input type="checkbox" className="custom-control-input" id="todosCheck" name="todosCheck"  onChange={this.toggleChange}/>
+              <label className="custom-control-label" htmlFor="todosCheck">Mostrar todos los registros</label>
+          
+          </div>
+          <br />
           <div className="form-group">
             <label className="font-len" htmlFor="consultas">Seleccione la consulta:</label>
             <select  defaultValue={'0'} className="form-control"  name="consultas" onChange={this.obtenerDatosConsulta}>              

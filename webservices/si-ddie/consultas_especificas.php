@@ -9,15 +9,18 @@ $id= $_GET['id_u'];
 $sql = '';
 switch ($tabla) {
     case 'consultas':
-        // $sql = "SELECT consultas.id_intervencion, tipo_intervencion.tipo, tipo_solicitante.tipo FROM tipo_intervencion INNER JOIN tipo_solicitante ON  tipo_intervencion.id=consultas.id_intervencion AND tipo_solicitante.id=consultas.id_solicitante WHERE consultas.id_usuario = $id  AND consultas.id_respuesta='0'";
-         $sql = "SELECT consultas.*, tipo_intervencion.tipo AS tipo_intervencion, tipo_solicitud.tipo AS tipo_solicitud, tipo_solicitante.tipo AS tipo_solicitante FROM `consultas` INNER JOIN `tipo_intervencion` ON tipo_intervencion.id = consultas.id_intervencion INNER JOIN `tipo_solicitud` ON tipo_solicitud.id = consultas.id_solicitud INNER JOIN `tipo_solicitante` ON tipo_solicitante.id = consultas.id_solicitante WHERE `id_usuario`= $id"; 
+        if($id == 0){
+            $sql = "SELECT consultas.*, tipo_intervencion.tipo AS tipo_intervencion, tipo_solicitud.tipo AS tipo_solicitud, tipo_solicitante.tipo AS tipo_solicitante FROM `consultas` INNER JOIN `tipo_intervencion` ON tipo_intervencion.id = consultas.id_intervencion INNER JOIN `tipo_solicitud` ON tipo_solicitud.id = consultas.id_solicitud INNER JOIN `tipo_solicitante` ON tipo_solicitante.id = consultas.id_solicitante ORDER BY consultas.tema";
+        }
+        else {
+            $sql = "SELECT consultas.*, tipo_intervencion.tipo AS tipo_intervencion, tipo_solicitud.tipo AS tipo_solicitud, tipo_solicitante.tipo AS tipo_solicitante FROM `consultas` INNER JOIN `tipo_intervencion` ON tipo_intervencion.id = consultas.id_intervencion INNER JOIN `tipo_solicitud` ON tipo_solicitud.id = consultas.id_solicitud INNER JOIN `tipo_solicitante` ON tipo_solicitante.id = consultas.id_solicitante WHERE `id_usuario`= $id ORDER BY consultas.tema"; 
+        }
         break;
     
     default:
         # code...
         break;
 }
-// $sql="SELECT * FROM $tabla"; 
 
 include "conectar.php";
 

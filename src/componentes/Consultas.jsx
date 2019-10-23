@@ -139,7 +139,7 @@ class Consultas extends Component {
       return (
         <React.Fragment>
 
-          <h1 className="header-1">Consultas</h1>        
+          <h1 className="header-1">Consultas</h1>              
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_intervencion">Tipo de intervención:</label>
             {/* <select className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >               */}
