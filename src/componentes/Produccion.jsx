@@ -61,12 +61,13 @@ class Produccion extends Component {
   handleSubmit = (e, formData, inputs) => {
     e.preventDefault();
     console.log("formData",e, formData, inputs);
-    alert(JSON.stringify(formData, null, 2));
+    // alert(JSON.stringify(formData, null, 2));
     this.enviarDatosForm();
   }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
-      console.log("handleErrorSubmit",e,formData, errorInputs)
+      // console.log("handleErrorSubmit",e,formData, errorInputs);
+      console.log("handleErrorSubmit", errorInputs)
   }
 
   resetForm = () => {
@@ -97,8 +98,8 @@ class Produccion extends Component {
 
   obtenerDatosForm = (e) => {
     const opcion = e.target.name;
-    console.log("e.target.name",e.target.name);    
-    console.log("e.target.value",e.target.value);
+    // console.log("e.target.name",e.target.name);    
+    // console.log("e.target.value",e.target.value);
 
     switch (opcion) {
       case "id_producto":
@@ -144,16 +145,18 @@ class Produccion extends Component {
             }
             </SelectGroup>
           </div>
-          <div className="form-group">
-            <label className="font-len" htmlFor="cantidad">Cantidad:</label>
-            <TextInput type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" required onChange={this.obtenerDatosForm}/>
-          </div>
+          <div className="row">
+            <div className="form-group col-sm-6">
+              <label className="font-len" htmlFor="cantidad">Cantidad:</label>
+              <TextInput type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" required onChange={this.obtenerDatosForm}/>
+            </div>
 
-          <div className="form-group">
-            <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
-            <TextInput type="date" className="form-control" id="fecha" name="fecha" onChange={this.obtenerDatosForm} required />
+            <div className="form-group col-sm-6">
+              <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
+              <TextInput type="date" className="form-control" id="fecha" name="fecha" onChange={this.obtenerDatosForm} required />
+            </div>
           </div>
-
+          <hr/>
           <div className="row">
             <div className="col-md-6 center">
               {/* <button className="btn btn-block btn-main" onClick={this.enviarDatosForm}>  */}

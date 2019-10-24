@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ValidationForm, TextInput, SelectGroup, Checkbox, Radio } from 'react-bootstrap4-form-validation';
+// import { ValidationForm, TextInput, SelectGroup, Checkbox, Radio } from 'react-bootstrap4-form-validation';
 import Moment from 'react-moment';
 
 import axios from 'axios';
@@ -179,7 +179,7 @@ class Respuestas extends Component {
             <label className="font-len" htmlFor="fecha_respuesta">Fecha de respuesta:</label>
             <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" onChange={this.obtenerDatosForm} />
           </div>
-
+          <br/><hr/>
           <div className="row">
             <div className="col-md-6 center">
             <button className="btn btn-block btn-main" onClick={this.enviarDatosForm} > Actualizar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
