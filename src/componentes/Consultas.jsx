@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import mostrarAlerta from './Alerta.js'
+import Menu from './Menu';
 
 import referenciasJson from '../data/referencias.json';
 
@@ -138,8 +139,9 @@ class Consultas extends Component {
       const  classSuccess  = this.state.classSuccess;
       return (
         <React.Fragment>
-
-          <h1 className="header-1">Consultas</h1>              
+          {/* <Menu /> */}
+          <h1 className="header-1">Consultas</h1>     
+          <hr/>         
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_intervencion">Tipo de intervención:</label>
             {/* <select className="form-control" name="tipo_intervencion" onChange={this.obtenerDatosForm} >               */}

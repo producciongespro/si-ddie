@@ -133,18 +133,13 @@ class Respuestas extends Component {
       // Moment().format('l'); 
       return (
         <React.Fragment>
-        <h1 className="header-1">Respuestas</h1>
-        <div className="custom-control custom-checkbox mb-3 float-right">
-        {/* <Checkbox name="check2" label="Check #2" id="check2"
-                            required successMessage="Todos los registros!"
-                            value={this.state.check2}
-                            onChange={this.handleChange}
-                        /> */}
+          <h1 className="header-1">Respuestas</h1>
+          <div className="custom-control custom-checkbox mb-3 float-right">
               <input type="checkbox" className="custom-control-input" id="todosCheck" name="todosCheck"  onChange={this.toggleChange}/>
               <label className="custom-control-label" htmlFor="todosCheck">Mostrar todos los registros</label>
-          
           </div>
           <br />
+          <hr/> 
           <div className="form-group">
             <label className="font-len" htmlFor="consultas">Seleccione la consulta:</label>
             <select  defaultValue={'0'} className="form-control"  name="consultas" onChange={this.obtenerDatosConsulta}>              

@@ -19,8 +19,11 @@ body
   background: url('../images/noisy2.png') repeat center center;
 
 }
+.jumbotron {
+  background-color: transparent!important;
+}
 /* Cover Area style */
- .jumbotron
+ .div-encabezado
 {
   /* background: url('../images/bg1-768x313.png') no-repeat center center; */
   background: url('../images/bg2.jpg') no-repeat center center;
@@ -38,6 +41,28 @@ body
   color: white;
 }
 
+.dropdown-menu {
+  /* position: absolute; */
+  /* top: 100%; */
+  left: -5rem!important;
+  /* z-index: 1000; */
+  /* display: none; */
+  /* float: left; */
+  /* min-width: 10rem; */
+  padding: .5rem 0!important;
+  margin: -0.2rem 0 0!important;
+  /* font-size: 1rem; */
+  /* color: #212529; */
+  /* text-align: left; */
+  /* list-style: none; */
+}
+.col-botonera {
+  background-color: #e6e6fab5;
+  background: url('../images/noisy2.png') repeat center center;
+  padding-top: 2%;
+  border-radius: 5px;
+
+}
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
 
 /* General Buttons */
@@ -143,6 +168,62 @@ body
 
   padding: 10px;
 }
+
+.alertify .ajs-header,
+.alertify .ajs-footer 
+{
+  border: none;
+  color: #fbfbfb!important;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 20px;
+  text-align: left;
+  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+}
+
+.alertify .ajs-header {
+  background: linear-gradient(to top, #4eb5e5 0%,#389ed5 100%); 
+  border-bottom: 4px solid #2b8bc6;
+}
+.alertify .ajs-footer {
+  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); 
+  border-top: 4px solid #2b8bc6;
+}
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
+
+  color: white;
+  background-color: #e74803;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  border-radius: 5px;
+  border: 3px solid white;
+  cursor: pointer;
+
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover {
+  background-color: #be3e07;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 18px;
+  border-radius: 5px;
+  border: 3px solid rgb(231, 228, 228);
+  cursor: pointer;
+}
+
+.alertify .ajs-body {
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 25px;
+  text-align: center;
+}
+
 @media only screen and (max-width: 550px) 
 {
   .btn-main{

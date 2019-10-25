@@ -8,11 +8,11 @@ import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion';
 import Respuestas  from './componentes/Respuestas';
+import Menu from './componentes/Menu';
 
 //CSS
 // import './css/animate.css';
 import "./css/master.css";
-// import "alertifyjs/build/css/alertify.min.css";
 
 //json
 
@@ -63,12 +63,14 @@ class App extends Component {
   render() { 
     return ( 
       <React.Fragment> 
-        <div className="jumbotron jumbotron-fluid ">
-          <h1 className="h1text" >SI-DDIE</h1>
-          <hr className="my-4"></hr>
-          {/* <img src={referencias.img + "logo.png"     } alt="logo"/> */}
+        <div className="div-encabezado">
+          <Menu />
+          <div className="jumbotron jumbotron-fluid ">
+            <h1 className="h1text" >SI-DDIE</h1>
+            <hr className="my-4"></hr>
+            {/* <img src={referencias.img + "logo.png"     } alt="logo"/> */}
+          </div>
         </div>
-
         <div className="row">
           <div className="col-3 col-botonera">
             {              
@@ -86,6 +88,7 @@ class App extends Component {
             }
           </div>
         </div>
+       
      </React.Fragment>
      );
   }

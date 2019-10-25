@@ -151,18 +151,19 @@ class Basededatos extends Component {
     // const  classSuccess  = this.state.classSuccess;
     return (
       <React.Fragment>
-                <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
-                        ref={this.formRef}
-                        immediate={this.state.immediate}
-                        setFocusOnError={this.state.setFocusOnError}
-                        defaultErrorMessage = {
-                          { required : "Este campo es requerido y debe ser numérico",
-                            min : "El número debe ser mayor a 0",
-                            type: "El valor debe ser numérico",
-                          }
-                        }
-                        >
-          <h1>Ingreso a la base de datos</h1>
+        <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
+          ref={this.formRef}
+          immediate={this.state.immediate}
+          setFocusOnError={this.state.setFocusOnError}
+          defaultErrorMessage = {
+            { required : "Este campo es requerido y debe ser numérico",
+              min : "El número debe ser mayor a 0",
+              type: "El valor debe ser numérico",
+            }
+          }
+        >
+          <h1 className="header-1">Ingreso a la base de datos</h1>
+          <hr/>
           <div className="row">
             <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:</label>

@@ -133,7 +133,8 @@ class Produccion extends Component {
                           max : "El número debe ser menor igual a 20"}
                         }
                         >
-
+          <h1 className="header-1">Producción</h1>
+          <hr/>
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_producto">Seleccione el tipo de producto:</label>
           <SelectGroup  defaultValue={'DEFAULT'} className="form-control" name="id_producto" required onChange={this.obtenerDatosForm} >
@@ -159,7 +160,6 @@ class Produccion extends Component {
           <hr/>
           <div className="row">
             <div className="col-md-6 center">
-              {/* <button className="btn btn-block btn-main" onClick={this.enviarDatosForm}>  */}
               <button className="btn btn-block btn-main"> 
                 Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } 
               </button>
