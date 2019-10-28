@@ -1,17 +1,18 @@
 Producción-----
 tipo Producto: 
-Población meta: (check - multiple)
-Cantidad de beneficiarios:
+1 - Población meta: (check - multiple) para todos menos para la opción "Revista conexiones"
+
+2 - Cantidad de beneficiarios: (Es la cantidad de personas que se benefician con ese producto)
 Fecha de envío:
 ---
-Tenddrá una caja de texto con el número en caso de "DDIE informa"
+3 - En caso de "DDIE informa" se mostrará una caja de texto para que el usuario inserte un número (Consecutivo).
 
-Agregar en el select:
+4 - Agregar en el select:
 Revista Conexiones - Divulgación
 
-En la opción revista conexiones se desaparece el campo beneficiarios.
+5 - En la opción revista conexiones se desaparece el campo beneficiarios.
 
-Se debe agregar otra opción: video de divulgación y activar una caja de texto  para que el funcionario escriba el tema del video
+6 - Se debe agregar otra opción: video de divulgación y activar una caja de texto  para que el funcionario escriba el tema del video
 
 
 
