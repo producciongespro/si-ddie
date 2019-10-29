@@ -130,7 +130,6 @@ class Respuestas extends Component {
     render() { 
       const  loading  = this.state.loading;
       const fechaOut = this.state.registroactual.fecha_solicitud;
-      // Moment().format('l'); 
       return (
         <React.Fragment>
           <h1 className="header-1">Respuestas</h1>

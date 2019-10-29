@@ -3,22 +3,22 @@ import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-vali
  //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
 //  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
 
- import axios from 'axios';
+//  import axios from 'axios';
 
-import mostrarAlerta from './Alerta.js';
+// import mostrarAlerta from './Alerta.js';
 
 import referenciasJson from '../data/referencias.json';
 
-import LoadingSpinner from './spinner/LoadingSpinner';
+// import LoadingSpinner from './spinner/LoadingSpinner';
 
-const referencias = referenciasJson[0];
+// const referencias = referenciasJson[0];
 
-var producto = {
-  // "id_producto": "",
-  // "id_usuario" : 1,
-  // "cantidad"   : 0,
-  // "fecha"      : "0001-01-01",
-}
+// var producto = {
+//   // "id_producto": "",
+//   // "id_usuario" : 1,
+//   // "cantidad"   : 0,
+//   // "fecha"      : "0001-01-01",
+// }
 
 var  me;
 

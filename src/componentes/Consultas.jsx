@@ -149,7 +149,7 @@ class Consultas extends Component {
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                 this.state.tipo_intervencion.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+                <option key={"intervencion"+ item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
             </select>
@@ -173,7 +173,7 @@ class Consultas extends Component {
             <option  disabled value="DEFAULT">Seleccione la opción</option>
             {
                   this.state.tipo_solicitud.map((item) => (
-                <option key={item.id} value={item.id}>  {item.tipo}   </option>
+                <option key={"solicitud"+item.id} value={item.id}>  {item.tipo}   </option>
               ))
             }
             </select>

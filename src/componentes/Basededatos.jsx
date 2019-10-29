@@ -199,7 +199,7 @@ class Basededatos extends Component {
             </div>
             <div className="form-group col-sm-6">
               <label  className="font-len" htmlFor="fecha">Fecha</label>
-              <TextInput type="date" className="form-control" id="fecha" name="fecha" min="1" required onChange={this.obtenerDatosForm} />
+              <TextInput type="date" className="form-control" id="fecha" name="fecha" required onChange={this.obtenerDatosForm}  errorMessage={{ required:"Este campo es requerido"}}/>
             </div>
           </div>
           <hr/>
