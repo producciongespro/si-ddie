@@ -1,0 +1,26 @@
+[
+  {
+      "id": "1",
+      "etiqueta": "Consultas"
+  },
+  {
+      "id": "2",
+      "etiqueta": "Respuestas"
+  },
+  {
+      "id": "3",
+      "etiqueta": "Base de Datos"
+  },
+  {
+      "id": "4",
+      "etiqueta": "Producción"
+  },
+  {
+      "id": "5",
+      "etiqueta": "Estadísticas"
+  },
+  {
+      "id": "6",
+      "etiqueta": "Bitácora"
+  }
+]

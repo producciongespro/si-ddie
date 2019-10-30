@@ -27,12 +27,6 @@ body
   cursor: auto!important;
 }
 
-/* .div-menu-1 {
-  display: block;
-}
-.div-menu-2 {
-  display: none!important;
-} */
 
 /* Cover Area style */
  .div-encabezado
@@ -92,7 +86,7 @@ body
   font-family: 'Open Sans', sans-serif;
   text-shadow: 1px 1px 1px rgba(0,0,0,.4);
   font-size: 15px;
-  text-align: left;
+  text-align: left!important;
   text-indent: 5px;
   box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
   cursor: pointer;
@@ -104,6 +98,10 @@ body
   overflow: hidden;
 }
 
+.btn-group-lg>.btn, .btn-lg {
+  padding: .2rem 1rem;
+  font-size: 1rem;
+}
 .module {
   /* max-width: 250px; */
   padding: 1rem;

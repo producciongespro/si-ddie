@@ -31,8 +31,11 @@ class Produccion extends Component {
 
     this.state = { 
       tipo_productos : [],
+      productos_poblacion_meta : [],
+      arreglo_poblacion : [],
       alertaActiva : false,
       loading: false, 
+      classSuccess : false,
     
       immediate:true,   //estado de validación del form
       setFocusOnError:true,
@@ -41,6 +44,7 @@ class Produccion extends Component {
   }
   componentDidMount( ) {
     this.obtenerJson("tipo_productos");
+    this.obtenerJson("productos_poblacion_meta");
   }
 
 
@@ -49,6 +53,14 @@ class Produccion extends Component {
    axios.get(url)
       .then(res => {     
         this.setState({ [tabla] : res.data  }); 
+        console.log("table", res.data);
+        if (tabla === 'productos_poblacion_meta') {
+          this.state.tipo_productos.map((item) => (
+            this.setState({arreglo_poblacion : res.data.id}, () => {console.log("arreglo poblacion", this.state.arreglo_poblacion);
+            })
+            // this.setState({ loading: true }, () => {
+          ))
+        }
       })
       .catch(function (error) {
         console.log("error",error)
@@ -60,7 +72,7 @@ class Produccion extends Component {
   //eventos del formulario
   handleSubmit = (e, formData, inputs) => {
     e.preventDefault();
-    console.log("formData",e, formData, inputs);
+    // console.log("formData",e, formData, inputs);
     // alert(JSON.stringify(formData, null, 2));
     this.enviarDatosForm();
   }
@@ -77,12 +89,12 @@ class Produccion extends Component {
 
   enviarDatosForm = () => {
       me = this;
-      console.log("producto", producto);
+      // console.log("producto", producto);
       
        this.setState({ loading: true }, () => {
         axios.post(referencias.guardaconsulta+"?tabla_destino=productos", producto)    
           .then(function (response) {
-            console.log("response.data",response.data);
+            // console.log("response.data",response.data);
              me.setState({loading: false});   
                  mostrarAlerta( "Alerta", response.data['mensaje']  );
           })
@@ -94,6 +106,13 @@ class Produccion extends Component {
           });
         });
 
+  }
+
+  obtenerPoblacion = (e) => {
+    //ojo limpiar el valor si no es 5, en caso de más de un registro
+    console.log("Target obtener Poblacion", e.target.value);
+    e.target.value !== '1'?this.setState({ classSuccess: true }):this.setState({ classSuccess: false });
+    this.obtenerDatosForm(e);    
   }
 
   obtenerDatosForm = (e) => {
@@ -117,10 +136,16 @@ class Produccion extends Component {
     }
   }
 
+  // handleChangeCheck = (e) => {
+  //   let isChecked = e.target.checked;
+  //   console.log("valor del ",e.target.id," es: ",isChecked);
+    
+  //   // do whatever you want with isChecked value
+  // }
 
   render() { 
     const  loading  = this.state.loading;
-    // const  classSuccess  = this.state.classSuccess;
+    const  classSuccess  = this.state.classSuccess;
     return (
       <React.Fragment>
         <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
@@ -137,31 +162,47 @@ class Produccion extends Component {
           <hr/>
           <div className="form-group">
             <label className="font-len" htmlFor="tipo_producto">Seleccione el tipo de producto:</label>
-          <SelectGroup  defaultValue={'DEFAULT'} className="form-control" name="id_producto" required onChange={this.obtenerDatosForm} >
-            <option  disabled value="DEFAULT">Seleccione la opción</option>
-            {
-                this.state.tipo_productos.map((item) => (
-                <option key={item.id} value={item.id}>{item.tipo}   </option>
-              ))
-            }
-            </SelectGroup>
-          </div>
+            <SelectGroup  key="selectproducto" defaultValue={'DEFAULT'} className="form-control" name="id_producto" required onChange={this.obtenerPoblacion} >
+              <option  disabled value="DEFAULT">Seleccione la opción</option>
+              {
+                  this.state.tipo_productos.map((item) => (
+                  <option key={item.id} value={item.id}>{item.tipo}   </option>
+                ))
+              }
+              </SelectGroup>
+            </div>
+            <div className="row">
+              <div className={"col-sm-12 my-2" + (classSuccess? "":" d-none")}>
+              {
+                  this.state.productos_poblacion_meta.map((item) => (
+                    <div className="pretty p-default p-curve">
+                    {/* <TextInput key={"poblacion"+ item.id} id={item.id}  name = {"poblacion"+ item.id} type="checkbox" onChange={this.handleChangeCheck}/> */}
+                    <TextInput key={"poblacion"+ item.id} id={item.id}  name = {"poblacion"+ item.id} type="checkbox"/>                    
+                    <div className="state">
+                        <label>{item.nombre}</label>
+                    </div>
+                  </div>
+                ))
+              } 
+              </div>
+            </div>               
+         
           <div className="row">
             <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="cantidad">Cantidad:</label>
-              <TextInput type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" required onChange={this.obtenerDatosForm}/>
+              <TextInput key="cantidad" type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" required onChange={this.obtenerDatosForm}/>
             </div>
 
             <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
-              <TextInput type="date" className="form-control" id="fecha" name="fecha" onChange={this.obtenerDatosForm} required />
+              <TextInput key="fecha" type="date" className="form-control" id="fecha" name="fecha" onChange={this.obtenerDatosForm} required />
             </div>
           </div>
           <hr/>
           <div className="row">
             <div className="col-md-6 center">
               <button className="btn btn-block btn-main"> 
-                Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } 
+                Guardar registro {loading ? <LoadingSpinner key="loading" elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner  key="loading" elementClass={"d-none"} /> } 
               </button>
             </div>
           </div>       

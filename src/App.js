@@ -14,6 +14,8 @@ import Menu from './componentes/Menu';
 // import './css/animate.css';
 import "./css/master.css";
 
+import  'pretty-checkbox/src/pretty-checkbox.scss';
+
 //json
 
 import referenciasJson from './data/referencias.json';
@@ -47,7 +49,7 @@ componentDidMount() {
 
 resize() {
   this.setState({hideNav: window.innerWidth <= 760});
-  console.log("ancho menor de 760?",this.state.hideNav);
+  // console.log("ancho menor de 760?",this.state.hideNav);
   if (this.state.hideNav) {
     this.setState({colUno: "col-sm-5"});
     this.setState({colDos: "col-sm-7"});
@@ -59,7 +61,7 @@ resize() {
 }
 
  handlerCargarVistas = (e) => {
-   console.log("e.target.id",e.target.id);
+  //  console.log("e.target.id",e.target.id);
    
    const opcion = e.target.id;
    switch (opcion) {
@@ -90,7 +92,7 @@ resize() {
     const componenteActivo = this.state.componenteActual.type.name;
     // const hideNav = this.state.componenteActual.hideNav;
     const componenteActual = this.state.componenteActual;
-    console.log("activo", componenteActivo);
+    // console.log("activo", componenteActivo);
    const col1 = this.state.colUno;
    const col2 = this.state.colDos;
     return ( 
