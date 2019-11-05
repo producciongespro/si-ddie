@@ -2,8 +2,11 @@ Producción-----
 tipo Producto: 
 1 - Población meta: (check - multiple) para todos menos para la opción "Revista conexiones"
 
-2 - Cantidad de beneficiarios: (Es la cantidad de personas que se benefician con ese producto)
-Fecha de envío:
+2 - Cantidad de beneficiarios: (Es la cantidad de personas que se benefician con ese producto) para todos menos para Revista conexiones
+
+no mostrar tan largo tipo producto y numero consecutivo (reducir columnas)
+unir en una sola línea
+modificar etiqueta por Fecha de envío
 ---
 3 - En caso de "DDIE informa" se mostrará una caja de texto para que el usuario inserte un número (Consecutivo).
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
-// import alertify from 'alertifyjs';
 import axios from 'axios';
 
 import mostrarAlerta from './Alerta.js'
-import Menu from './Menu';
+import Menu from './Menu0';
+
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import referenciasJson from '../data/referencias.json';
 
@@ -16,11 +18,11 @@ const referencias = referenciasJson[0];
 var consulta = {
     "id_solicitud" :  "",
     "id_solicitante" : "",
-    "solicitante_otro" : "no aplica",
+    "solicitante_otro" : null,
     "id_intervencion": 0,
     "tema": "",
-    "id_respuesta": "0",
-    "fecha_respuesta": "0001-01-01",
+    "id_respuesta": null,
+    "fecha_respuesta": null,
     "fecha_solicitud": "",
     "id_usuario": "1",
 }
@@ -73,16 +75,29 @@ class Consultas extends Component {
 
   enviarDatosForm = () => {
       me = this;
+      if (consulta.id_respuesta === null){
+        delete consulta["id_respuesta"];
+      };
+      if (consulta.fecha_respuesta === null){
+        delete consulta["fecha_respuesta"];
+      }
+      if (consulta.solicitante_otro === null){
+        delete consulta["solicitante_otro"];
+      }
        this.setState({ loading: true }, () => {
-
+        let url= referencias.guardaconsulta+"?tabla_destino=consultas";
+        console.log("url", url);
+        
         axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", consulta)    
           .then(function (response) {
             console.log("response.data",response.data);
-             me.setState({loading: false});   
-                 mostrarAlerta( "Alerta", response.data['mensaje']  );
+             me.setState({loading: false});
+              mostrarAlerta( "ALERTA", response.data['mensaje']  );
+               
           })
           .catch(function (error) {
             console.log("Este es el error en envío",error);       
+            // mostrarAlerta( "Error", "Ocurrido un error al guardar la información"  );
           })
           .finally(function () {
             console.log("Transacción finalizada");        
@@ -107,7 +122,6 @@ class Consultas extends Component {
         consulta.id_solicitud = e.target.value;
         break;
       case "tipo_solicitante":
-        e.target.value !== '5' && (consulta.solicitante_otro = "no aplica"); 
         consulta.id_solicitante = e.target.value;
       break;
       case "tipo_solicitante_otro":

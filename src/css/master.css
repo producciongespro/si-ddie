@@ -19,6 +19,20 @@ body
   background: url('../images/noisy2.png') repeat center center;
 
 }
+
+.navbar-light .navbar-nav .nav-link {
+  color: white!important;
+  font-size: 1.5rem;
+}
+
+.navbar-expand-lg .navbar-nav {
+  font-family: "myfontJun"!important;
+  text-transform: uppercase;
+  color:#e74803;
+  text-shadow: 2px 2px 2px  #999;
+}
+
+
 .jumbotron {
   background-color: transparent!important;
 }
@@ -43,8 +57,10 @@ body
 
 .h1text {
   padding-left: 2%;
-  font-family: myfont; 
   color: white;
+  font-family: "myfontJun"!important;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px black;
 }
 
 .dropdown-menu {
@@ -179,50 +195,50 @@ body
   padding: 10px;
 }
 
-.alertify .ajs-header,
-.alertify .ajs-footer 
-{
-  border: none;
-  color: #fbfbfb!important;
-  font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
-  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
-  font-size: 20px;
-  text-align: left;
-  text-indent: 5px;
-  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+.alertify .ajs-dialog {
+  background: linear-gradient(to top,  #d7d3d3 0%,#a6a3a2 100%);  
 }
 
 .alertify .ajs-header {
-  background: linear-gradient(to top, #4eb5e5 0%,#389ed5 100%); 
-  border-bottom: 4px solid #2b8bc6;
+  color:  black;
+  font-weight: 600;
+  background-color: transparent;
+  font-family: "myfontJun"!important;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px black;
+  font-size: 25px;
+}
+.alertify .ajs-body {
+  /* background-color: white; */
 }
 .alertify .ajs-footer {
-  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); 
-  border-top: 4px solid #2b8bc6;
+  /* background: linear-gradient(to bottom,  #d7d3d3 0%,#a6a3a2 100%);
+  border-top: 4px solid #9aa5ab; */
+  background-color: transparent;
+
 }
 .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
-
-  color: white;
-  background-color: #e74803;
-  font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
-  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
-  font-size: 15px;
+  color: #fa4d02;
+  font-family: "myfontJun"!important;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px black;
+  font-size: 25px;
   border-radius: 5px;
-  border: 3px solid white;
+  border: 5px double #6e7173;
+  background-color: white;
   cursor: pointer;
-
 }
 
 .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover {
-  background-color: #be3e07;
-  font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
-  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
-  font-size: 18px;
+  background-color:#5e5959;
+  color: white;
+  font-weight: 400;
+  font-family: "myfontJun"!important;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px black;
+  font-size: 25px;
   border-radius: 5px;
-  border: 3px solid rgb(231, 228, 228);
+  border: 5px double white;
   cursor: pointer;
 }
 
@@ -232,6 +248,13 @@ body
   text-shadow: 1px 1px 1px rgba(0,0,0,.4);
   font-size: 25px;
   text-align: center;
+}
+
+@media only screen and (max-width: 992px) 
+{
+  .navbar-light .navbar-nav .nav-link {
+  font-size: 1rem;
+  }
 }
 
 @media only screen and (max-width: 700px) 

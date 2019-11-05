@@ -22,14 +22,17 @@
     $comando .= $lista_campos.") values (".$lista_valores.")";
     $mysqli = conectarDB();
     mysqli_set_charset($mysqli, "utf8"); //formato de datos utf8
-    $registro = mysqli_query($mysqli,$comando) or die ("Problemas al insertar registro".mysqli_error($mysqli));
+    $registro = mysqli_query($mysqli,$comando);
+    //  or die ("Problemas al insertar registro".mysqli_error($mysqli));
     if($registro > 0 )
     {
         $mjs="Registro exitoso";
         echo json_encode(array('error'=>false, 'mensaje'=>$mjs));
         exit;
     } else {
-            $errors[] = "Error al registrar";
-            echo json_encode(array('error'=>true, 'mensaje'=>$errors ));
+            // $errors[] = "Error al registrar";
+            $errors = "¡A ocurrido un error!";
+            echo json_encode(array('error'=>true, 'mensaje'=>$errors));
+
         } 
 ?>

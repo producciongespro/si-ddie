@@ -15,30 +15,27 @@ class  Menu extends Component {
       // const usuario = <FontAwesomeIcon icon={faAlt} size="2x" />;
         return (
           <React.Fragment>
-            <div className="container-fluid">
-
-            
-            <Navbar className="float-right" bg="transparent" expand="lg">
-            <Navbar.Brand href="#home">
-            {/* <FontAwesomeIcon icon={faCog} size="2x" /> */}
-            </Navbar.Brand>
-            <div>
-               {/* <FontAwesomeIcon icon={faHome} /> */}
-            </div>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-              {/* <Nav.Link href="#home"><FontAwesomeIcon icon={faHome} size="2x" /></Nav.Link>                   */}
-                <NavDropdown title={ <FontAwesomeIcon icon={faCog} size="2x" />} id="basic-nav-dropdown">
-                  {/* <NavDropdown.Item href="#action/3.2"><FontAwesomeIcon icon={faHome} size="1x" /> Inicio</NavDropdown.Item> */}
-                  <NavDropdown.Item href="#action/3.1"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario:</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4"><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
-                  
-                </NavDropdown>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
+            <div className="container-fluid">            
+              <Navbar className="float-right" bg="transparent" expand="lg">
+              <Navbar.Brand href="#home">
+              {/* <FontAwesomeIcon icon={faCog} size="2x" /> */}
+              </Navbar.Brand>
+              <div>
+                {/* <FontAwesomeIcon icon={faHome} /> */}
+              </div>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <NavDropdown title={ <FontAwesomeIcon icon={faCog} />} id="basic-nav-dropdown">
+                      {/* <NavDropdown.Item href="#action/3.2"><FontAwesomeIcon icon={faHome} size="1x" /> Inicio</NavDropdown.Item> */}
+                    <NavDropdown.Item href="#action/3.1"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario:</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/3.4"><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="#">Acerca de</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
           </div>
         </React.Fragment>
           );

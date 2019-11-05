@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 //componentes
+import Registro from './componentes/Registro';
 import Boton from './componentes/Boton';
 import Consultas from './componentes/Consultas';
 import Basededatos  from './componentes/Basededatos';
@@ -91,7 +92,7 @@ resize() {
   render() { 
     const componenteActivo = this.state.componenteActual.type.name;
     // const hideNav = this.state.componenteActual.hideNav;
-    const componenteActual = this.state.componenteActual;
+    // const componenteActual = this.state.componenteActual;
     // console.log("activo", componenteActivo);
    const col1 = this.state.colUno;
    const col2 = this.state.colDos;
@@ -118,6 +119,7 @@ resize() {
           </div>
         </div>
         {/* {this.componenteContenedor(hideNav, componenteActivo)} */}
+        <Registro />
      </React.Fragment>
      );
   }
