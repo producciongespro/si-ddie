@@ -15,11 +15,47 @@
 
 body
 {
+  /* background-color: black!important; */
   background-color: blanchedalmond;
   background: url('../images/noisy2.png') repeat center center;
 
 }
 
+/* .div-logueo {
+
+} */
+
+.modal {
+  display: block!important;
+  /*font-family: 'Yanone Kaffeesatz';*/
+  font-family: 'Fjalla One', sans-serif;
+}
+
+.modal-content {
+  background: url('../images/fondo1.jpg') repeat center center;
+  /* https://all-free-download.com/free-vector/download/abstract_color_wave_background_6817416_download.html */
+  opacity: 1;
+}
+.modal-backdrop.show {
+  opacity: .9!important;
+}
+
+.btn-group, .btn-group-vertical {
+
+  border: 3px solid white;
+  border-radius: 5px;
+}
+
+.btn-lila {
+  background-color:transparent;
+  color: whitesmoke!important;
+  /* font-weight: bold!important; */
+}
+
+.btn-lila:hover, .btn-lila:active {
+  background-color:azure;
+  color: whitesmoke;
+}
 .navbar-light .navbar-nav .nav-link {
   color: white!important;
   font-size: 1.5rem;
@@ -46,7 +82,9 @@ body
  .div-encabezado
 {
   /* background: url('../images/bg1-768x313.png') no-repeat center center; */
-  background: url('../images/bg2.jpg') no-repeat center center;
+  /* background: url('../images/bg2.jpg') no-repeat center center; */
+  background: url('../images/fondo1.jpg') no-repeat center center;
+  background-color: blanchedalmond;
 	background-position: 0% 25%;
 	background-size: cover;
   color: white; 

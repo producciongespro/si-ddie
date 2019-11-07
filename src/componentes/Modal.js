@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-// import Perfil from './Perfil';
 import Registro from './Registro';
-// import { AcercaDe, Preguntas, Ayuda, Creditos } from "./Estaticos";
+import Ingreso from './Ingreso';
+// import Perfil from './Perfil';
+import { AcercaDe, Preguntas, Ayuda, Creditos } from "./Estaticos";
 // import GaleriaAvatar from './GaleriaAvatar/GaleriaAvatar';
 import referenciasJSON from '../data/referencias.json';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.min.js';
 const referencias = referenciasJSON[0];
+
 
 
 
@@ -20,13 +24,15 @@ class Modal extends Component {
   }
 
 
-  handlerMontarTipoModal = (e) => {
+  handlerMontarTipoModal = (e) => {    
     const target = e.target.dataset.tar;
-    console.log( "Tiupo de modal:",  target);    
+    console.log( "Tipo de modal:",  target);    
     this.setState({ tipoModal: target });
   }
 
   renderContenido = (tipoModal, array) => {
+    console.log("tipoModal", tipoModal);
+    
     switch (tipoModal) {
       case "txt":
         contenidoHTML = (
@@ -38,33 +44,41 @@ class Modal extends Component {
       //     <h2>Esto es un video</h2>
       //   )
       //   break;
-      // case "registro":
-      //       // contenidoHTML = <Registro handlerCerrarModal={this.props.handlerCerrarModal} />
-      //   break;
+      case "registro":
+        console.log("en registro");
+        contenidoHTML = (
+          // <h2>Esto es un texto</h2>)
+         contenidoHTML = <Registro handlerCerrarModal={this.props.handlerCerrarModal} />)
+        break;
+      case "ingreso":
+        console.log("en ingreso");
+        contenidoHTML = (
+          // <h2>Esto es un texto</h2>)
+          contenidoHTML = <Ingreso handlerCerrarModal={this.props.handlerCerrarModal} />)
+        break;
+      case "perfil":
+        // contenidoHTML = <Perfil handlerMontarTipoModal = {this.handlerMontarTipoModal}   handlerCerrarModal={this.props.handlerCerrarModal}  referencias={referencias} />
+        break;
   
-      // case "perfil":
-      //   contenidoHTML = <Perfil handlerMontarTipoModal = {this.handlerMontarTipoModal}   handlerCerrarModal={this.props.handlerCerrarModal}  referencias={referencias} />
-      //   break;
+      case "acerca":
+        contenidoHTML = <AcercaDe />
+        break;
   
-      // case "acerca":
-      //   contenidoHTML = <AcercaDe />
-      //   break;
+      case "preguntas":
+        contenidoHTML = <Preguntas />
+        break;
   
-      // case "preguntas":
-      //   contenidoHTML = <Preguntas />
-      //   break;
+      case "ayuda":
+        contenidoHTML = <Ayuda />
+        break;
   
-      // case "ayuda":
-      //   contenidoHTML = <Ayuda />
-      //   break;
-  
-      // case "creditos":
-      //   contenidoHTML = <Creditos />
-      //   break;
+      case "creditos":
+        contenidoHTML = <Creditos />
+        break;
 
-      // case "galeria":
-      //     contenidoHTML = <GaleriaAvatar handlerMontarTipoModal = {this.handlerMontarTipoModal} referencias={referencias} />
-      //     break;
+      case "galeria":
+          // contenidoHTML = <GaleriaAvatar handlerMontarTipoModal = {this.handlerMontarTipoModal} referencias={referencias} />
+          break;
   
       default:
         break;
@@ -76,9 +90,12 @@ class Modal extends Component {
 
 
   render() { 
+    const cerrar = this.props.handlerCerrarModal;
+    console.log("cerrar modal", cerrar);
     return ( 
+      
       <div>
-      <div className="modal fade show  element-top" id="modalScreen"   >
+        <div className="modal fade show element-top" id="modalScreen"   >      
         <div className={modalAncho} role="document">
           <div className="modal-content animated bounceInDown">
 
@@ -88,8 +105,11 @@ class Modal extends Component {
               </button>
             </div>
             <div className={classModalBody} >
-              {
-                this.renderContenido(this.state.tipoModal, this.props.info, this.props.handlerCerrarModal )
+            {console.log("Tipo", this.props.tipo)}
+              {  
+                
+                              
+                (this.state.tipoModal==="ingreso")?<Ingreso handlerCerrarModal={this.props.handlerCerrarModal} />:this.renderContenido(this.state.tipoModal)
               }
             </div>
 
@@ -97,13 +117,10 @@ class Modal extends Component {
         </div>
       </div>
 
-      <div className="modal-backdrop fade show"></div>
+      <div className="modal-backdrop show"></div>
     </div>
      );
   }
 }
  
 export default Modal;
-
-
-

@@ -1,11 +1,12 @@
 [
     {
-        "version" : "1.0",
-        "img"  : "http://localhost/si-ddie/server_assets/si-ddie/img/",
-        "servicios" : "http://localhost/si-ddie/webservices/si-ddie/",   
-       "consultageneral": "http://localhost/si-ddie/webservices/si-ddie/consultas_generales.php",
-       "consultaespecifica": "http://localhost/si-ddie/webservices/si-ddie/consultas_especificas.php",
-       "guardaconsulta" : "http://localhost/si-ddie/webservices/si-ddie/registro_consulta.php",
-       "actualizaconsulta" : "http://localhost/si-ddie/webservices/si-ddie/consulta_generico.php"
+       "version" : "1.0",
+       "img"  : "http://localhost/si-ddie/server_assets/si-ddie/img/",
+       "servicios" : "http://localhost/si-ddie/webservices/si-ddie/",   
+       "registroUsuario" : "http://localhost/projects/Flautaoke20/webservices/si-ddie/registro.php",                                                            
+       "consultageneral": "http://localhost/projects/si-ddie/webservices/si-ddie/consultas_generales.php",
+       "consultaespecifica": "http://localhost/projects/si-ddie/webservices/si-ddie/consultas_especificas.php",
+       "guardaconsulta" : "http://localhost/projects/si-ddie/webservices/si-ddie/registro_consulta.php",
+       "actualizaconsulta" : "http://localhost/projects/si-ddie/webservices/si-ddie/consulta_generico.php"
     }
 ]

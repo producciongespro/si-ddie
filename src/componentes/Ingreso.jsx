@@ -13,7 +13,7 @@ const referencias = referenciasJson[0];
 
 
 
-class Registro extends Component {
+class Ingreso extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -150,45 +150,34 @@ class Registro extends Component {
                   defaultErrorMessage = {
                     { required : "Este campo es requerido"}
                   }>
-          <h1 className="titmodal">Registro</h1> <hr />
+          {/* <h1 className="titmodal">INGRESAR</h1> <hr /> */}
+          <br/><br/><br/>
+          <div class="btn-group">
+            <button type="button" class="btn btn-lg btn-lila">Ingresar</button>
+            <button type="button" class="btn btn-lg btn-lila">Inscribirse</button>
+            <button type="button" class="btn btn-lg btn-lila">Recuperar contraseña</button>
+          </div>
 
           <div className="textos control-group form-group">
-
-            <h5 className="text-perfil" >Datos Personales</h5>
-
-            <div className="row ">
-              <div className="col-md-6">
-                <TextInput key ="nombre" type="text" className="form-control" placeholder="Nombre" onChange={this.obtenerDatosForm} id="txtNombre"  required/>
-                <TextInput key ="apellido1" type="text" className="form-control" placeholder="Primer Apellido" onChange={this.obtenerDatosForm} id="txtApellido1" required  />
-                <TextInput key ="apellido2" type="text" className="form-control" placeholder="Segundo Apellido" onChange={this.obtenerDatosForm} id="txtApellido2" required/> <br />
-              </div>
-
-              <div className="col-md-6 ">
-                <h6>Tipo de usuario</h6>
-                <TextInput key="tipo" type="text" className="form-control" placeholder="Tipo de usuario" onChange={this.obtenerDatosForm} id="txtTipoUsuario" required /> <br />
+            <div className="row">
+              <div className="col-md-12 ">
+                <h6>Usuario</h6>
+                <TextInput key="usuario" type="text" className="form-control" placeholder="Tipo de usuario" onChange={this.obtenerDatosForm} id="txtUsuario" required /> <br />
               </div>
             </div>
 
             <div className="row">
-              <div className="col-10">
-                <TextInput type="text" className="form-control" placeholder="Correo electrónico" onChange={this.obtenerDatosForm} id="txtcorreo" required />
+              <div className="col-12">
+                <TextInput type="password" className="form-control" placeholder="Contraseña" onChange={this.obtenerDatosForm} id="txtContrasena" required />
               </div>
             </div>
             <br/>
-            <div className="row">
-              <div className="col-6">
-                <TextInput type="password" className="form-control" placeholder="Contraseña" onChange={this.obtenerDatosForm} id="txtClave1"  required/>
-              </div>
-              <div className="col-6">
-                <TextInput type="password" className="form-control" placeholder="Repita Contraseña" onChange={this.obtenerDatosForm} id="txtClave2" required />
-              </div>
-            </div> 
-            <br />
+     
 
             <div className="row">
                 <div className="col-md-4 center">
                   {/* <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button> */}
-                  <button className="btn btn-warning"  > Guardar registro </button>
+                  <button className="btn btn-warning"  > Enviar </button>
                 </div>
             </div>
           </div>
@@ -199,4 +188,4 @@ class Registro extends Component {
   }
 }
 
-export default Registro;
+export default Ingreso;
