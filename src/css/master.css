@@ -21,10 +21,6 @@ body
 
 }
 
-/* .div-logueo {
-
-} */
-
 .modal {
   display: block!important;
   /*font-family: 'Yanone Kaffeesatz';*/
@@ -32,7 +28,7 @@ body
 }
 
 .modal-content {
-  background: url('../images/fondo2.jpg') repeat center center;
+  background: url('../images/fondo_2.jpg') repeat center center;
   /* https://all-free-download.com/free-vector/download/abstract_color_wave_background_6817416_download.html */
 }
 .modal-backdrop.show {
@@ -43,33 +39,44 @@ body
   width: 75px!important;
 }
 
-.btn-group, .btn-group-vertical {
-  border-radius: 5px;
-  display: flex!important;
+.nav-tabs {
+  border-bottom: none!important;
+}
+
+.nav-tabs > a{
+  color:white;
+  font-size: 16px;
+  text-shadow: 2px 2px 2px #999;
+  border-radius: 0!important;
   background-color: rgba(255,0,255,0.25);
 }
 
-.btn-group-vertical > .btn, .btn-group > .btn {
+.nav-tabs > a:hover{
+  color: white!important;
   font-size: 16px;
-}
-.btn-lila {
-  background-color:transparent;
-  color: whitesmoke!important;
-  font-weight: bold;
   text-shadow: 2px 2px 2px #999;
+  border: 2px solid white;
+  background-color: rgba(241, 238, 241, 0.5) !important
+  /* border-color: darkmagenta!important; */
 }
-
-.btn-lila:hover, .btn-lila:active {
-  background-color:azure;
-  color: #2431a1 !important;
-  text-shadow: 2px 2px 2px  #999;
-}
-#txtUsuario::placeholder,
-#txtContrasena::placeholder { 
-  color: #e5e1e1;
+.nav-item.nav-link.active,
+.nav-item.nav-link.active:hover {
+  color: white!important;
   font-weight: bold;
+  background-color: rgba(255,0,255,0.5)!important;
+  border-color: rgba(255,0,255,0.5)!important;
 }
 
+
+/* #txtUsuario::placeholder, */
+::placeholder { 
+  color: #e5e1e1!important;
+  /* font-weight: bold; */
+}
+
+#noanim-tab {
+  margin-bottom: 1.5rem !important;
+}
 .input-ingreso {
   border: none!important;
   border-bottom: 1px solid white!important;
@@ -77,16 +84,15 @@ body
   font-size: 1.1rem!important;
 }
 
-#txtUsuario:focus,
-#txtContrasena:focus,
-#txtUsuario:active,
-#txtContrasena:active { 
-  outline: none;
+ #txtUsuario:focus,
+#txtContrasena:focus,  
+ #txtContrasena:active
+{ 
+  outline: 0!important;
   box-shadow: none; 
   color: white;
   font-size: 1.5rem;
  }
-
 
 .btn-ingreso {
   color:white!important;

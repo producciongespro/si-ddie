@@ -15,7 +15,7 @@ const getPassword = (e) => {
     //console.log(password);
 }
 
-class Logueo extends Component {
+class Recuperar extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -29,7 +29,7 @@ class Logueo extends Component {
     render() {
         return (
             <React.Fragment>
-                   <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
+                <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
                   ref={this.formRef}
                   immediate={this.state.immediate}
                   setFocusOnError={this.state.setFocusOnError}
@@ -39,26 +39,21 @@ class Logueo extends Component {
                     <div className="textos control-group form-group mt-2">
                         <div className="row">
                             <div className="col-md-12 ">
-                                <TextInput key="usuario" type="text" className="form-control input-ingreso" placeholder="Usuario" onChange={this.obtenerDatosForm} id="txtUsuario" name="txtUsuario" required /> <br />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-12">
-                                <TextInput type="password" className="form-control input-ingreso" placeholder="Contraseña" onChange={this.obtenerDatosForm} id="txtContrasena" name="txtContrasena" required />
+                                <TextInput key="usuario" type="text" className="form-control input-ingreso" placeholder="Digite el correo electrónico" onChange={this.obtenerDatosForm} id="txtUsuario" name="txtUsuario" required /> <br />
                             </div>
                         </div>
                         <br/>
                     </div>
-										<div className="row">
-											<div className="col-md-12 center">
-												<button className="btn btn-ingreso float-right"  > Enviar </button>
-											</div>
-            				</div>
-								</ValidationForm>
+                    <div className="row">
+                        <div className="col-md-12 center">
+                            {/* <button className="btn btn-warning" onClick={this.enviarDatosForm} > Guardar registro </button> */}
+                            <button className="btn btn-ingreso float-right"  > Enviar </button>
+                        </div>
+                     </div>
+                </ValidationForm>
             </React.Fragment>
         );
     }
 }
 
-export default Logueo;
+export default Recuperar;
