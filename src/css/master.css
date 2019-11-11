@@ -32,29 +32,73 @@ body
 }
 
 .modal-content {
-  background: url('../images/fondo1.jpg') repeat center center;
+  background: url('../images/fondo2.jpg') repeat center center;
   /* https://all-free-download.com/free-vector/download/abstract_color_wave_background_6817416_download.html */
-  opacity: 1;
 }
 .modal-backdrop.show {
-  opacity: .9!important;
+  opacity: 1!important;
+}
+
+.logoMEP {
+  width: 75px!important;
 }
 
 .btn-group, .btn-group-vertical {
-
-  border: 3px solid white;
   border-radius: 5px;
+  display: flex!important;
+  background-color: rgba(255,0,255,0.25);
 }
 
+.btn-group-vertical > .btn, .btn-group > .btn {
+  font-size: 16px;
+}
 .btn-lila {
   background-color:transparent;
   color: whitesmoke!important;
-  /* font-weight: bold!important; */
+  font-weight: bold;
+  text-shadow: 2px 2px 2px #999;
 }
 
 .btn-lila:hover, .btn-lila:active {
   background-color:azure;
-  color: whitesmoke;
+  color: #2431a1 !important;
+  text-shadow: 2px 2px 2px  #999;
+}
+#txtUsuario::placeholder,
+#txtContrasena::placeholder { 
+  color: #e5e1e1;
+  font-weight: bold;
+}
+
+.input-ingreso {
+  border: none!important;
+  border-bottom: 1px solid white!important;
+  color: white!important;
+  font-size: 1.1rem!important;
+}
+
+#txtUsuario:focus,
+#txtContrasena:focus,
+#txtUsuario:active,
+#txtContrasena:active { 
+  outline: none;
+  box-shadow: none; 
+  color: white;
+  font-size: 1.5rem;
+ }
+
+
+.btn-ingreso {
+  color:white!important;
+  text-shadow: 2px 2px 2px #999;
+  background-color:#72cade!important;
+  border: 3px solid#1494b1 !important;
+}
+
+.btn-ingreso:hover {
+  font-weight: bold;
+  background-color: #174b94!important;
+  /* text-shadow: 2px 2px 2px white; */
 }
 .navbar-light .navbar-nav .nav-link {
   color: white!important;
@@ -82,8 +126,8 @@ body
  .div-encabezado
 {
   /* background: url('../images/bg1-768x313.png') no-repeat center center; */
-  /* background: url('../images/bg2.jpg') no-repeat center center; */
-  background: url('../images/fondo1.jpg') no-repeat center center;
+  background: url('../images/bg2.jpg') no-repeat center center;
+  /* background: url('../images/fondo2.jpg') no-repeat center center; */
   background-color: blanchedalmond;
 	background-position: 0% 25%;
 	background-size: cover;

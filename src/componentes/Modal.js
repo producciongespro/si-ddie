@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import Registro from './Registro';
 import Ingreso from './Ingreso';
-// import Perfil from './Perfil';
-import { AcercaDe, Preguntas, Ayuda, Creditos } from "./Estaticos";
-// import GaleriaAvatar from './GaleriaAvatar/GaleriaAvatar';
+import Imagen from './Imagen';
 import referenciasJSON from '../data/referencias.json';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
 const referencias = referenciasJSON[0];
-
-
-
 
 const classModalBody = "modal-body "; // Se agrega "modal-body large cuando carga un pdf"
 const modalAncho = "modal-dialog"; // clase que contiene el tamaño del modal
@@ -56,29 +49,29 @@ class Modal extends Component {
           // <h2>Esto es un texto</h2>)
           contenidoHTML = <Ingreso handlerCerrarModal={this.props.handlerCerrarModal} />)
         break;
-      case "perfil":
-        // contenidoHTML = <Perfil handlerMontarTipoModal = {this.handlerMontarTipoModal}   handlerCerrarModal={this.props.handlerCerrarModal}  referencias={referencias} />
-        break;
+      // case "perfil":
+      //   // contenidoHTML = <Perfil handlerMontarTipoModal = {this.handlerMontarTipoModal}   handlerCerrarModal={this.props.handlerCerrarModal}  referencias={referencias} />
+      //   break;
   
-      case "acerca":
-        contenidoHTML = <AcercaDe />
-        break;
+      // case "acerca":
+      //   contenidoHTML = <AcercaDe />
+      //   break;
   
-      case "preguntas":
-        contenidoHTML = <Preguntas />
-        break;
+      // case "preguntas":
+      //   contenidoHTML = <Preguntas />
+      //   break;
   
-      case "ayuda":
-        contenidoHTML = <Ayuda />
-        break;
+      // case "ayuda":
+      //   contenidoHTML = <Ayuda />
+      //   break;
   
-      case "creditos":
-        contenidoHTML = <Creditos />
-        break;
+      // case "creditos":
+      //   contenidoHTML = <Creditos />
+      //   break;
 
-      case "galeria":
-          // contenidoHTML = <GaleriaAvatar handlerMontarTipoModal = {this.handlerMontarTipoModal} referencias={referencias} />
-          break;
+      // case "galeria":
+      //     // contenidoHTML = <GaleriaAvatar handlerMontarTipoModal = {this.handlerMontarTipoModal} referencias={referencias} />
+      //     break;
   
       default:
         break;
@@ -99,7 +92,9 @@ class Modal extends Component {
         <div className={modalAncho} role="document">
           <div className="modal-content animated bounceInDown">
 
-            <div className="col-12 text-right">
+            <div className="col-12">
+              <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} />
+              {/* <img className="logoMep" src= {referencias.img+"logo_mep.png"} alt=""/> */}
               <button onClick={this.props.handlerCerrarModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
