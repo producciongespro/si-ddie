@@ -1,81 +1,67 @@
 import React, { Component } from 'react';
-
 import Logueo from './Logueo';
 import Recuperar from './Recuperar';
 import  Registro from './Registro';
-// import  Inscripcion from './Inscripcion';
+
+import Imagen from './Imagen';
+import referenciasJSON from '../data/referencias.json';
+
+// librerías
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-validation';
 
-import referenciasJson from '../data/referencias.json';
+const referencias = referenciasJSON[0];
 
-
-//Librerias
-import alertify from 'alertifyjs';
-import axios from 'axios';
-
-var nombre, apellido1, apellido2, provincia = "NA", clave, confirmaClave, usuario, fechaNacimiento;
-const referencias = referenciasJson[0];
-
+const classModalBody = "modal-body "; // Se agrega "modal-body large cuando carga un pdf"
+const modalAncho = "modal-dialog"; // clase que contiene el tamaño del modal
+var contenidoHTML = "prueba";
 
 
 class Ingreso extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        key: 'ingresar',
-      // ajaxOcupado: false,
-      // nombre: "",
-      // contrasena: ""
+      key: 'ingresar'
+      // tipoModal : props.tipo  
     }
   }
 
-  
-  //eventos del formulario
-  handleSubmit = (e, formData, inputs) => {
-    e.preventDefault();
-    this.enviarDatosForm();
-  }
+  render() { 
+    return ( 
+      
+      <div>
+        <div className="modal fade show element-top" id="modalScreen"   >      
+        <div className={modalAncho} role="document">
+          <div className="modal-content animated bounceInDown">
 
-  handleErrorSubmit = (e,formData, errorInputs) => {
-      console.log("handleErrorSubmit", errorInputs)
-  }
+            <div className="col-12">
+              <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} />
+              <button onClick={this.props.handlerCerrarModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className={classModalBody} >
+              <Tabs activeKey={this.state.key} onSelect={key => this.setState({ key })} transition={false} id="noanim-tab">
+                <Tab className="" eventKey="ingresar" title="Ingresar">
+                  <Logueo handlerLogin={this.props.handlerLogin} />
+                </Tab>
+                <Tab className="" eventKey="inscribir" title="Inscribirse">
+                  <Registro />
+                </Tab>
+                <Tab className="" eventKey="recuperar" title="Recuperar contraseña">
+                  <Recuperar />
+                </Tab>
+              </Tabs>
+            </div>
 
-  resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
-  }
-  
-  cerrarModal = () => {
-    this.props.handlerCerrarModal();
-  }
+          </div>
+        </div>
+      </div>
 
-  datosLogin = () => {
-    
-  }
-
-  
-  
- 
-  render() {
-    return (
-      <React.Fragment>
-        
-          <Tabs activeKey={this.state.key} onSelect={key => this.setState({ key })} transition={false} id="noanim-tab">
-              <Tab className="" eventKey="ingresar" title="Ingresar">
-                <Logueo />
-              </Tab>
-              <Tab className="" eventKey="inscribir" title="Inscribirse">
-                <Registro />
-              </Tab>
-              <Tab className="" eventKey="recuperar" title="Recuperar contraseña">
-                <Recuperar />
-              </Tab>
-          </Tabs>
-      </React.Fragment>
-    );
+      <div className="modal-backdrop show"></div>
+    </div>
+     );
   }
 }
-
+ 
 export default Ingreso;

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 //componentes
-import Logueo from './componentes/Logueo';
-// import Ingreso from './componentes/Ingreso';
-import Modal from './componentes/Modal';
+import Ingreso from './componentes/Ingreso';
 import Boton from './componentes/Boton';
 import Consultas from './componentes/Consultas';
 import Basededatos  from './componentes/Basededatos';
@@ -64,7 +62,7 @@ componentDidMount() {
       isModalActivo: true,
       // typeContent: "ingreso",
       isMenuGeneralActivo: false,
-      modalComponent: <Modal handlerCerrarModal={this.handlerCerrarModal} tipo={"ingreso"} />
+      modalComponent: <Ingreso handlerLogin={this.handlerLogin} handlerCerrarModal={this.handlerCerrarModal}/>
     });
 }
 
@@ -90,7 +88,7 @@ handlerMostrarModal = (e) => {
     isModalActivo: true,
     typeContent: tipo,
     isMenuGeneralActivo: false,
-    modalComponent: <Modal handlerCerrarModal={this.handlerCerrarModal} tipo={tipo} />
+    modalComponent: <Ingreso handlerLogin={this.handlerLogin} handlerCerrarModal={this.handlerCerrarModal}/>
   });
 }
 
@@ -103,32 +101,35 @@ handlerCerrarModal = () => {
 }
 
 
-handlerMenuGeneral = () => {
-  if (this.state.isMenuGeneralActivo) {
-    this.setState({ isMenuGeneralActivo: false });
-  } else {
-    this.setState({ isMenuGeneralActivo: true });
-  }
-}
+// handlerMenuGeneral = () => {
+//   if (this.state.isMenuGeneralActivo) {
+//     this.setState({ isMenuGeneralActivo: false });
+//   } else {
+//     this.setState({ isMenuGeneralActivo: true });
+//   }
+// }
 //fin 
 
   //Entrar en session
   handlerLogin = (user, password) => {
-    //    console.log("user desde app", user);
-    //    console.log("pass desde app", password);   
+       console.log("user desde app", user);
+       console.log("pass desde app", password);   
     const me = this;
     let data = {
-      "usuario": user,
+      "correo": user,
       "clave": password
     }
+
     console.log("DAta", data ); 
-    //console.log("**ref", referencias.login);
+    console.log("**ref", referencias.login);
     this.setState({ ajaxOcupado: true });
 
     axios.post(referencias.login, data)
       .then(function (response) {
-        //console.log(response.data);
+        console.log("response.data",response.data);
         const mensajeError = response.data.error_msg;
+        console.log("Mensaje error", mensajeError);
+        
         if (response.data.error === false) {          
           //Almacenamiento en session el objeto usuario          
           sessionStorage.setItem("usuario",  JSON.stringify(response.data)  );                             
@@ -140,8 +141,8 @@ handlerMenuGeneral = () => {
           console.log("Error IF acceso usuario");
           alertify
             .alert(referencias.version, mensajeError, function () {
-              document.getElementById("idUser").value = "";
-              document.getElementById("txtPwd").value = "";
+              // document.getElementById("idUser").value = "";
+              // document.getElementById("txtPwd").value = "";
             });
         }
       })

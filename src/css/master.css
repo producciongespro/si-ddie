@@ -84,9 +84,16 @@ body
   font-size: 1.1rem!important;
 }
 
- #txtUsuario:focus,
+#txtUsuario:focus,
 #txtContrasena:focus,  
- #txtContrasena:active
+#txtNombre:focus,
+#txtApellido1:focus,  
+#txtApellido2:focus,
+#txtTipoUsuario:focus,  
+#txtCorreo:focus,  
+#txtClave1:focus,  
+#txtClave2:focus,  
+#txtContrasena:active
 { 
   outline: 0!important;
   box-shadow: none; 

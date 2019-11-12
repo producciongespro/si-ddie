@@ -1,13 +1,13 @@
 <?php
 
-	function isNull($nombre, $pass, $pass_con, $email){
-		if(strlen(trim($nombre)) < 1 || strlen(trim($pass)) < 1 || strlen(trim($pass_con)) < 1 || strlen(trim($email)) < 1)
-		{
-			return true;
-			} else {
-			return false;
-		}
-	}
+	// function isNull($nombre, $pass, $pass_con, $email){
+	// 	if(strlen(trim($nombre)) < 1 || strlen(trim($pass)) < 1 || strlen(trim($pass_con)) < 1 || strlen(trim($email)) < 1)
+	// 	{
+	// 		return true;
+	// 		} else {
+	// 		return false;
+	// 	}
+	// }
 
 	function isEmail($email)
 	{
@@ -116,11 +116,12 @@
 		}
 	}
 
-	function registraUsuarioAsesor($pass_hash, $nombre, $email, $cedula, $id_tipo, $sexo, $telefono_movil, $telefono_fijo, $estado_nombramiento, $circuito, $especialidad, $id_CE, $activo, $token){
+	// function registraUsuario($pass_hash, $nombre, $email, $cedula, $id_tipo, $sexo, $telefono_movil, $telefono_fijo, $estado_nombramiento, $circuito, $especialidad, $id_CE, $activo, $token){
+		function registraUsuario($pass_hash, $nombre, $apellido1, $apellido2, $usuario, $tipoUsuario, $activo, $token){
 		global $mysqli;
 
-		$stmt = $mysqli->prepare("INSERT INTO usuarios (password, nombre, correo, cedula, id_tipo, sexo, telefono_movil, telefono_fijo, estado_nombramiento, circuito, especialidad, id_CE, activacion, token) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-		$stmt->bind_param('ssssissssisiis', $pass_hash, $nombre, $email, $cedula, $id_tipo, $sexo, $telefono_movil, $telefono_fijo, $estado_nombramiento, $circuito, $especialidad, $id_CE, $activo, $token);
+		$stmt = $mysqli->prepare("INSERT INTO usuarios (password, nombre, apellido1, apellido2, correo, tipoUsuario, activacion, token) VALUES(?,?,?,?,?,?,?,?)");
+		$stmt->bind_param('ssssssis', $pass_hash, $nombre, $apellido1, $apellido2, $usuario, $tipoUsuario, $activo, $token);
 		if ($stmt->execute()){
 			return $mysqli->insert_id;
 			} else {

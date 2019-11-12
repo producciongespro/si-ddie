@@ -3,31 +3,33 @@
 	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 	header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	header("Content-Type: text/html; charset=utf-8");
-	require 'funcs/conexion.php';
+	// header("Content-Type:multipart/form-data");
+
+	require 'conectar.php';
 	require 'funcs/funcs.php';
+
 	$JSONData = file_get_contents("php://input");
 	$dataObject = json_decode($JSONData);
-
+	
+	var_dump(json_decode($JSONData));
 	$errors = array();
 	$mjs = "";
 	
+		// $nombre = utf8_decode ($dataObject-> nombre);
 		$nombre = utf8_decode ($dataObject-> nombre);
 		$apellido1 = utf8_decode ( $dataObject-> apellido1);
 		$apellido2 = utf8_decode ( $dataObject-> apellido2);
-		$usuario = utf8_decode ($dataObject-> usuario);
-		$pais = utf8_decode ($dataObject-> pais);
-		$provincia = utf8_decode ($dataObject-> provincia);
-		$sexo = $dataObject-> sexo;
-		$fechaNacimiento = $dataObject-> fechaNacimiento;
+		$usuario = utf8_decode ($dataObject-> correo);
+		$tipoUsuario = utf8_decode ($dataObject-> tipoUsuario);
 		$password = $dataObject-> clave;
 		$con_password = $dataObject-> confirmaClave;
 		$activo = 1;
-		$tipoUsuario = 4;
-		if(isNull($nombre, $usuario, $password, $con_password))
-		{
-			$errors[] = "Debe llenar todos los campos";
+
+		// if(isNull($nombre, $password, $con_password, $usuario))
+		// {
+		// 	$errors[] = "Debe llenar todos los campos";
 			
-		}
+		// }
 
  		if(!validaPassword($password, $con_password))
 		{
@@ -48,8 +50,7 @@
 				$pass_hash = hashPassword($password);
 				$token = generateToken();
 
-				$registro = registraUsuario($usuario, $pass_hash, $nombre, $apellido1, $apellido2, $pais, $provincia, $fechaNacimiento, $sexo, $token, $tipoUsuario, $activo);
-
+				$registro = registraUsuario($pass_hash, $nombre, $apellido1, $apellido2, $usuario, $tipoUsuario, $activo, $token);
 				if($registro > 0 )
 				{
 
@@ -66,17 +67,5 @@
 
 
 		}
-
-	// }
-
-	function calculaedad($fechanacimiento){
-	  list($ano,$mes,$dia) = explode("-",$fechanacimiento);
-	  $ano_diferencia  = date("Y") - $ano;
-	  $mes_diferencia = date("m") - $mes;
-	  $dia_diferencia   = date("d") - $dia;
-	  if ($dia_diferencia < 0 || $mes_diferencia < 0)
-	    $ano_diferencia--;
-	  return $ano_diferencia;
-	}
 
 ?>

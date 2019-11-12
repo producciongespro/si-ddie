@@ -26,6 +26,24 @@ class Recuperar extends Component {
     //   user = "";
     //   password = "";
     }
+
+    handleSubmit = (e, formData, inputs) => {
+        // me = this;
+        e.preventDefault();
+        console.log("FormaData del logueo", formData.txtContrasena);
+        console.log("Inputs del logueo", inputs);
+        this.props.handlerLogin(formData.txtUsuario,formData.txtContrasena);
+      }
+    
+      handleErrorSubmit = (e,formData, errorInputs) => {
+          console.log("handleErrorSubmit", errorInputs)
+      }
+    
+      resetForm = () => {
+          let formRef = this.formRef.current;
+          formRef.resetValidationState(this.state.clearInputOnReset);
+      }
+    
     render() {
         return (
             <React.Fragment>

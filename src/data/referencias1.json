@@ -7,6 +7,9 @@
        "consultaespecifica": "http://localhost/si-ddie/webservices/si-ddie/consultas_especificas.php",
        "guardaconsulta" : "http://localhost/si-ddie/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/si-ddie/webservices/si-ddie/consulta_generico.php",
-       "registroUsuario" : "http://localhost/si-ddie/webservices/si-ddie/registro.php"
+       "registroUsuario" : "http://localhost/si-ddie/webservices/si-ddie/registro.php",
+       "login" : "http://localhost/si-ddie/webservices/si-ddie/login.php",
+    //    "registroUsuario" : "http://localhost/si-ddie/webservices/si-ddie/registro2.php"
+
     }
 ]
