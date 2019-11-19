@@ -16,11 +16,11 @@ $mensaje = array();
     session_start();    
     $mysqli->set_charset('utf8');
 	    
-	// $usuario = $dataObject-> correo; //cambié el usuario por correo
-	// $pas =	$dataObject-> clave;
-  $usuario = 'ana.araya.salazar@mep.go.cr'; //cambié el usuario por correo
-	$pas =	'123';
-    if ($nueva_consulta = $mysqli->prepare("Select nombre, apellido1, apellido2, tipoUsuario, idUsuario, correo From usuarios Where correo = ?")) {
+	$usuario = $dataObject-> correo; //cambié el usuario por correo
+	$pas =	$dataObject-> claveEncriptada;
+  // $usuario = 'ana.araya.salazar@mep.go.cr'; //cambié el usuario por correo
+	// $pas =	'123';
+    if ($nueva_consulta = $mysqli->prepare("Select nombre, apellido1, apellido2, tipoUsuario, idUsuario, correo, claveEncriptada From usuarios Where correo = ?")) {
         $nueva_consulta->bind_param('s', $usuario); 
         $nueva_consulta->execute();
         $resultado = $nueva_consulta->get_result();
@@ -29,8 +29,9 @@ $mensaje = array();
              $encriptado_db = $datos['claveEncriptada'];
             if (   (password_verify($pas, $encriptado_db)   )    )
             {
-                $_SESSION['usuario'] = $datos['usuario'];
-                echo json_encode(array('error'=>false,'correo'=>$datos['correo'], 'nombre'=>$datos['nombre'],  'apellido1'=>$datos['apellido1'],  'apellido2'=>$datos['apellido2'],'idUsuario'=>$datos['idUsuario'], 'tipoUsuario'=>$datos['tipoUsuario'] ) );
+                $_SESSION['usuario'] = $datos['correo'];
+                // echo json_encode(array('error'=>false,'correo'=>$datos['correo'], 'nombre'=>$datos['nombre'],  'apellido1'=>$datos['apellido1'],  'apellido2'=>$datos['apellido2'],'idUsuario'=>$datos['idUsuario'], 'tipoUsuario'=>$datos['tipoUsuario'] ) );
+                echo json_encode(array('error'=>false,'correo'=>$datos['correo'], 'tipoUsuario'=>$datos['tipoUsuario'] ) );
               }
 
                else {

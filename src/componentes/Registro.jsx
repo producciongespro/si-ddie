@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
 import LoadingSpinner from './spinner/LoadingSpinner';
-import mostrarAlerta from './Alerta.js';
 
 // JSON
 import referenciasJson from '../data/referencias.json';
@@ -12,8 +11,8 @@ import axios from 'axios';
 
 // var nombre, apellido1, apellido2, clave, confirmaClave, correo, tipoUsuario;
 const referencias = referenciasJson[0];
-var  me;
-var registro = {};
+// var  me;
+// var registro = {};
 class Registro extends Component {
   constructor(props) {
     super(props);
@@ -26,24 +25,10 @@ class Registro extends Component {
   componentDidMount() {}
     
    handleSubmit = (e, formData, inputs) => {
-    // me = this;
-    registro = {
-      "nombre": formData.nombre,
-      "apellido1" : formData.apellido1,
-      "apellido2"   : formData.apellido2,
-      "tipoUsuario":  formData.tipoUsuario,
-      "correo": formData.correo, 
-      "clave": formData.clave, 
-      "confirmaClave": formData.confirmaClave
-    }
+  
     e.preventDefault();
     console.log("FormaData del REGISTRO", formData);
-    console.log("Inputs del logueo", inputs);
-    // var myJSON = JSON.stringify(formData);
-    // console.log("en JSON", myJSON);
-    console.log("registro", registro);
-    
-    this.enviarDatosForm(registro);
+    this.enviarDatosForm(formData);
   }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
@@ -55,29 +40,37 @@ class Registro extends Component {
       formRef.resetValidationState(this.state.clearInputOnReset);
   }
 
-
-  enviarDatosForm = (datos) => {
-    console.log("DATOS", datos);
-    
+  // cerrarModal = () => {
+  //   this.props.handlerCerrarModal();
+  // }
+  enviarDatosForm = (datos) => {    
     console.log("data desde enviarDatosForm", datos);
 
-    const me = this;
+    // const me = this;
     console.log("URL servicio", referencias.registroUsuario );
     
     axios.post(referencias.registroUsuario, datos)    
       .then(function (response) {
-        console.log("response.data",response.data);
-
-        alertify
-          .alert( referencias.version, response.data.mensaje, function () {            
-            me.cerrarModal();                       
+        console.log("response.data", response.data);
+        
+        if (response.data.error) {
+          alertify
+          .alert( "Error", '<br><p>'+response.data.msj['0']+'</p>', function () {            
+            // me.cerrarModal();                       
           });
+        }
+        else {
+          alertify
+          .alert( "Alerta", '<br><p>'+response.data.msj['0']+'</p>', function () {            
+          });
+        }
+        
       })
       .catch(function (error) {
         console.log(error);
         alertify
         .alert( referencias.version, "Error de conexión al intentar registrarse", function () {            
-          me.cerrarModal();                       
+          // me.cerrarModal();                       
         });
 
       })
@@ -85,33 +78,6 @@ class Registro extends Component {
 
       });
   }
-
-  enviarDatosForm = (datos) => {
-    me = this;
-    console.log("data desde enviarDatosForm", datos);
-
-    console.log(referencias.setRegistro);
-
-      let url = referencias.registroUsuario;
-    console.log("referencia",url);
-    
-     this.setState({ loading: true }, () => {
-      axios.post(referencias.registroUsuario, datos)    
-        .then(function (response) {
-          // console.log("response.data",response.data);
-           me.setState({loading: false});   
-               mostrarAlerta( "Alerta", response.data['mensaje']);
-        })
-        .catch(function (error) {
-          console.log("Este es el error en envío",error);       
-        })
-        .finally(function () {
-          console.log("Transacción finalizada");        
-        });
-      });
-
-}
-
   render() {
     const  loading  = this.state.loading;
     return (
@@ -166,7 +132,7 @@ class Registro extends Component {
             </div> <br />
 
             <div className="row">
-              <div className="col-md-6 center">
+              <div className="col-md-12">
                 <button className="btn btn-ingreso float-right"> 
                   Enviar {loading ? <LoadingSpinner key="loading" elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner  key="loading" elementClass={"d-none"} /> } 
                 </button>

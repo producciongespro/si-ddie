@@ -10,6 +10,7 @@ import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion';
 import Respuestas  from './componentes/Respuestas';
 import Menu from './componentes/Menu';
+import PantallaFondo from './componentes/PantallaFondo';
 
 //Librerias
 import alertify from 'alertifyjs';
@@ -25,7 +26,7 @@ import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 import referenciasJson from './data/referencias.json';
 import paginas from './data/paginas.json';
-import { cpus } from 'os';
+// import { cpus } from 'os';
 
 const referencias = referenciasJson[0];
 console.log("ruta de imagen", referencias.img);
@@ -36,20 +37,21 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      componenteActual : <Consultas/>, 
+      //componenteActual : <Consultas/>, 
+      componenteActual : <PantallaFondo/>, 
       colUno : "col-sm-3",
       colDos: "col-sm-9",
       hideNav: window.innerWidth <= 760,
 
       isAccesado: false,
       isModalActivo: true,
-      isBotoneraDerechaActiva: false,
-      isMenuGeneralActivo: false,
-      modalComponent: "",
-      typeContent: "",
-      ajaxOcupado: false
+      // modalComponent: ""
+      modalComponent: <Ingreso handlerLogin={this.handlerLogin}/>
+      // ajaxOcupado: false
     }
   };
+  //propiedades de la clase:
+  correoUsuraio="";
 
 componentDidMount() {
     if (!this.state.hideNav) {
@@ -59,10 +61,8 @@ componentDidMount() {
     window.addEventListener("resize", this.resize.bind(this));
     this.resize();
     this.setState({
-      isModalActivo: true,
-      // typeContent: "ingreso",
-      isMenuGeneralActivo: false,
-      modalComponent: <Ingreso handlerLogin={this.handlerLogin} handlerCerrarModal={this.handlerCerrarModal}/>
+      // isModalActivo: true,
+      // modalComponent: <Ingreso handlerLogin={this.handlerLogin}/>
     });
 }
 
@@ -79,24 +79,28 @@ resize() {
   }
 }
 
-//modal
-handlerMostrarModal = (e) => {
-  e.preventDefault();
-  const tipo = e.target.dataset.tipo;
-  console.log("TIPO ", tipo);
-  this.setState({
-    isModalActivo: true,
-    typeContent: tipo,
-    isMenuGeneralActivo: false,
-    modalComponent: <Ingreso handlerLogin={this.handlerLogin} handlerCerrarModal={this.handlerCerrarModal}/>
-  });
+handlerCerrarSesion = () => {
+  alertify.confirm("SALIR", "¿Realmente desea salir?",
+    () => {
+      this.setState({
+        isAccesado: false,
+        isMenuGeneralActivo: false,
+        isModalActivo: true,
+        componenteActual : <PantallaFondo/>
+      })
+    },
+    function () {
+      console.log("accion cancelada");
+    });
+
+
 }
 
 handlerCerrarModal = () => {
   this.setState({
     isModalActivo: false
   }, () => {
-    console.log("Estado del modal activo", this.state.isModalActivo);
+    // console.log("Estado del modal activo", this.state.isModalActivo);
   });
 }
 
@@ -111,18 +115,13 @@ handlerCerrarModal = () => {
 //fin 
 
   //Entrar en session
-  handlerLogin = (user, password) => {
-       console.log("user desde app", user);
-       console.log("pass desde app", password);   
+  // handlerLogin = (user, password) => {
+    handlerLogin = (data) => {
     const me = this;
-    let data = {
-      "correo": user,
-      "clave": password
-    }
 
-    console.log("DAta", data ); 
+    console.log("DAta en LOGIN", data ); 
     console.log("**ref", referencias.login);
-    this.setState({ ajaxOcupado: true });
+    // this.setState({ ajaxOcupado: true });
 
     axios.post(referencias.login, data)
       .then(function (response) {
@@ -131,12 +130,15 @@ handlerCerrarModal = () => {
         console.log("Mensaje error", mensajeError);
         
         if (response.data.error === false) {          
-          //Almacenamiento en session el objeto usuario          
-          sessionStorage.setItem("usuario",  JSON.stringify(response.data)  );                             
-          me.setState({
-            isAccesado: true
-          })          
-
+          //Almacenamiento en session el objeto usuario   
+          console.log("response data error es false");
+                 
+          sessionStorage.setItem("usuario",  JSON.stringify(response.data.correo)  );                             
+          //Asgina valores en caso de que el login fue exitoso.
+          me.correoUsuraio= response.data.correo;
+          me.setState({isAccesado: true});
+          me.setState({ isModalActivo:false  });
+          me.setState({componenteActual : <Consultas/> });
         } else {
           console.log("Error IF acceso usuario");
           alertify
@@ -150,9 +152,9 @@ handlerCerrarModal = () => {
         console.log(error);
       })
       .finally(() => {
-        me.setState({
-          ajaxOcupado: false
-        })
+        // me.setState({
+        //   ajaxOcupado: false
+        // })
       });
 
   }
@@ -196,37 +198,39 @@ handlerCerrarModal = () => {
     return ( 
       <div className="App">
       {
+       this.state.isAccesado ?
         <React.Fragment> 
-
-         <div className="div-encabezado">
-           <Menu />
-           <div className="jumbotron jumbotron-fluid ">
-             <h1 className="h1text" >SI-DDIE</h1>
-             <hr className="my-4"></hr>
-           </div>
-         </div>
-         <div className="row">
-           <div id="col1" className={"col-botonera "+col1}>
-           {
-               paginas.map((item, i) => (              
-                   <Boton key={i} handlerCargarVistas= {this.handlerCargarVistas} id={item.id} etiqueta={item.etiqueta} activo={componenteActivo} />                    
-               ))               
-             
-           }
-           </div>
-           <div id="col2" className={"visor "+col2}>
-               {this.state.componenteActual}
-           </div>
-         </div>
+      
+          <div className="div-encabezado">
+            <Menu usuario={this.correoUsuraio}   handlerCerrarSesion ={this.handlerCerrarSesion}/>
+            <div className="jumbotron jumbotron-fluid ">
+              <h1 className="h1text" >SI-DDIE</h1>
+              <hr className="my-4"></hr>
+            </div>
+          </div>
+          <div className="row">
+            <div id="col1" className={"col-botonera "+col1}>
+            {
+                paginas.map((item, i) => (              
+                    <Boton key={i} handlerCargarVistas= {this.handlerCargarVistas} id={item.id} etiqueta={item.etiqueta} activo={componenteActivo} />                    
+                ))               
+              
+            }
+            </div>
+            <div id="col2" className={"visor "+col2}>
+                {this.state.componenteActual}
+            </div>
+          </div>
+        </React.Fragment>
+      :
+        <React.Fragment>
          {/* {this.componenteContenedor(hideNav, componenteActivo)} */}
-       <div className="contModal row">
-                <div className="col-12">
-                  {console.log("this.state.isModalActivo",this.state.isModalActivo)}
-                  {console.log("this.state.modalComponent", this.state.modalComponent)}
-                  {this.state.isModalActivo && this.state.modalComponent}
-                </div>
-              </div>
-     </React.Fragment>
+        <div className="contModal row">
+          <div className="col-12">
+            {this.state.isModalActivo && this.state.modalComponent}
+          </div>
+        </div>
+        </React.Fragment>
       }
     </div>
      );

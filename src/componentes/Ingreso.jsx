@@ -36,9 +36,9 @@ class Ingreso extends Component {
 
             <div className="col-12">
               <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} />
-              <button onClick={this.props.handlerCerrarModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+              {/* <button onClick={this.props.handlerCerrarModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-              </button>
+              </button> */}
             </div>
             <div className={classModalBody} >
               <Tabs activeKey={this.state.key} onSelect={key => this.setState({ key })} transition={false} id="noanim-tab">
@@ -46,7 +46,8 @@ class Ingreso extends Component {
                   <Logueo handlerLogin={this.props.handlerLogin} />
                 </Tab>
                 <Tab className="" eventKey="inscribir" title="Inscribirse">
-                  <Registro />
+                  {/* <Registro handlerCerrarModal={this.props.handlerCerrarModal}/> */}
+                  <Registro/>
                 </Tab>
                 <Tab className="" eventKey="recuperar" title="Recuperar contraseña">
                   <Recuperar />

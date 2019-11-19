@@ -29,6 +29,11 @@ body
 
 .modal-content {
   background: url('../images/fondo_2.jpg') repeat center center;
+  -webkit-filter: grayscale(50%); 
+  -moz-filter: grayscale(50%);
+  -ms-filter: grayscale(50%);
+  -o-filter: grayscale(50%);
+  filter: grayscale(50%);	
   /* https://all-free-download.com/free-vector/download/abstract_color_wave_background_6817416_download.html */
 }
 .modal-backdrop.show {
@@ -119,8 +124,6 @@ body
 }
 
 .navbar-expand-lg .navbar-nav {
-  font-family: "myfontJun"!important;
-  text-transform: uppercase;
   color:#e74803;
   text-shadow: 2px 2px 2px  #999;
 }
@@ -159,19 +162,14 @@ body
 }
 
 .dropdown-menu {
-  /* position: absolute; */
-  /* top: 100%; */
-  left: -5rem!important;
-  /* z-index: 1000; */
-  /* display: none; */
-  /* float: left; */
-  /* min-width: 10rem; */
-  padding: .5rem 0!important;
-  margin: -0.2rem 0 0!important;
-  /* font-size: 1rem; */
-  /* color: #212529; */
-  /* text-align: left; */
-  /* list-style: none; */
+  /* left: -5rem!important; */
+  /* padding: .5rem 0!important; */
+  /* margin: -0.2rem 0 0!important; */
+
+}
+
+.dropdown-item {
+  /* white-space: normal!important; */
 }
 .col-botonera {
   background-color: #e6e6fab5;
@@ -291,29 +289,28 @@ body
 }
 
 .alertify .ajs-dialog {
-  background: linear-gradient(to top,  #d7d3d3 0%,#a6a3a2 100%);  
+  background-color: #f3f3f3;
 }
 
 .alertify .ajs-header {
-  color:  black;
+  color: #344555;
   font-weight: 600;
   background-color: transparent;
   font-family: "myfontJun"!important;
   text-transform: uppercase;
-  text-shadow: 2px 2px 2px black;
+  text-shadow: 2px 2px 2px #bfbdbd;
   font-size: 25px;
+  border-bottom: 10px double #334e59;
 }
-.alertify .ajs-body {
-  /* background-color: white; */
-}
+
 .alertify .ajs-footer {
-  /* background: linear-gradient(to bottom,  #d7d3d3 0%,#a6a3a2 100%);
-  border-top: 4px solid #9aa5ab; */
   background-color: transparent;
+  border-top:  10px double #334e59;
 
 }
-.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
-  color: #fa4d02;
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok, 
+.ajs-button.ajs-cancel {
+  color: #344555;
   font-family: "myfontJun"!important;
   text-transform: uppercase;
   text-shadow: 2px 2px 2px black;
@@ -324,8 +321,9 @@ body
   cursor: pointer;
 }
 
-.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover {
-  background-color:#5e5959;
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover,
+.ajs-button.ajs-cancel:hover  {
+  background-color:#478898;
   color: white;
   font-weight: 400;
   font-family: "myfontJun"!important;
@@ -338,11 +336,11 @@ body
 }
 
 .alertify .ajs-body {
-  font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
   text-shadow: 1px 1px 1px rgba(0,0,0,.4);
   font-size: 25px;
   text-align: center;
+  color:black;
+  font-family: "myfontPoe"!important;
 }
 
 @media only screen and (max-width: 992px) 

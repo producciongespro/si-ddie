@@ -1,0 +1,13 @@
+[
+    {
+       "version" : "1.0",
+       "img"  : "http://localhost/projects/si-ddie/server_assets/si-ddie/img/",
+       "servicios" : "http://localhost/si-ddie/webservices/si-ddie/",   
+       "registroUsuario" : "http://localhost/projects/si-ddie/webservices/si-ddie/registro.php",                                                            
+       "consultageneral": "http://localhost/projects/si-ddie/webservices/si-ddie/consultas_generales.php",
+       "consultaespecifica": "http://localhost/projects/si-ddie/webservices/si-ddie/consultas_especificas.php",
+       "guardaconsulta" : "http://localhost/projects/si-ddie/webservices/si-ddie/registro_consulta.php",
+       "actualizaconsulta" : "http://localhost/projects/si-ddie/webservices/si-ddie/consulta_generico.php",
+       "login" : "http://localhost/projects/si-ddie/webservices/si-ddie/login.php"
+    }
+]

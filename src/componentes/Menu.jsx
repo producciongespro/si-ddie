@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faCog,faHome,faUserAlt,faOutdent, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import { faCog,faHome,faUserAlt,faAddressCard, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class  Menu extends Component {
@@ -13,6 +13,9 @@ class  Menu extends Component {
     }
     render() { 
       // const usuario = <FontAwesomeIcon icon={faAlt} size="2x" />;
+      //const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+     //nsole.log("datos USUARIO", usuario);
+      
         return (
           <React.Fragment>
             <div className="container-fluid">            
@@ -25,14 +28,14 @@ class  Menu extends Component {
               </div>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                  <NavDropdown title={ <FontAwesomeIcon icon={faCog} />} id="basic-nav-dropdown">
-                      {/* <NavDropdown.Item href="#action/3.2"><FontAwesomeIcon icon={faHome} size="1x" /> Inicio</NavDropdown.Item> */}
-                    <NavDropdown.Item href="#action/3.1"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario:</NavDropdown.Item>
+                <Nav className="dropdown dropleft float-right">
+                  <NavDropdown title="Opciones" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/1.1"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario: {this.props.usuario}</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/1.2"><FontAwesomeIcon icon={faAddressCard} size="1x" /> Acerca de</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4"><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/1.3" onClick = {this.props.handlerCerrarSesion} ><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="#">Acerca de</Nav.Link>
+                  {/* <Nav.Link href="#">Acerca de</Nav.Link> */}
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
