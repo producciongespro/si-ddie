@@ -80,7 +80,7 @@ resize() {
 }
 
 handlerCerrarSesion = () => {
-  alertify.confirm("SALIR", "¿Realmente desea salir?",
+  alertify.confirm("", "¿Realmente desea salir?",
     () => {
       this.setState({
         isAccesado: false,
@@ -142,7 +142,7 @@ handlerCerrarModal = () => {
         } else {
           console.log("Error IF acceso usuario");
           alertify
-            .alert(referencias.version, mensajeError, function () {
+            .alert("", mensajeError, function () {
               // document.getElementById("idUser").value = "";
               // document.getElementById("txtPwd").value = "";
             });

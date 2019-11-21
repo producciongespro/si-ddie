@@ -55,13 +55,13 @@ class Registro extends Component {
         
         if (response.data.error) {
           alertify
-          .alert( "Error", '<br><p>'+response.data.msj['0']+'</p>', function () {            
+          .alert( "", '<br><p>'+response.data.msj['0']+'</p>', function () {            
             // me.cerrarModal();                       
           });
         }
         else {
           alertify
-          .alert( "Alerta", '<br><p>'+response.data.msj['0']+'</p>', function () {            
+          .alert( "", '<br><p>'+response.data.msj['0']+'</p>', function () {            
           });
         }
         
