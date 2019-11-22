@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faCog,faHome,faUserAlt,faAddressCard, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {faUserAlt,faAddressCard, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class  Menu extends Component {
@@ -12,9 +12,6 @@ class  Menu extends Component {
         this.state = {  }
     }
     render() { 
-      // const usuario = <FontAwesomeIcon icon={faAlt} size="2x" />;
-      //const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-     //nsole.log("datos USUARIO", usuario);
       
         return (
           <React.Fragment>
@@ -35,7 +32,6 @@ class  Menu extends Component {
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#action/1.3" onClick = {this.props.handlerCerrarSesion} ><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
                   </NavDropdown>
-                  {/* <Nav.Link href="#">Acerca de</Nav.Link> */}
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

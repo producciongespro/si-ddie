@@ -161,16 +161,6 @@ body
   text-shadow: 2px 2px 2px black;
 }
 
-.dropdown-menu {
-  /* left: -5rem!important; */
-  /* padding: .5rem 0!important; */
-  /* margin: -0.2rem 0 0!important; */
-
-}
-
-.dropdown-item {
-  /* white-space: normal!important; */
-}
 .col-botonera {
   background-color: #e6e6fab5;
   background: url('../images/noisy2.png') repeat center center;
