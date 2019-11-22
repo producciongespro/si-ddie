@@ -13,6 +13,23 @@
   src: url("../fonts/poetsen_one/PoetsenOne-Regular.ttf");
 }
 
+/* figuras geométricas */
+.triangle-down {
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-top: 50px solid #5660F1;
+    border-radius: 3px;
+}
+.left-triangle {
+  width: 0;
+  height: 0;
+  border-right: 100px solid blue;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+}
+
 body
 {
   /* background-color: black!important; */
@@ -279,49 +296,40 @@ body
 }
 
 .alertify .ajs-dialog {
-  background-color: #f3f3f3;
+  background-color: white;
 }
 
 .alertify .ajs-header {
   color: #344555;
   font-weight: 600;
-  background-color: transparent;
   font-family: "myfontJun"!important;
   text-transform: uppercase;
   text-shadow: 2px 2px 2px #bfbdbd;
   font-size: 25px;
-  border-bottom: 10px double #334e59;
 }
 
 .alertify .ajs-footer {
   background-color: transparent;
-  border-top:  10px double #334e59;
-
+  padding: 20px!important;
 }
 .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok, 
 .ajs-button.ajs-cancel {
-  color: #344555;
-  font-family: "myfontJun"!important;
-  text-transform: uppercase;
-  text-shadow: 2px 2px 2px black;
-  font-size: 25px;
-  border-radius: 5px;
-  border: 5px double #6e7173;
-  background-color: white;
+  color: white;
+  font-size: 20px;
+  border-radius: 50px;
+  background-color: #2a90ca;
   cursor: pointer;
+  min-width: 80%!important; 
+}
+.alertify .ajs-footer .ajs-buttons.ajs-primary {
+  text-align: center!important;
 }
 
 .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover,
 .ajs-button.ajs-cancel:hover  {
-  background-color:#478898;
-  color: white;
-  font-weight: 400;
-  font-family: "myfontJun"!important;
+  background-color:#4b9ece;
+  font-weight: bolder;
   text-transform: uppercase;
-  text-shadow: 2px 2px 2px black;
-  font-size: 25px;
-  border-radius: 5px;
-  border: 5px double white;
   cursor: pointer;
 }
 
