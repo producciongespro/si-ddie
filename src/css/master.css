@@ -166,6 +166,16 @@ body
 	background-size: cover;
   color: white; 
 }
+
+.div-acercade {
+  /* background: url('../images/tecnologia.jpg') no-repeat center center;
+  background-size: cover; */
+  min-height: 201px;
+  border-radius: 10px!important;
+  opacity: 0.6; 
+  	
+filter: grayscale(100%);
+}
 .container .jumbotron, .container-fluid .jumbotron {
   border-radius: 0px;
 }

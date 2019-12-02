@@ -28,7 +28,7 @@ class  Menu extends Component {
                 <Nav className="dropdown dropleft float-right">
                   <NavDropdown title="Opciones" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/1.1"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario: {this.props.usuario}</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/1.2"><FontAwesomeIcon icon={faAddressCard} size="1x" /> Acerca de</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/1.2" onClick = {this.props.handlerAcercaDe}><FontAwesomeIcon icon={faAddressCard} size="1x" /> Acerca de</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#action/1.3" onClick = {this.props.handlerCerrarSesion} ><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
                   </NavDropdown>

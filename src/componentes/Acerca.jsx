@@ -1,12 +1,29 @@
-import React from 'react';
-const Acerca = () => {
-    return ( 
+import React, { Component } from 'react';
+
+class Acerca extends Component {
+    constructor(props) {
+      super(props);
+           // If you want to use the reset state function, you need to have a reference to the ValidationForm component
+          //If your React < 16.3, check https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
+  
+      this.state = { 
+      };
+    }
+    render() { 
+        return (
         <React.Fragment>
-            <h3>Acerca de</h3>
+            <div className="jumbotron jumbotron-fluid div-acercade">              
+            <h1 className="header-1">Acerca de</h1>
+            </div>            
             <hr/>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit suscipit consequuntur aut id cum doloremque, odio incidunt. Saepe sequi exercitationem quo dolore earum repellendus quia voluptatibus velit obcaecati. Quasi, quidem?
+            <p>Ministerio de Educación Pública de Costa Rica <br />
+                Dirección de Recursos Tecnológicos <br />
+                Departamento de Gestión y Producción GESPRO <br />
+                Desarrolladores: Luis Chacón, Óscar Pérez, Patricia Hernández, Ana Araya <br />
+                Derechos reservados ©2019 </p>
         </React.Fragment>
      );
+};
 }
  
 export default Acerca;

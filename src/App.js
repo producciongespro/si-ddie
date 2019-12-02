@@ -9,6 +9,7 @@ import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion';
 import Respuestas  from './componentes/Respuestas';
+import Acerca  from './componentes/Acerca';
 import Menu from './componentes/Menu';
 import PantallaFondo from './componentes/PantallaFondo';
 
@@ -160,6 +161,12 @@ handlerCerrarModal = () => {
   }
 
 
+handlerAcercaDe = (e) => { 
+  this.setState({componenteActual: <Acerca/>});
+  console.log("Acerca de");
+  
+}
+
  handlerCargarVistas = (e) => {
   //  console.log("e.target.id",e.target.id);
    
@@ -202,7 +209,7 @@ handlerCerrarModal = () => {
         <React.Fragment> 
       
           <div className="div-encabezado">
-            <Menu usuario={this.correoUsuraio}   handlerCerrarSesion ={this.handlerCerrarSesion}/>
+            <Menu usuario={this.correoUsuraio}   handlerCerrarSesion ={this.handlerCerrarSesion}  handlerAcercaDe ={this.handlerAcercaDe}/>
             <div className="jumbotron jumbotron-fluid ">
               <h1 className="h1text" >SI-DDIE</h1>
               <hr className="my-4"></hr>

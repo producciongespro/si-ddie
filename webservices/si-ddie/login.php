@@ -30,7 +30,7 @@ $mensaje = array();
             if (   (password_verify($pas, $encriptado_db)   )    )
             {
                 $_SESSION['usuario'] = $datos['correo'];
-                /
+                
                 // echo json_encode(array('error'=>false,'correo'=>$datos['correo'], 'nombre'=>$datos['nombre'],  'apellido1'=>$datos['apellido1'],  'apellido2'=>$datos['apellido2'],'idUsuario'=>$datos['idUsuario'], 'tipoUsuario'=>$datos['tipoUsuario'] ) );
                 echo json_encode(array('error'=>false,'correo'=>$datos['correo'], 'tipoUsuario'=>$datos['tipoUsuario'] ) );
               }
