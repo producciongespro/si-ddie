@@ -167,15 +167,6 @@ body
   color: white; 
 }
 
-.div-acercade {
-  /* background: url('../images/tecnologia.jpg') no-repeat center center;
-  background-size: cover; */
-  min-height: 201px;
-  border-radius: 10px!important;
-  opacity: 0.6; 
-  	
-filter: grayscale(100%);
-}
 .container .jumbotron, .container-fluid .jumbotron {
   border-radius: 0px;
 }
@@ -350,6 +341,30 @@ filter: grayscale(100%);
   color:black;
   font-family: "myfontPoe"!important;
 }
+
+
+#calendarEmbedWrapper {
+  width: 80%;
+  min-height: 300px;
+  margin-left: 10%;
+  position: relative;
+}
+#calendarEmbed,#calendarEmbedBlocker {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+#calendarEmbedBlocker {
+  background-color: #e15151;
+}
+#calendarEmbedBlocker p {
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 19%;
+  text-align: center;
+  font-size: x-large;
+}
+
 
 @media only screen and (max-width: 992px) 
 {

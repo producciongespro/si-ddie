@@ -9,6 +9,7 @@ import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion';
 import Respuestas  from './componentes/Respuestas';
+import Calendario  from './componentes/Calendario/Calendario';
 import Acerca  from './componentes/Acerca';
 import Menu from './componentes/Menu';
 import PantallaFondo from './componentes/PantallaFondo';
@@ -190,6 +191,9 @@ handlerAcercaDe = (e) => {
     case "bitacora":
         this.setState({componenteActual: <Bitacora />});
         break;
+    case "calendario":
+        this.setState({componenteActual: <Calendario />});
+    break;
      default:
        break;
    }

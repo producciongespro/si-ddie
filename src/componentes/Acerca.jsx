@@ -12,7 +12,7 @@ class Acerca extends Component {
     render() { 
         return (
         <React.Fragment>
-            <div className="jumbotron jumbotron-fluid div-acercade">              
+            <div className="jumbotron jumbotron-fluid">              
             <h1 className="header-1">Acerca de</h1>
             </div>            
             <hr/>
