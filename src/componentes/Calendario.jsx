@@ -82,7 +82,8 @@ class Calendario extends Component {
        <h1 className="header-1">Calendario</h1>
         <div id="calendarEmbedWrapper">
             <Iframe id="calendarEmbed" 
-                        url="https://calendar.google.com/calendar/embed?src=ddie.mep%40gmail.com&ctz=America%2FCosta_Rica"
+                        // url="https://calendar.google.com/calendar/embed?src=ddie.mep%40gmail.com&ctz=America%2FCosta_Rica"
+                        url= "https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FCosta_Rica&amp"
             />
             {/* <div id="calendarEmbedBlocker">
                 <p>Por favor introduzca el correo electrónico y presione Enviar</p>

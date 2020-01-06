@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-// import { render } from "react-dom";
-import events from "./events";
-import BigCalendar from "react-big-calendar";
+import { render } from "react-dom";
+import events from "./componentes/events";
+import * as BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -10,7 +10,7 @@ BigCalendar.momentLocalizer(moment);
 
 const allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
 
-class Llamacalendario extends Component {
+class App extends Component {
   state = {
     view: "day",
     date: new Date(2015, 3, 12),
@@ -45,6 +45,7 @@ class Llamacalendario extends Component {
       </div>
     );
   }
+  
 }
-
-export default Llamacalendario;
+export default App;
+render(<App />, document.getElementById("root"));

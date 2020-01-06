@@ -61,6 +61,28 @@ body
   width: 75px!important;
 }
 
+#calendarEmbedWrapper {
+  width: 80%;
+  min-height: 400px;
+  margin-left: 10%;
+  position: relative;
+}
+#calendarEmbed,#calendarEmbedBlocker {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+#calendarEmbedBlocker {
+  background-color: #e15151;
+}
+#calendarEmbedBlocker p {
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 19%;
+  text-align: center;
+  font-size: x-large;
+}
+
 .nav-tabs {
   border-bottom: none!important;
 }
@@ -341,30 +363,6 @@ body
   color:black;
   font-family: "myfontPoe"!important;
 }
-
-
-#calendarEmbedWrapper {
-  width: 80%;
-  min-height: 300px;
-  margin-left: 10%;
-  position: relative;
-}
-#calendarEmbed,#calendarEmbedBlocker {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-#calendarEmbedBlocker {
-  background-color: #e15151;
-}
-#calendarEmbedBlocker p {
-  width: 50%;
-  margin-left: 25%;
-  margin-top: 19%;
-  text-align: center;
-  font-size: x-large;
-}
-
 
 @media only screen and (max-width: 992px) 
 {
