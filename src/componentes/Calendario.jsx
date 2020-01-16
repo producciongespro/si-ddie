@@ -50,44 +50,13 @@ class Calendario extends Component {
   }
 
     render() { 
-    // const  loading  = this.state.loading;
-    // const  classSuccess  = this.state.classSuccess;
     return ( 
       <React.Fragment>
-        {/* <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
-            ref={this.formRef}
-            immediate={this.state.immediate}
-            setFocusOnError={this.state.setFocusOnError}
-            defaultErrorMessage = {
-              { required : "Este campo es requerido",
-              min : "El número debe ser mayor a 0",
-              max : "El número debe ser menor igual a 20"}
-            }
-          >
-          <h1 className="header-1">Calendario</h1>
-          <hr/>
-          <div className="row">
-            <div className="col-12">
-                <TextInput key="contraseña" type="email" placeholder="user@gmail.com" className="form-control input-ingreso" id="email" name="email" required />
-            </div>
-          </div>
-          <div className="row">
-              <div className="col-md-12">
-                <button className="btn btn-ingreso float-right"> 
-                  Enviar {loading ? <LoadingSpinner key="loading" elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner  key="loading" elementClass={"d-none"} /> } 
-                </button>
-             </div>
-          </div> 
-        </ValidationForm>    */}
        <h1 className="header-1">Calendario</h1>
         <div id="calendarEmbedWrapper">
             <Iframe id="calendarEmbed" 
-                        // url="https://calendar.google.com/calendar/embed?src=ddie.mep%40gmail.com&ctz=America%2FCosta_Rica"
-                        url= "https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FCosta_Rica&amp"
+               url= 'https://calendar.google.com/calendar/embed?src=ddie.mep%40gmail.com&ctz=America%2FCosta_Rica" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"'
             />
-            {/* <div id="calendarEmbedBlocker">
-                <p>Por favor introduzca el correo electrónico y presione Enviar</p>
-            </div> */}
         </div>
       </React.Fragment>
     )

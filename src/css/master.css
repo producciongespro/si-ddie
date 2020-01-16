@@ -45,16 +45,20 @@ body
 }
 
 .modal-content {
-  background: url('../images/fondo_2.jpg') repeat center center;
-  -webkit-filter: grayscale(50%); 
+  /* background: url('../images/bg2.jpg') repeat center center;
+  background-size: contain; */
+  /* -webkit-filter: grayscale(50%); 
   -moz-filter: grayscale(50%);
   -ms-filter: grayscale(50%);
   -o-filter: grayscale(50%);
-  filter: grayscale(50%);	
+  filter: grayscale(50%);	 */
   /* https://all-free-download.com/free-vector/download/abstract_color_wave_background_6817416_download.html */
+  background-color: #0D67B3!important;
 }
 .modal-backdrop.show {
-  opacity: 1!important;
+  opacity: 9!important;
+  /* background-color: white; */
+  background: url('../images/patterns-css/wavy-dots.png') repeat center center;
 }
 
 .logoMEP {
@@ -122,10 +126,14 @@ body
   margin-bottom: 1.5rem !important;
 }
 .input-ingreso {
-  border: none!important;
-  border-bottom: 1px solid white!important;
-  color: white!important;
-  font-size: 1.1rem!important;
+  border: none !important;
+  border-bottom-color: currentcolor;
+  border-bottom-style: none;
+  border-bottom-width: medium;
+  border-bottom: 3px solid #f9f3f3 !important;
+  color: white !important;
+  font-size: 1.1rem !important;
+  /* background-color: white; */
 }
 
 #txtUsuario:focus,
@@ -212,7 +220,7 @@ body
 
 /* General Buttons */
 .btn-main, btn-main:hover {
-  width: 130px;
+  /* width: 130px; */
   height: 40px;
   /* background: linear-gradient(to bottom,#de8801  0%, #b99164 100%);  */
   background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); 

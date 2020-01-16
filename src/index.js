@@ -5,6 +5,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
+// import "./css/master.css";
+// import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
