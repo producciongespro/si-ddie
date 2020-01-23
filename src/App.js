@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 //componentes
 import Ingreso from './componentes/Ingreso';
-import Boton from './componentes/Boton';
+import Botones from './componentes/Botones';
 import Consultas from './componentes/Consultas';
 import Basededatos  from './componentes/Basededatos';
 import Bitacora from './componentes/Bitacora';
@@ -28,34 +28,29 @@ import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 import referenciasJson from './data/referencias.json';
 import paginas from './data/paginas.json';
-// import { cpus } from 'os';
 
 const referencias = referenciasJson[0];
-console.log("ruta de imagen", referencias.img);
-console.log("version", referencias.version);
 
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      //componenteActual : <Consultas/>, 
       componenteActual : <PantallaFondo/>, 
+      componenteActivo: 'consultas',
       colUno : "col-sm-3",
       colDos: "col-sm-9",
       hideNav: window.innerWidth <= 760,
 
       isAccesado: false,
       isModalActivo: true,
-      // modalComponent: ""
       modalComponent: <Ingreso handlerLogin={this.handlerLogin}/>
-      // ajaxOcupado: false
     }
   };
   //propiedades de la clase:
-  correoUsuraio="";
+  correoUsuario="";
 
-componentDidMount() {
+componentDidMount() {  
     if (!this.state.hideNav) {
       this.setState({colUno: "col-sm-5"});
       this.setState({colDos: "col-sm-7"});
@@ -66,11 +61,11 @@ componentDidMount() {
       // isModalActivo: true,
       // modalComponent: <Ingreso handlerLogin={this.handlerLogin}/>
     });
+    
 }
 
 resize() {
   this.setState({hideNav: window.innerWidth <= 760});
-  // console.log("ancho menor de 760?",this.state.hideNav);
   if (this.state.hideNav) {
     this.setState({colUno: "col-sm-5"});
     this.setState({colDos: "col-sm-7"});
@@ -82,7 +77,7 @@ resize() {
 }
 
 handlerCerrarSesion = () => {
-  alertify.confirm("", "¿Realmente desea salir?",
+  alertify.confirm("Aviso", "¿Realmente desea salir?",
     () => {
       this.setState({
         isAccesado: false,
@@ -106,45 +101,34 @@ handlerCerrarModal = () => {
   });
 }
 
-
-// handlerMenuGeneral = () => {
-//   if (this.state.isMenuGeneralActivo) {
-//     this.setState({ isMenuGeneralActivo: false });
-//   } else {
-//     this.setState({ isMenuGeneralActivo: true });
-//   }
-// }
-//fin 
-
   //Entrar en session
-  // handlerLogin = (user, password) => {
     handlerLogin = (data) => {
     const me = this;
 
-    console.log("DAta en LOGIN", data ); 
-    console.log("**ref", referencias.login);
-    // this.setState({ ajaxOcupado: true });
-
     axios.post(referencias.login, data)
       .then(function (response) {
-        console.log("response.data",response.data);
         const mensajeError = response.data.error_msg;
-        console.log("Mensaje error", mensajeError);
-        
-        if (response.data.error === false) {          
-          //Almacenamiento en session el objeto usuario   
-          console.log("response data error es false");
-                 
-          sessionStorage.setItem("usuario",  JSON.stringify(response.data.correo)  );                             
-          //Asgina valores en caso de que el login fue exitoso.
-          me.correoUsuraio= response.data.correo;
+        // console.log("response",response/*  */)
+        if (response.data.error === false) {    
+
+          //Almacenamiento en session el objeto usuario                    
+          sessionStorage.setItem("correo",  JSON.stringify(response.data.correo)  );                             
+          sessionStorage.setItem("tipo_usuario",  JSON.stringify(response.data.tipoUsuario)  );                             
+          sessionStorage.setItem("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
+          //Asigna valores en caso de que el login fue exitoso.
+          console.log("correo",  JSON.stringify(response.data.correo)  );                             
+          console.log("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
+          console.log("tipo_usuario",  JSON.stringify(response.data.tipoidUsuario)  );                             
+          
+          me.correoUsuario= response.data.correo;
           me.setState({isAccesado: true});
           me.setState({ isModalActivo:false  });
           me.setState({componenteActual : <Consultas/> });
+          me.setState({componenteActivo : 'consultas' });
         } else {
           console.log("Error IF acceso usuario");
           alertify
-            .alert("", mensajeError, function () {
+            .alert("Aviso", mensajeError, function () {
               // document.getElementById("idUser").value = "";
               // document.getElementById("txtPwd").value = "";
             });
@@ -164,35 +148,39 @@ handlerCerrarModal = () => {
 
 handlerAcercaDe = (e) => { 
   this.setState({componenteActual: <Acerca/>});
-  console.log("Acerca de");
-  
+  this.setState({componenteActivo: 'acerca'});  
 }
 
- handlerCargarVistas = (e) => {
-  //  console.log("e.target.id",e.target.id);
-   
+ handlerCargarVistas = (e) => {   
    const opcion = e.target.id;
    switch (opcion) {
      case "consultas":
        this.setState({componenteActual: <Consultas/>});
+       this.setState({componenteActivo: 'consultas'});  
        break;
     case "respuestas":
       this.setState({componenteActual: <Respuestas/>});
+      this.setState({componenteActivo: 'respuestas'});  
       break;
     case "basedeDatos":
       this.setState({componenteActual: <Basededatos />});
+      this.setState({componenteActivo: 'basedeDatos'});  
       break;
     case "produccion":
       this.setState({componenteActual: <Produccion />});
+      this.setState({componenteActivo: 'produccion'}); 
       break;
     case "estadisticas":
         this.setState({componenteActual: <Estadisticas />});
+        this.setState({componenteActivo: 'estadisticas'}); 
         break;
     case "bitacora":
         this.setState({componenteActual: <Bitacora />});
+        this.setState({componenteActivo: 'bitacora'}); 
         break;
     case "calendario":
         this.setState({componenteActual: <Calendario />});
+        this.setState({componenteActivo: 'calendario'}); 
     break;
      default:
        break;
@@ -200,10 +188,8 @@ handlerAcercaDe = (e) => {
  }
   
   render() { 
-    const componenteActivo = this.state.componenteActual.type.name;
-    // const hideNav = this.state.componenteActual.hideNav;
-    // const componenteActual = this.state.componenteActual;
-    // console.log("activo", componenteActivo);
+    // const componenteActivo = this.state.componenteActual.type.name;
+    const compActivo = this.state.componenteActivo;
    const col1 = this.state.colUno;
    const col2 = this.state.colDos;
     return ( 
@@ -213,7 +199,7 @@ handlerAcercaDe = (e) => {
         <React.Fragment> 
       
           <div className="div-encabezado">
-            <Menu usuario={this.correoUsuraio}   handlerCerrarSesion ={this.handlerCerrarSesion}  handlerAcercaDe ={this.handlerAcercaDe}/>
+            <Menu usuario={this.correoUsuario}   handlerCerrarSesion ={this.handlerCerrarSesion}  handlerAcercaDe ={this.handlerAcercaDe}/>
             <div className="jumbotron jumbotron-fluid ">
               <h1 className="h1text" >SI-DDIE</h1>
               <hr className="my-4"></hr>
@@ -223,7 +209,7 @@ handlerAcercaDe = (e) => {
             <div id="col1" className={"col-botonera "+col1}>
             {
                 paginas.map((item, i) => (              
-                    <Boton key={i} handlerCargarVistas= {this.handlerCargarVistas} id={item.id} etiqueta={item.etiqueta} activo={componenteActivo} />                    
+                    <Botones key={i} handlerCargarVistas= {this.handlerCargarVistas} id={item.id} etiqueta={item.etiqueta} activo={compActivo} />                    
                 ))               
               
             }

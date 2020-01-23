@@ -68,18 +68,18 @@ class Produccion extends Component {
       .then(res => {     
         me.setState({ [tabla] : res.data  }); 
         const limite = res.data.length;
-        console.log("LIMITE TABLA", limite);
+        // console.log("LIMITE TABLA", limite);
         
       if (tabla === 'productos_poblacion_meta') {
         for (let index = 0; index < limite; index++) {
           let componente = "poblacion_"+(index+1);
           var obj = {[componente]:false }
           poblacion.push(obj);
-          console.log("I contador", index);
+          // console.log("I contador", index);
         }
-        this.setState({arreglo_poblacion: poblacion}, () => {
-          console.log("STATE arreglo_poblacion", this.state.arreglo_poblacion)
-        })
+        // this.setState({arreglo_poblacion: poblacion}, () => {
+        //   console.log("STATE arreglo_poblacion", this.state.arreglo_poblacion)
+        // })
       }
             // console.log("POBLACION", poblacion);
       }
@@ -203,6 +203,9 @@ class Produccion extends Component {
       case "poblacion_7":
         producto.poblacion_7 = +e.target.checked;
       break;
+      case "poblacion_8":
+        producto.poblacion_8 = +e.target.checked;
+      break;
       default:
        // console.log("Opción fuera de rango");
         break;
@@ -235,7 +238,7 @@ class Produccion extends Component {
                 <option  disabled value="DEFAULT">Seleccione la opción</option>
                 {
                     this.state.tipo_productos.map((item) => (
-                    <option key={item.id} value={item.id}>{item.tipo}   </option>
+                    <option key={"producto"+ item.id}  value={item.id}>{item.tipo}   </option>
                   ))
                 }
               </SelectGroup>

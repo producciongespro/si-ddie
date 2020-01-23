@@ -34,11 +34,9 @@ class Recuperar extends Component {
   }
 
   enviarDatosForm = (datos) => {  
-    // datos= { correo: "ana.araya.salazar@mep.go.cr" };  
-    console.log("data desde enviarDatosForm", datos);
 
-    const me = this;
-    console.log("URL servicio", referencias.recuperarContrasena);
+    // const me = this;
+    // console.log("URL servicio", referencias.recuperarContrasena);
     
     axios.post(referencias.recuperarContrasena, datos)    
       .then(function (response) {

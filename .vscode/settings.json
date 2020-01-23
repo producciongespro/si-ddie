@@ -1,3 +1,14 @@
 {
-  "editor.fontSize": 16
+  "git.ignoreMissingGitWarning": true,
+  "editor.minimap.enabled": false,
+  "emmet.includeLanguages": {
+      "javascript" : "javascriptreact"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "window.zoomLevel": 1,
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "Base16 Atelier Forest",
+  "editor.tabSize": 2,
+  "editor.fontSize": 15,
+  "editor.tabCompletion": "on"
 }

@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
-import referenciasJson from '../data/referencias.json';
+// import referenciasJson from '../data/referencias.json';
 
-const referencias = referenciasJson[0];
-var me;
+// const referencias = referenciasJson[0];
+// var me;
 
 class Logueo extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class Logueo extends Component {
       this.state = {
         loading: false, 
       }
-      me = this;   
+      // me = this;   
     }
 
   handleSubmit = (e, formData, inputs) => {

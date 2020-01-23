@@ -179,23 +179,23 @@ class Basededatos extends Component {
 
             <div className="form-group col-sm-6">
               <label  className="font-len"  htmlFor="descriptor">Descriptor:</label>
-              <TextInput type="number" className="form-control" id="descriptor" name="descriptor" min="1" required onChange={this.obtenerDatosForm} />
+              <TextInput type="number" className="form-control form-basedatos" id="descriptor" name="descriptor" min="1"  placeholder="Digite la cantidad" required onChange={this.obtenerDatosForm} />
             </div>
           </div>
           <div className="row">  
             <div className="form-group col-sm-6">
               <label  className="font-len"  htmlFor="portada">Portada:</label>
-              <TextInput key ="portada" type="number" className="form-control" id="portada" name="portada" min="1" required onChange={this.obtenerDatosForm} />
+              <TextInput key ="portada" type="number" className="form-control form-basedatos" id="portada" name="portada" min="1" placeholder="Digite la cantidad" required onChange={this.obtenerDatosForm} />
             </div>
             <div className="form-group col-sm-6">
               <label  className="font-len"  htmlFor="texto_completo">Texto completo:</label>
-              <TextInput type="number" className="form-control" id="texto_completo" name="texto_completo" min="1" required onChange={this.obtenerDatosForm} />
+              <TextInput type="number" className="form-control form-basedatos" id="texto_completo" name="texto_completo" min="1" placeholder="Digite la cantidad" required onChange={this.obtenerDatosForm} />
             </div>
           </div>
           <div className="row">  
             <div className="form-group col-sm-6">
               <label  className="font-len"  htmlFor="enlace">Enlace:</label>
-              <TextInput type="number" className="form-control" id="enlace" name="enlace" min="1" required onChange={this.obtenerDatosForm} />
+              <TextInput type="number" className="form-control form-basedatos" id="enlace" name="enlace" min="1"  placeholder="Digite la cantidad" required onChange={this.obtenerDatosForm} />
             </div>
             <div className="form-group col-sm-6">
               <label  className="font-len" htmlFor="fecha">Fecha</label>

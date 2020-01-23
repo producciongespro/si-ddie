@@ -13,12 +13,17 @@ import axios from 'axios';
 const referencias = referenciasJson[0];
 // var  me;
 // var registro = {};
+
 class Registro extends Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     this.state = {
       ajaxOcupado: false,
       loading: false, 
+      immediate:true,
+      setFocusOnError:true,
+      clearInputOnReset:false
     }
   }
 
@@ -27,8 +32,7 @@ class Registro extends Component {
    handleSubmit = (e, formData, inputs) => {
   
     e.preventDefault();
-    console.log("FormaData del REGISTRO", formData);
-    this.enviarDatosForm(formData);
+    this.enviarDatosForm(e.target,formData);
   }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
@@ -36,33 +40,39 @@ class Registro extends Component {
   }
 
   resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
-  }
+    let formRef = this.formRef.current;
+    formRef.resetValidationState(this.state.clearInputOnReset);
+}
 
   // cerrarModal = () => {
   //   this.props.handlerCerrarModal();
   // }
-  enviarDatosForm = (datos) => {    
-    console.log("data desde enviarDatosForm", datos);
+
+  enviarDatosForm = (form, datos) => {    
 
     // const me = this;
-    console.log("URL servicio", referencias.registroUsuario );
+    // console.log("URL servicio", referencias.registroUsuario );
     
     axios.post(referencias.registroUsuario, datos)    
       .then(function (response) {
-        console.log("response.data", response.data);
         
         if (response.data.error) {
           alertify
-          .alert( "", '<br><p>'+response.data.msj['0']+'</p>', function () {            
-            // me.cerrarModal();                       
+          .alert( "Error", '<br><p>'+response.data.msj['0']+'</p>', function () {                                  
           });
         }
         else {
           alertify
-          .alert( "", '<br><p>'+response.data.msj['0']+'</p>', function () {            
+          .alert( "Registro", '<br><p>'+response.data.msj['0']+'</p>', function () {            
           });
+          // limpiar el formulario
+          form.reset()
+          form.classList.remove("was-validated");
+          var inputsFormItems =  form.querySelectorAll("input");
+            inputsFormItems.forEach(function(item) {
+                item.classList.remove("is-valid");
+            });
+            //fin limpiar formulario
         }
         
       })

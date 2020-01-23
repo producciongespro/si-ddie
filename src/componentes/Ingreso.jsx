@@ -4,17 +4,19 @@ import Recuperar from './Recuperar';
 import  Registro from './Registro';
 
 import Imagen from './Imagen';
-import referenciasJSON from '../data/referencias.json';
+// import referenciasJSON from '../data/referencias.json';
+
+import logo from '../images/logo_mep.png'
 
 // librerías
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
-const referencias = referenciasJSON[0];
+// const referencias = referenciasJSON[0];
 
 const classModalBody = "modal-body "; // Se agrega "modal-body large cuando carga un pdf"
 const modalAncho = "modal-dialog"; // clase que contiene el tamaño del modal
-var contenidoHTML = "prueba";
+// var contenidoHTML = "prueba";
 
 
 class Ingreso extends Component {
@@ -34,8 +36,9 @@ class Ingreso extends Component {
         <div className={modalAncho} role="document">
           <div className="modal-content animated bounceInDown">
 
-            <div className="col-12">
-              <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} />
+            <div className="col-12 col-logo">
+              {/* <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} /> */}
+              <Imagen classElement="logoMep" origen= {logo} />
               {/* <button onClick={this.props.handlerCerrarModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button> */}
