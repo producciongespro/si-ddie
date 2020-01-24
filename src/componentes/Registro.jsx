@@ -9,10 +9,9 @@ import referenciasJson from '../data/referencias.json';
 import alertify from 'alertifyjs';
 import axios from 'axios';
 
-// var nombre, apellido1, apellido2, clave, confirmaClave, correo, tipoUsuario;
 const referencias = referenciasJson[0];
-// var  me;
-// var registro = {};
+
+var  me;
 
 class Registro extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class Registro extends Component {
       loading: false, 
       immediate:true,
       setFocusOnError:true,
-      clearInputOnReset:false
+      clearInputOnReset:true
     }
   }
 
@@ -40,17 +39,13 @@ class Registro extends Component {
   }
 
   resetForm = () => {
-    let formRef = this.formRef.current;
+    me = this;
+    let formRef = me.formRef.current;    
     formRef.resetValidationState(this.state.clearInputOnReset);
 }
 
-  // cerrarModal = () => {
-  //   this.props.handlerCerrarModal();
-  // }
-
-  enviarDatosForm = (form, datos) => {    
-
-    // const me = this;
+enviarDatosForm = (form, datos) => {    
+     const me = this;
     // console.log("URL servicio", referencias.registroUsuario );
     
     axios.post(referencias.registroUsuario, datos)    
@@ -65,14 +60,7 @@ class Registro extends Component {
           alertify
           .alert( "Registro", '<br><p>'+response.data.msj['0']+'</p>', function () {            
           });
-          // limpiar el formulario
-          form.reset()
-          form.classList.remove("was-validated");
-          var inputsFormItems =  form.querySelectorAll("input");
-            inputsFormItems.forEach(function(item) {
-                item.classList.remove("is-valid");
-            });
-            //fin limpiar formulario
+            me.resetForm();
         }
         
       })

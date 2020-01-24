@@ -4,25 +4,26 @@ import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 // import referenciasJson from '../data/referencias.json';
-
 // const referencias = referenciasJson[0];
-// var me;
+
+var me;
 
 class Logueo extends Component {
-    constructor(props) {
-   
-      // console.log("props", props);
-      
+    constructor(props) {      
       super(props);
       this.state = {
         loading: false, 
+        // validacion
+        immediate:true,
+        setFocusOnError:true,
+        clearInputOnReset:true
       }
-      // me = this;   
     }
 
   handleSubmit = (e, formData, inputs) => {
     e.preventDefault();
     this.props.handlerLogin(formData);
+
   }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
@@ -30,8 +31,9 @@ class Logueo extends Component {
   }
 
   resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
+    me = this;
+    let formRef = me.formRef.current;    
+    formRef.resetValidationState(this.state.clearInputOnReset);
   }
 
     render() {

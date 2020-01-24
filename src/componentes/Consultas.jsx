@@ -2,20 +2,17 @@ import React, { Component } from 'react';
 import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-validation';
 
 import axios from 'axios';
-
 import mostrarAlerta from './Alerta.js'
-
+import LoadingSpinner from './spinner/LoadingSpinner';
 import referenciasJson from '../data/referencias.json';
 
-import LoadingSpinner from './spinner/LoadingSpinner';
-
-
 const referencias = referenciasJson[0];
-var correoUser = sessionStorage.getItem("correo");
+
+// var correoUser = sessionStorage.getItem("correo");
 var idUser = sessionStorage.getItem("id_usuario");
      
-console.log("correoUser", correoUser);
-console.log("idUser", idUser);
+// console.log("correoUser", correoUser);
+// console.log("idUser", idUser);
 
 
 var  me;
@@ -24,35 +21,37 @@ var  me;
 class Consultas extends Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     this.state = { 
       id_intervencion : "",
       id_solicitud : "",
       id_solicitante : "",
       id_respuesta: "",    
-      ttipo_intervencion : [],
-      ttipo_solicitud : [],
-      ttipo_solicitante : [],
-      ttipo_respuesta: [],      
+      tipo_intervencion : [],
+      tipo_solicitud : [],
+      tipo_solicitante : [],
+      tipo_respuesta: [],      
       alertaActiva : false,
       classSuccess : false,
-      loading: false // will be true when ajax request is running
+      loading: false, // will be true when ajax request is running
+      // validacion
+      immediate:true,
+      setFocusOnError:true,
+      clearInputOnReset:true
      }
   }
 
- 
-
   componentDidMount() {
-    this.obtenerJson("ttipo_solicitud");
-    this.obtenerJson("ttipo_solicitante");
-    this.obtenerJson("ttipo_intervencion");
-    this.obtenerJson("ttipo_respuesta");
+    this.obtenerJson("tipo_solicitud");
+    this.obtenerJson("tipo_solicitante");
+    this.obtenerJson("tipo_intervencion");
+    this.obtenerJson("tipo_respuesta");
   }
 
 
   obtenerJson = (tabla) => {
-    var tablaConsulta = tabla.substring(1);
-    console.log("tabla subs", tabla)
-   let url= referencias.consultageneral+"?tabla=" + tablaConsulta;
+    // var tablaConsulta = tabla.substring(1);
+   let url= referencias.consultageneral+"?tabla=" + tabla;
     // console.log("URL",url);
     axios.get(url)
       .then(res => {     
@@ -68,10 +67,8 @@ class Consultas extends Component {
 
   handleSubmit = (e, formData, inputs) => {
     e.preventDefault();
-    this.enviarDatosForm(e.target,formData);
-    // e.preventDefault();
-    console.log(formData);
-    alert(JSON.stringify(formData, null, 2));
+    this.enviarDatosForm(formData);
+    // alert(JSON.stringify(formData, null, 2));
   }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
@@ -79,12 +76,12 @@ class Consultas extends Component {
   }
 
   resetForm = () => {
-    let formRef = this.formRef.current;
+    me = this;
+    let formRef = me.formRef.current;    
     formRef.resetValidationState(this.state.clearInputOnReset);
 }
 
-  enviarDatosForm =  (form, datos)  => {
-    console.log("datos para enviar", datos)
+  enviarDatosForm =  (datos)  => {
       me = this;
       if (datos.id_respuesta === ""){
         delete datos["id_respuesta"];
@@ -103,10 +100,12 @@ class Consultas extends Component {
         axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", datos)    
           .then(function (response) {
           
-            console.log("response.data",response.data.error);
+            console.log("response.data",response.data['error']);
              me.setState({loading: false});
-              mostrarAlerta( "ALERTA", response.data['mensaje']  );
-               
+             mostrarAlerta( "ALERTA", response.data['mensaje']  );
+              if(!response.data['error']){
+                me.resetForm();
+              }               
           })
           .catch(function (error) {
             console.log("Este es el error en envío",error);       
@@ -120,7 +119,6 @@ class Consultas extends Component {
   }
 
   handleChange = (e) => {
-  console.log("escogido del tipo de intervencion", e.target.value);
   this.setState({
     [e.target.name]: e.target.value
   })
@@ -129,19 +127,12 @@ class Consultas extends Component {
   }
 }
 
-  obtenerSolicitante = (e) => {
-    //ojo limpiar el valor si no es 5, en caso de más de un registro
-    console.log("Target obtener Solicitante", e.target.value);
-    e.target.value === '5'?this.setState({ classSuccess: true }):this.setState({ classSuccess: false });
-    // this.obtenerDatosForm(e);    
-  }
 
     render() { 
       const  loading  = this.state.loading;
       const  classSuccess  = this.state.classSuccess;
       return (
         <React.Fragment>
-          {/* <Menu /> */}
           <h1 className="header-1">Consultas</h1>     
           <hr/>         
           <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
@@ -149,32 +140,31 @@ class Consultas extends Component {
                   immediate={this.state.immediate}
                   setFocusOnError={this.state.setFocusOnError}
                   defaultErrorMessage = {
-                    { required : "Este campo es requerido"}
-                  }><div className="form-group">
+                    { required : "Este campo es requerido"}}
+              >
+                    
               <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:</label>
               <SelectGroup name="id_intervencion" id="id_intervencion"
                          value={this.state.id_intervencion} 
                         required errorMessage="Por favor seleccione un tipo de intervención."
                         onChange={this.handleChange}
                         >
-                           {/* <option value="">--- Please select ---</option> */}
                 <option  disabled value="">Seleccione la opción</option>
                 {
-                    this.state.ttipo_intervencion.map((item) => (
+                    this.state.tipo_intervencion.map((item) => (
                     <option key={"intervencion"+ item.id} value={item.id}>  {item.tipo}   </option>
                   ))
                 }
               </SelectGroup>
 
             <label className="font-len" htmlFor="id_solicitante">Tipo de solicitante:</label>
-            {/* <select defaultValue={'DEFAULT'} className="form-control"   name="tipo_solicitante" onChange={this.obtenerSolicitante} > */}
             <SelectGroup name="id_solicitante" id="id_solicitante"
                          value={this.state.id_solicitante} 
                         required errorMessage="Por favor seleccione un tipo de solicitante."
                         onChange={this.handleChange}>
                 <option  disabled value="">Seleccione la opción</option>
                 {
-                      this.state.ttipo_solicitante.map((item) => (
+                      this.state.tipo_solicitante.map((item) => (
                     <option key={item.id} value={item.id}>  {item.tipo}   </option>
                   ))
                 }
@@ -185,7 +175,6 @@ class Consultas extends Component {
             </div>
             
               <label className="font-len" htmlFor="id_solicitud">Tipo de solicitud:</label>
-              {/* <select defaultValue={'DEFAULT'} className="form-control"  name="tipo_solicitud" onChange={this.obtenerDatosForm} > */}
               <SelectGroup name="id_solicitud" id="id_solicitud"
                          value={this.state.id_solicitud} 
                         required errorMessage="Por favor seleccione el tipo de solicitud." 
@@ -193,13 +182,11 @@ class Consultas extends Component {
                   
               <option  disabled value="">Seleccione la opción</option>
               { 
-                  this.state.ttipo_solicitud.map((item) => (
+                  this.state.tipo_solicitud.map((item) => (
                   <option key={"solicitud"+item.id} value={item.id}>  {item.tipo}   </option>
                 ))
               }
               </SelectGroup>
-
-            </div>
             <div className="form-group">
               <label className="font-len" htmlFor="tema">Tema:</label>
               <TextInput key ="temas" type="text" className="form-control" id="tema" name="tema" required/>
@@ -217,7 +204,7 @@ class Consultas extends Component {
                       onChange={this.handleChange}>
               <option  disabled value="">Seleccione la opción</option>
               {
-                this.state.ttipo_respuesta.map((item) => (
+                this.state.tipo_respuesta.map((item) => (
                 <option key={item.id} value={item.id}>  {item.tipo}   </option>
                 ))
               }
@@ -228,21 +215,16 @@ class Consultas extends Component {
             </div>
 
             <div className={"form-group d-none"}>
-                <TextInput key ="usuario" type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>
-                
-
-                
+                <TextInput key ="usuario" type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
             </div>
 
             <div className="row">
               <div className="col-md-6 center">
                 <button className="btn btn-block btn-main"> 
-                {/* {this.state.showWarning ? 'Hide' : 'Show'} */}
                 Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
               </div>
             </div>  
-            </ValidationForm>  
-
+          </ValidationForm>  
           </React.Fragment>
 
         );

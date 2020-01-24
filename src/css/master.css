@@ -326,6 +326,17 @@ body
   background-color: #03172321 !important;
 }
 
+.input-group-text.deshabilitado {
+    background-color: transparent!important;
+    border: none!important;
+    border-radius: none!important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+
+  background-color: #e9ecef!important;
+  opacity: 5!important;
+}
 .form-control {
   background-color: rgba(32, 140, 205, 0.12) !important;
 }

@@ -5,7 +5,6 @@ class Botones extends Component {
      render() { 
         var componenteActivo = this.props.activo.toLowerCase();
 
-        console.log("props activo en botones", componenteActivo);
         var componenteClase = '';
         if (componenteActivo === this.props.id.toLowerCase()) {
             componenteClase = "btn-main btn-lg btn-block btn disabled inactivo";

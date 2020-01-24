@@ -9,12 +9,17 @@ import axios from 'axios';
 
 const referencias = referenciasJson[0];
 
+var  me;
 
 class Recuperar extends Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     this.state = {
       loading: false, 
+      immediate:true,
+      setFocusOnError:true,
+      clearInputOnReset:true
     }
   }
 
@@ -29,13 +34,14 @@ class Recuperar extends Component {
   }
 
   resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
+    me = this;
+    let formRef = me.formRef.current;    
+    formRef.resetValidationState(this.state.clearInputOnReset);
   }
 
   enviarDatosForm = (datos) => {  
 
-    // const me = this;
+    const me = this;
     // console.log("URL servicio", referencias.recuperarContrasena);
     
     axios.post(referencias.recuperarContrasena, datos)    
@@ -52,6 +58,7 @@ class Recuperar extends Component {
           alertify
           .alert( "Alerta", '<br><p>'+response.data.msj['0']+'</p>', function () {            
           });
+          me.resetForm();
         }
         
       })
