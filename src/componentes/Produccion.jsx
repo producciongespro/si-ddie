@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-validation';
+import {ValidationForm, TextInput, SelectGroup, Checkbox} from 'react-bootstrap4-form-validation';
  //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
 //  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
 
@@ -13,24 +13,9 @@ import LoadingSpinner from './spinner/LoadingSpinner';
 
 const referencias = referenciasJson[0];
 
-var producto = {
-  "id_producto": 0,
-  "id_usuario" : 1,
-  "cantidad"   : 0,
-  "fecha"      : "0001-01-01",
-  "cantidad_beneficiarios" : 0,
-  "numero_consecutivo" : null,
-  "tema_video_divulgacion"  : "",
-  "poblacion_1" : 0,
-  "poblacion_2" : 0,
-  "poblacion_3" : 0,
-  "poblacion_4" : 0,
-  "poblacion_5" : 0,
-  "poblacion_6" : 0,
-  "poblacion_7" : 0
-},
-  poblacion = [],
-  me;
+  var poblacion = [],
+      idUser = sessionStorage.getItem("id_usuario"),
+      me;
 
 
 class Produccion extends Component {
@@ -41,9 +26,26 @@ class Produccion extends Component {
     this.formRef = React.createRef();
 
     this.state = { 
+      id_producto : "",
+      id_usuario : "",
+      cantidad   : "",
+      fecha      : "",
+      cantidad_beneficiarios : "",
+      numero_consecutivo : "",
+      tema_video_divulgacion  : "",
+      poblacion_1 : false,
+      poblacion_2 : false,
+      poblacion_3 : false,
+      poblacion_4 : false,
+      poblacion_5 : false,
+      poblacion_6 : false,
+      poblacion_7 : false,
+      poblacion_8 : false,
+
       tipo_productos : [],
       productos_poblacion_meta : [],
       arreglo_poblacion : [],
+
       alertaActiva : false,
       loading: false, 
       classSuccess : false,
@@ -75,13 +77,8 @@ class Produccion extends Component {
           let componente = "poblacion_"+(index+1);
           var obj = {[componente]:false }
           poblacion.push(obj);
-          // console.log("I contador", index);
         }
-        // this.setState({arreglo_poblacion: poblacion}, () => {
-        //   console.log("STATE arreglo_poblacion", this.state.arreglo_poblacion)
-        // })
       }
-            // console.log("POBLACION", poblacion);
       }
       )
       .catch(function (error) {
@@ -91,27 +88,26 @@ class Produccion extends Component {
       });
   }
 
-  //eventos del formulario
-  handleSubmit = (e, formData, inputs) => {
-    e.preventDefault();
-    this.enviarDatosForm();
-  }
+  handleSubmit = (e, producto, inputs) => {
+      e.preventDefault();
 
-  handleErrorSubmit = (e,formData, errorInputs) => {
-      console.log("handleErrorSubmit", errorInputs)
-  }
-
-  resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
-  }
-
-  enviarDatosForm = () => {
+      for (let index = 1; index < 9 ; index++) {
+        const element = producto["poblacion_"+ index];
+        producto["poblacion_"+ index] = +element;     
+        console.log("poblacion_",  producto["poblacion_"+ index]);
+                   
+      };
+      
       me = this;
-      console.log("producto", producto);
-      if(producto.numero_consecutivo === null){
+      console.log("paquete para tabla producto", producto);
+
+      if(producto.numero_consecutivo === ""){
          delete producto["numero_consecutivo"];
-      }
+      };
+      if(producto.tema_video_divulgacion === ""){
+        delete producto["tema_video_divulgacion"];
+     };
+     
       let url = referencias.guardaconsulta+"?tabla_destino=productos";
       console.log("referencia",url);
       
@@ -120,7 +116,32 @@ class Produccion extends Component {
           .then(function (response) {
             // console.log("response.data",response.data);
              me.setState({loading: false});   
-                 mostrarAlerta( "Alerta", response.data['mensaje']);
+             mostrarAlerta( "Alerta", response.data['mensaje']);
+             if(!response.data['error']){
+              me.setState(() => ({
+                id_producto : "",
+                id_usuario : "",
+                cantidad   : "",
+                fecha      : "",
+                cantidad_beneficiarios : "",
+                numero_consecutivo : "",
+                tema_video_divulgacion  : "",
+                poblacion_1 : false,
+                poblacion_2 : false,
+                poblacion_3 : false,
+                poblacion_4 : false,
+                poblacion_5 : false,
+                poblacion_6 : false,
+                poblacion_7 : false,
+                poblacion_8 : false,
+
+                classSuccess : false,
+                verConsecutivo : false,
+                verTemaVideo : false,
+              })
+              );
+              me.resetForm(); 
+             }
           })
           .catch(function (error) {
             console.log("Este es el error en envío",error);       
@@ -132,9 +153,20 @@ class Produccion extends Component {
 
   }
 
+
+  handleErrorSubmit = (e,formData, errorInputs) => {
+      console.log("handleErrorSubmit", errorInputs)
+  }
+
+  resetForm = () => {
+        me = this;
+        let formRef = me.formRef.current;
+        formRef.resetValidationState(this.state.clearInputOnReset);
+  }
+
   activarDatos = (e) => {
     //ojo limpiar el valor si no es 5, en caso de más de un registro
-    console.log("Target obtener Poblacion", e.target.value);
+    // console.log("Target obtener Poblacion", e.target.value);
     this.setState({ classSuccess: true });
     this.setState({ verConsecutivo: false });
     this.setState({ verTemaVideo: false });
@@ -152,65 +184,18 @@ class Produccion extends Component {
       default:
         break;
     }
-    this.obtenerDatosForm(e);    
+    // this.obtenerDatosForm(e);    
   }
 
-  obtenerDatosForm = (e) => {
-    const opcion = e.target.name;
-    // console.log("e.target.name",e.target.name);    
-    console.log("e.target.checked",e.target.checked);
-
-    switch (opcion) {
-      case "id_producto":
-        producto.id_producto = e.target.value;
-        break;
-      case "cantidad":
-        producto.cantidad = e.target.value;  //ojo revisar, que guardo en id_tipo solicitante
-      break;
-      case "fecha":
-        producto.fecha = e.target.value;
-        break;
-      case "cantidad_beneficiarios":
-        producto.cantidad_beneficiarios = e.target.value;
-        break;
-      case "numero_consecutivo":
-        producto.numero_consecutivo = e.target.value;
-        break;
-      case "tema_video_divulgacion":
-        producto.tema_video_divulgacion = e.target.value;
-        break;
-      case "poblacion_1":
-        producto.poblacion_1 = +e.target.checked;
-        break;
-      case "poblacion_2":
-        producto.poblacion_2 = +e.target.checked;
-      
-        console.log("2", producto.poblacion_2);
-        console.log("2", +producto.poblacion_2);
-      break;
-      case "poblacion_3":
-        producto.poblacion_3 = +e.target.checked;
-      break;
-      case "poblacion_4":
-        producto.poblacion_4 = +e.target.checked;
-      break;
-      case "poblacion_5":
-        producto.poblacion_5 = +e.target.checked;
-      break;
-      case "poblacion_6":
-        producto.poblacion_6 = +e.target.checked;
-      break;
-      case "poblacion_7":
-        producto.poblacion_7 = +e.target.checked;
-      break;
-      case "poblacion_8":
-        producto.poblacion_8 = +e.target.checked;
-      break;
-      default:
-       // console.log("Opción fuera de rango");
-        break;
+  handleChange = (e, value) => {
+    if (e.target.name === 'id_producto')
+    {
+      this.activarDatos(e)
     }
-  }
+    this.setState({
+        [e.target.name]: value
+    })
+}
 
  render() { 
     const  loading  = this.state.loading;
@@ -234,8 +219,15 @@ class Produccion extends Component {
           <div className="row">
             <div className="form-group col-sm-6 ">
               <label className="font-len" htmlFor="tipo_producto">Seleccione el tipo de producto:</label>
-              <SelectGroup  key="selectproducto" defaultValue={'DEFAULT'} className="form-control" name="id_producto" required onChange={this.activarDatos} >
-                <option  disabled value="DEFAULT">Seleccione la opción</option>
+              {/* <SelectGroup  key="selectproducto" defaultValue= className="form-control" name="id_producto" required onChange={this.activarDatos} > */}
+              <SelectGroup key="selectproducto" name="id_producto" id="id_producto"
+                          value={this.state.id_producto} 
+                          required 
+                          errorMessage="Por favor seleccione un tipo de solicitante."
+                          onChange={this.handleChange}>
+
+
+                <option  disabled value="">Seleccione la opción</option>
                 {
                     this.state.tipo_productos.map((item) => (
                     <option key={"producto"+ item.id}  value={item.id}>{item.tipo}   </option>
@@ -246,59 +238,67 @@ class Produccion extends Component {
               <div className="col-sm-6  my-2 form-group">
                 <div className={(verTemaVideo? "":" d-none")}>
                   <label className="font-len" htmlFor="tema_video_divulgacion">Tema del video:</label>
-                  <TextInput key="video" type="text" className="form-control" id="tema_video_divulgacion" name="tema_video_divulgacion" onChange={this.obtenerDatosForm}/>
+                  <TextInput key="video" type="text" className="form-control" id="tema_video_divulgacion" name="tema_video_divulgacion" value={this.state.tema_video_divulgacion} onChange={this.handleChange}/>
                 </div>
               {/* </div> */}
             {/* </div> */}
               <div className={(verConsecutivo? "":" d-none")}>
                 <label className="font-len" htmlFor="numero_consecutivo">Número consecutivo:</label>
-                <TextInput key="consecutivo" type="number" className="form-control" id="numero_consecutivo" name="numero_consecutivo" onChange={this.obtenerDatosForm}/>
+                <TextInput key="consecutivo" type="number" className="form-control" id="numero_consecutivo" name="numero_consecutivo" value={this.state.numero_consecutivo} onChange={this.handleChange}/>
               </div>
             </div>
           </div>
             <div className="row">
               <div className={"col-sm-12 my-2" + (classSuccess? "":" d-none")}>
-               <p className="font-len">Población meta: </p>
-              {
-                  this.state.productos_poblacion_meta.map((item) => (
-                    <div className="pretty p-default p-curve">
-                    <TextInput key={"poblacion"+ item.id} id={"poblacion_"+item.id}  name = {"poblacion_"+ item.id} type="checkbox" onChange={this.obtenerDatosForm}/>
-                    {/* <TextInput key={"poblacion"+ item.id} id={item.id}  name = {"poblacion"+ item.id} type="checkbox"/>                     */}
-                    <div className="state">
-                        <label>{item.nombre}</label>
-                    </div>
+                <p className="font-len">Población meta: </p>
+                <div className="form-group custom-control custom-checkbox">
+                {
+                  this.state.productos_poblacion_meta.map((item => ( 
+                    // <div className="pretty p-default p-curve">
+                    
+                        <Checkbox key={"poblacion"+ item.id} id={"poblacion_"+item.id}  name = {"poblacion_"+ item.id} label={item.nombre}
+                                  errorMessage="Please check this box"
+                                  value={this.state["poblacion_"+ item.id]}
+                                  // value= {this.state.poblacion_1}
+                                  inline
+                                  onChange={this.handleChange} 
+                        />
+                  )))
+                } 
                   </div>
-                ))
-              } 
               </div>
             </div>               
          
           <div className="row">
             <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="cantidad">Cantidad:</label>
-              <TextInput key="cantidad" type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" required onChange={this.obtenerDatosForm}/>
+              <TextInput key="cantidadproductos" type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" value={this.state.cantidad}  required onChange={this.handleChange}/>
             </div>
 
             <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
-              <TextInput key="fecha" type="date" className="form-control" id="fecha" name="fecha" onChange={this.obtenerDatosForm} required />
+              <TextInput key="fechasolicitud" type="date" className="form-control" id="fecha" name="fecha" onChange={this.handleChange} value={this.state.fecha} required />
             </div>
           </div>
           <hr/>
 
           <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="cantidad_beneficiarios">Cantidad de beneficiarios:</label>
-              <TextInput key="beneficiario" type="number" className="form-control" id="cantidad_beneficiarios" name="cantidad_beneficiarios" onChange={this.obtenerDatosForm} required />
+              <TextInput key="beneficiario" type="number" className="form-control" id="cantidad_beneficiarios" name="cantidad_beneficiarios"  value={this.state.cantidad_beneficiarios} onChange={this.handleChange} required />
             </div>
           <hr/>
+
+          <div className={"form-group d-none"}>
+              <TextInput key ="usuario" type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
+          </div>
 
           <div className="row">
             <div className="col-md-6 center">
               <button className="btn btn-block btn-main"> 
-                Guardar registro {loading ? <LoadingSpinner key="loading" elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner  key="loading" elementClass={"d-none"} /> } 
-              </button>
+              Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } </button>
             </div>
-          </div>       
+          </div>  
+
         </ValidationForm>   
       </React.Fragment>
       );

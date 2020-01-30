@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-validation';
+import {ValidationForm} from 'react-bootstrap4-form-validation';
  //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
 //  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
 
@@ -7,7 +7,7 @@ import {ValidationForm, TextInput, SelectGroup} from 'react-bootstrap4-form-vali
 
 // import mostrarAlerta from './Alerta.js';
 
-import referenciasJson from '../data/referencias.json';
+// import referenciasJson from '../data/referencias.json';
 
 // import LoadingSpinner from './spinner/LoadingSpinner';
 
@@ -20,7 +20,7 @@ import referenciasJson from '../data/referencias.json';
 //   // "fecha"      : "0001-01-01",
 // }
 
-var  me;
+// var  me;
 
 class Estadisticas extends Component {
   constructor(props) {
@@ -119,7 +119,7 @@ class Estadisticas extends Component {
 
 
   render() { 
-    const  loading  = this.state.loading;
+    // const  loading  = this.state.loading;
     // const  classSuccess  = this.state.classSuccess;
     return (
       <React.Fragment>

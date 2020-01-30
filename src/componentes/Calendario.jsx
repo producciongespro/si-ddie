@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Iframe from 'react-iframe';
-import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
-import LoadingSpinner from './spinner/LoadingSpinner';
+// import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
+// import LoadingSpinner from './spinner/LoadingSpinner';
 
 // import showCall from './Muestracalendario.js'
 

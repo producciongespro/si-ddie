@@ -131,6 +131,10 @@ body
   color:black!important;
 }
 
+.input-otro::placeholder {
+  color: #1fb013 !important;
+}
+
 #noanim-tab {
   margin-bottom: 1.5rem !important;
 }

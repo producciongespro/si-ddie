@@ -1,26 +1,5 @@
 import React, { Component } from 'react';
 import {ValidationForm} from 'react-bootstrap4-form-validation';
- //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
-//  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
-
-//  import axios from 'axios';
-
-// import mostrarAlerta from './Alerta.js';
-
-// import referenciasJson from '../data/referencias.json';
-
-// import LoadingSpinner from './spinner/LoadingSpinner';
-
-// const referencias = referenciasJson[0];
-
-// var producto = {
-//   // "id_producto": "",
-//   // "id_usuario" : 1,
-//   // "cantidad"   : 0,
-//   // "fecha"      : "0001-01-01",
-// }
-
-var  me;
 
 class Bitacora extends Component {
   constructor(props) {
@@ -32,7 +11,7 @@ class Bitacora extends Component {
     this.state = { 
       // tipo_productos : [],
       alertaActiva : false,
-      loading: false, 
+      // loading: false, 
     
       immediate:true,   //estado de validación del form
       setFocusOnError:true,
@@ -119,7 +98,7 @@ class Bitacora extends Component {
 
 
   render() { 
-    const  loading  = this.state.loading;
+    // const  loading  = this.state.loading;
     // const  classSuccess  = this.state.classSuccess;
     return (
       <React.Fragment>

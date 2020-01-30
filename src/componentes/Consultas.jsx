@@ -12,7 +12,7 @@ const referencias = referenciasJson[0];
 var idUser = sessionStorage.getItem("id_usuario");
      
 // console.log("correoUser", correoUser);
-// console.log("idUser", idUser);
+console.log("idUser en consultas", idUser);
 
 
 var  me;
@@ -23,10 +23,18 @@ class Consultas extends Component {
     super(props);
     this.formRef = React.createRef();
     this.state = { 
-      id_intervencion : "",
+      id_intervencion: "",
+      id_usuario    : "",
       id_solicitud : "",
+      registro_id : "",
       id_solicitante : "",
-      id_respuesta: "",    
+      tema : "",
+      solicitante_otro : "",
+      fecha_solicitud : "",
+      id_respuesta : "",
+      fecha_respuesta : "",
+      respuesta : "",   
+      
       tipo_intervencion : [],
       tipo_solicitud : [],
       tipo_solicitante : [],
@@ -82,6 +90,8 @@ class Consultas extends Component {
 }
 
   enviarDatosForm =  (datos)  => {
+    console.log("datos", datos);
+    
       me = this;
       if (datos.id_respuesta === ""){
         delete datos["id_respuesta"];
@@ -104,6 +114,20 @@ class Consultas extends Component {
              me.setState({loading: false});
              mostrarAlerta( "ALERTA", response.data['mensaje']  );
               if(!response.data['error']){
+                me.setState(() => ({
+                  id_intervencion: "",
+                  id_solicitud : "",
+                  registro_id : "",
+                  id_solicitante : "",
+                  tema : "",
+                  solicitante_otro : "",
+                  fecha_solicitud : "",
+                  id_respuesta : "",
+                  fecha_respuesta : "",
+                  respuesta : "",
+                  classSuccess: false 
+                  })
+                );
                 me.resetForm();
               }               
           })
@@ -119,10 +143,12 @@ class Consultas extends Component {
   }
 
   handleChange = (e) => {
+    console.log("e.target.name", e.target.name);
+    
   this.setState({
     [e.target.name]: e.target.value
   })
-  if (e.target.name === 'tipo_solicitante') {
+  if (e.target.name === 'id_solicitante') {
       e.target.value === '5'?this.setState({ classSuccess: true }):this.setState({ classSuccess: false });
   }
 }
@@ -144,7 +170,7 @@ class Consultas extends Component {
               >
                     
               <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:</label>
-              <SelectGroup name="id_intervencion" id="id_intervencion"
+              <SelectGroup key="idintervencion" name="id_intervencion" id="id_intervencion"
                          value={this.state.id_intervencion} 
                         required errorMessage="Por favor seleccione un tipo de intervención."
                         onChange={this.handleChange}
@@ -158,7 +184,7 @@ class Consultas extends Component {
               </SelectGroup>
 
             <label className="font-len" htmlFor="id_solicitante">Tipo de solicitante:</label>
-            <SelectGroup name="id_solicitante" id="id_solicitante"
+            <SelectGroup key="idsolicitante" name="id_solicitante" id="id_solicitante"
                          value={this.state.id_solicitante} 
                         required errorMessage="Por favor seleccione un tipo de solicitante."
                         onChange={this.handleChange}>
@@ -175,7 +201,7 @@ class Consultas extends Component {
             </div>
             
               <label className="font-len" htmlFor="id_solicitud">Tipo de solicitud:</label>
-              <SelectGroup name="id_solicitud" id="id_solicitud"
+              <SelectGroup key="idsolicitud" name="id_solicitud" id="id_solicitud"
                          value={this.state.id_solicitud} 
                         required errorMessage="Por favor seleccione el tipo de solicitud." 
                         onChange={this.handleChange}>
@@ -193,13 +219,13 @@ class Consultas extends Component {
             </div>
             <div className="form-group">
               <label className="font-len" htmlFor="fecha_solicitud">Fecha solicitud:</label>
-              <TextInput key ="fechasolicitud" type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" required/>
+              <TextInput key ="fechasolicitud" type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" required />
             </div>
             <br />
             <h2 className="header-2">Atención a la consulta</h2>
             <hr />
             <label className="font-len" htmlFor="id_respuesta">Tipo de respuesta:</label>
-              <SelectGroup name="id_respuesta" id="id_respuesta"
+              <SelectGroup key="idrespuesta" name="id_respuesta" id="id_respuesta"
                       value={this.state.id_respuesta}
                       onChange={this.handleChange}>
               <option  disabled value="">Seleccione la opción</option>
@@ -211,7 +237,7 @@ class Consultas extends Component {
               </SelectGroup>
             <div className="form-group">
               <label className="font-len" htmlFor="fecha_respuesta">Fecha de respuesta:</label>
-              <TextInput key ="fecharespuesta"  type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" onChange={this.obtenerDatosForm} />
+              <TextInput key ="fecharespuesta"  type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta"/>
             </div>
 
             <div className={"form-group d-none"}>
