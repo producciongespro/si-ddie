@@ -10,6 +10,7 @@ const referencias = referenciasJson[0];
 
 // var correoUser = sessionStorage.getItem("correo");
 var idUser = sessionStorage.getItem("id_usuario");
+idUser = sessionStorage.getItem("id_usuario");
      
 // console.log("correoUser", correoUser);
 console.log("idUser en consultas", idUser);
@@ -91,8 +92,8 @@ class Consultas extends Component {
 
   enviarDatosForm =  (datos)  => {
     console.log("datos", datos);
-    
-      me = this;
+    this.excluyeCampos(datos);
+    me = this;
       if (datos.id_respuesta === ""){
         delete datos["id_respuesta"];
       };
@@ -104,8 +105,6 @@ class Consultas extends Component {
       }
 
        this.setState({ loading: true }, () => {
-        // let url= referencias.guardaconsulta+"?tabla_destino=consultas";
-        // console.log("url", url);
         
         axios.post(referencias.guardaconsulta+"?tabla_destino=consultas", datos)    
           .then(function (response) {
@@ -141,6 +140,14 @@ class Consultas extends Component {
         });
 
   }
+
+  excluyeCampos = (obj) => {
+    for (const prop in obj) {
+      if(obj[prop] === ''){
+        delete obj[prop];
+      }
+    }
+  } 
 
   handleChange = (e) => {
     console.log("e.target.name", e.target.name);

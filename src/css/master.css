@@ -167,10 +167,6 @@ body
  }
 
 .btn-ingreso {
-  /* color:white!important;
-  text-shadow: 2px 2px 2px #999;
-  background-color:#72cade!important;
-  border: 3px solid#1494b1 !important; */
   color: white !important;
   text-shadow: 2px 2px 2px#999;
   background-color:#5f9fd5 !important;
@@ -263,7 +259,9 @@ body
 }
 
 .btn-main.inactivo {
-  color:#595959 !important; 
+  color: #e74803 !important;
+  text-shadow: 2px 2px 2px #070707;
+  font-weight: bold;
 }
 .btn-group-lg>.btn, .btn-lg {
   padding: .2rem 1rem;

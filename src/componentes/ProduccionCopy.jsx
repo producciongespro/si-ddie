@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {ValidationForm, TextInput, SelectGroup, Checkbox} from 'react-bootstrap4-form-validation';
  //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
 //  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
@@ -17,11 +17,6 @@ const referencias = referenciasJson[0];
       idUser = sessionStorage.getItem("id_usuario"),
       me;
 
-export default function Produccion() {
-  const [revista, setRevista]= useState(false)
-
-}
-
 
 class Produccion extends Component {
   constructor(props) {
@@ -33,15 +28,11 @@ class Produccion extends Component {
     this.state = { 
       id_producto : "",
       id_usuario : "",
-      cantidad1   : "",
+      cantidad   : "",
       fecha      : "",
       cantidad_beneficiarios : "",
       numero_consecutivo : "",
       tema_video_divulgacion  : "",
-      volumen_revista : "",
-      numero_revista : "",
-      mes_revista : "",
-      anno_revista : "",
       poblacion_1 : false,
       poblacion_2 : false,
       poblacion_3 : false,
@@ -58,7 +49,6 @@ class Produccion extends Component {
       alertaActiva : false,
       loading: false, 
       classSuccess : false,
-      classRevista : false,
       verConsecutivo : false,
       verTemaVideo : false,
     
@@ -67,7 +57,6 @@ class Produccion extends Component {
       clearInputOnReset:false
     };
   }
-
   componentDidMount( ) {
     this.obtenerJson("tipo_productos");
     this.obtenerJson("productos_poblacion_meta");
@@ -96,18 +85,29 @@ class Produccion extends Component {
         console.log("error",error)
       })
       .finally(function () {
-      });      
+      });
   }
 
-  handleSubmit = (e, producto) => {
+  handleSubmit = (e, producto, inputs) => {
       e.preventDefault();
 
       for (let index = 1; index < 9 ; index++) {
         const element = producto["poblacion_"+ index];
-        producto["poblacion_"+ index] = +element;                                
+        producto["poblacion_"+ index] = +element;     
+        console.log("poblacion_",  producto["poblacion_"+ index]);
+                   
       };
+      
       me = this;
-      me.excluyeCampos(producto);
+      console.log("paquete para tabla producto", producto);
+
+      if(producto.numero_consecutivo === ""){
+         delete producto["numero_consecutivo"];
+      };
+      if(producto.tema_video_divulgacion === ""){
+        delete producto["tema_video_divulgacion"];
+     };
+     
       let url = referencias.guardaconsulta+"?tabla_destino=productos";
       console.log("referencia",url);
       
@@ -118,8 +118,29 @@ class Produccion extends Component {
              me.setState({loading: false});   
              mostrarAlerta( "Alerta", response.data['mensaje']);
              if(!response.data['error']){
-              me.resetDatos();
-              // me.resetForm(); 
+              me.setState(() => ({
+                id_producto : "",
+                id_usuario : "",
+                cantidad   : "",
+                fecha      : "",
+                cantidad_beneficiarios : "",
+                numero_consecutivo : "",
+                tema_video_divulgacion  : "",
+                poblacion_1 : false,
+                poblacion_2 : false,
+                poblacion_3 : false,
+                poblacion_4 : false,
+                poblacion_5 : false,
+                poblacion_6 : false,
+                poblacion_7 : false,
+                poblacion_8 : false,
+
+                classSuccess : false,
+                verConsecutivo : false,
+                verTemaVideo : false,
+              })
+              );
+              me.resetForm(); 
              }
           })
           .catch(function (error) {
@@ -132,83 +153,27 @@ class Produccion extends Component {
 
   }
 
-  // excluyeCampos = (obj) => {
-  //   console.log("paquete para tabla producto", obj);
-  //   for (const prop in obj) {
-  //     // console.log(`obj.${prop} = ${obj[prop]}`);
-  //     if(`${obj[prop]}`=== ''){
-  //       console.log("prop", prop);
-        
-  //       console.log("borrado porque está vacío");        
-  //       console.log(`obj.${prop} = ${obj[prop]}`);
-  //       // delete `${obj[prop]}`;
-  //       delete obj[prop];
-  //     }
-  //   }
-  // }
-
-  excluyeCampos = (obj) => {
-    for (const prop in obj) {
-      if(obj[prop]=== ''){
-        delete obj[prop];
-      }
-    }
-  } 
-
-  resetDatos = () => {
-    me = this;
-    me.setState(() => ({
-        id_producto : "",
-        id_usuario : "",
-        cantidad1   : "",
-        fecha      : "",
-        cantidad_beneficiarios : "",
-        numero_consecutivo : "",
-        tema_video_divulgacion  : "",
-        volumen_revista : "",
-        numero_revista : "",
-        mes_revista : "",
-        anno_revista : "",
-        poblacion_1 : false,
-        poblacion_2 : false,
-        poblacion_3 : false,
-        poblacion_4 : false,
-        poblacion_5 : false,
-        poblacion_6 : false,
-        poblacion_7 : false,
-        poblacion_8 : false,
-
-        classSuccess : false,
-        verConsecutivo : false,
-        verTemaVideo : false,
-        classRevista : false
-      })
-    );
-    me.resetForm(); 
-  }
 
   handleErrorSubmit = (e,formData, errorInputs) => {
       console.log("handleErrorSubmit", errorInputs)
   }
 
   resetForm = () => {
-        // me = this;
-        let formRef = this.formRef.current;
+        me = this;
+        let formRef = me.formRef.current;
         formRef.resetValidationState(this.state.clearInputOnReset);
   }
 
-  activarDatos = (value) => {
+  activarDatos = (e) => {
     //ojo limpiar el valor si no es 5, en caso de más de un registro
     // console.log("Target obtener Poblacion", e.target.value);
     this.setState({ classSuccess: true });
     this.setState({ verConsecutivo: false });
     this.setState({ verTemaVideo: false });
 
-    // switch (e.target.value) {
-    switch (value) {
+    switch (e.target.value) {
       case '1':
         this.setState({ classSuccess: false });
-        this.setState({ classRevista: true });
       break;
       case '4':
         this.setState({ verConsecutivo: true });
@@ -223,12 +188,9 @@ class Produccion extends Component {
   }
 
   handleChange = (e, value) => {
-    
-    
     if (e.target.name === 'id_producto')
     {
-      // this.activarDatos(e)
-      this.activarDatos(value)
+      this.activarDatos(e)
     }
     this.setState({
         [e.target.name]: value
@@ -236,15 +198,14 @@ class Produccion extends Component {
 }
 
  render() { 
-    const loading  = this.state.loading;
-    const classSuccess  = this.state.classSuccess;
+    const  loading  = this.state.loading;
+    const  classSuccess  = this.state.classSuccess;
     const verConsecutivo = this.state.verConsecutivo;
     const verTemaVideo = this.state.verTemaVideo;
-    const classRevista = this.state.classRevista;
     return (
       <React.Fragment>
         <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
-                        // ref={this.formRef}
+                        ref={this.formRef}
                         immediate={this.state.immediate}
                         setFocusOnError={this.state.setFocusOnError}
                         defaultErrorMessage = {
@@ -258,11 +219,13 @@ class Produccion extends Component {
           <div className="row">
             <div className="form-group col-sm-6 ">
               <label className="font-len" htmlFor="tipo_producto">Seleccione el tipo de producto:</label>
+              {/* <SelectGroup  key="selectproducto" defaultValue= className="form-control" name="id_producto" required onChange={this.activarDatos} > */}
               <SelectGroup key="selectproducto" name="id_producto" id="id_producto"
                           value={this.state.id_producto} 
                           required 
                           errorMessage="Por favor seleccione un tipo de solicitante."
                           onChange={this.handleChange}>
+
 
                 <option  disabled value="">Seleccione la opción</option>
                 {
@@ -272,38 +235,19 @@ class Produccion extends Component {
                 }
               </SelectGroup>
             </div>
-            <div className="col-sm-6  my-2 form-group">
-              <div className={(verTemaVideo? "":" d-none")}>
-                <label className="font-len" htmlFor="tema_video_divulgacion">Tema del video:</label>
-                <TextInput type="text" className="form-control" id="tema_video_divulgacion" name="tema_video_divulgacion" value={this.state.tema_video_divulgacion} onChange={this.handleChange}/>
-              </div>
-
+              <div className="col-sm-6  my-2 form-group">
+                <div className={(verTemaVideo? "":" d-none")}>
+                  <label className="font-len" htmlFor="tema_video_divulgacion">Tema del video:</label>
+                  <TextInput key="video" type="text" className="form-control" id="tema_video_divulgacion" name="tema_video_divulgacion" value={this.state.tema_video_divulgacion} onChange={this.handleChange}/>
+                </div>
+              {/* </div> */}
+            {/* </div> */}
               <div className={(verConsecutivo? "":" d-none")}>
                 <label className="font-len" htmlFor="numero_consecutivo">Número consecutivo:</label>
-                <TextInput  type="number" className="form-control" id="numero_consecutivo" name="numero_consecutivo" value={this.state.numero_consecutivo} onChange={this.handleChange}/>
+                <TextInput key="consecutivo" type="number" className="form-control" id="numero_consecutivo" name="numero_consecutivo" value={this.state.numero_consecutivo} onChange={this.handleChange}/>
               </div>
             </div>
           </div>
-          
-          <div className={"row"+ (classRevista?"":" d-none")}>  
-            <div className="col-sm-3  my-2 form-group">
-                <label className="font-len" htmlFor="volumen_revista">No. volumen:</label>
-                <TextInput type="number" className="form-control" id="volumen_revista" name="volumen_revista" value={this.state.volumen_revista} onChange={this.handleChange}/>
-            </div>
-            <div className="col-sm-3  my-2 form-group">
-                <label className="font-len" htmlFor="numero_revista">Número:</label>
-                <TextInput type="number" className="form-control" id="numero_revista" name="numero_revista" value={this.state.numero_revista} onChange={this.handleChange}/>
-            </div>
-            <div className="col-sm-3  my-2 form-group">
-                <label className="font-len" htmlFor="mes_revista">Mes:</label>
-                <TextInput type="number" className="form-control" id="mes_revista" name="mes_revista" value={this.state.mes_revista} onChange={this.handleChange}/>
-            </div>
-            <div className="col-sm-3  my-2 form-group">
-                <label className="font-len" htmlFor="anno_revista">Año:</label>
-                <TextInput type="number" className="form-control" id="anno_revista" name="anno_revista" value={this.state.anno_revista} onChange={this.handleChange}/>
-            </div>
-          </div>
-
             <div className="row">
               <div className={"col-sm-12 my-2" + (classSuccess? "":" d-none")}>
                 <p className="font-len">Población meta: </p>
@@ -312,8 +256,8 @@ class Produccion extends Component {
                   this.state.productos_poblacion_meta.map((item => ( 
                     // <div className="pretty p-default p-curve">
                     
-                        <Checkbox key={"kpoblacion"+ item.id} id={"poblacion_"+item.id}  name = {"poblacion_"+ item.id} label={item.nombre}
-                                  // errorMessage="Por favor chequee alg check this box"
+                        <Checkbox key={"poblacion"+ item.id} id={"poblacion_"+item.id}  name = {"poblacion_"+ item.id} label={item.nombre}
+                                  errorMessage="Please check this box"
                                   value={this.state["poblacion_"+ item.id]}
                                   // value= {this.state.poblacion_1}
                                   inline
@@ -321,39 +265,31 @@ class Produccion extends Component {
                         />
                   )))
                 } 
-                </div>
+                  </div>
               </div>
             </div>               
          
           <div className="row">
             <div className="form-group col-sm-6">
-              <label className="font-len" htmlFor="cantidad1">Cantidad:</label>
-              {/* <TextInput type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" value={this.state.cantidad}  required onChange={this.handleChange}/> */}
-              <TextInput type="number" className="form-control" id="cantidad1" name="cantidad1" required value={this.state.cantidad} onChange={this.handleChange}/>
+              <label className="font-len" htmlFor="cantidad">Cantidad:</label>
+              <TextInput key="cantidadproductos" type="number" className="form-control" id="cantidad" name="cantidad" min="1" max="20" value={this.state.cantidad}  required onChange={this.handleChange}/>
             </div>
-
-            {/* <div className="form-group col-sm-6">
-              <label  className="font-len"  htmlFor="texto_completo">Texto completo:</label>
-              <TextInput type="number" className="form-control form-basedatos" id="texto_completo" name="texto_completo" min="1" placeholder="Digite la cantidad" required value={this.state.texto_completo} onChange={this.handleChange} />
-            </div> */}
 
             <div className="form-group col-sm-6">
-              <label className="font-len" htmlFor="fecha">Fecha:</label>
-              <TextInput  type="date" className="form-control" id="fecha" name="fecha"  required value={this.state.fecha} onChange={this.handleChange} />
+              <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
+              <TextInput key="fechasolicitud" type="date" className="form-control" id="fecha" name="fecha" onChange={this.handleChange} value={this.state.fecha} required />
             </div>
-            
           </div>
           <hr/>
-          <div className="row">
-            <div className="form-group col-sm-6">
+
+          <div className="form-group col-sm-6">
               <label className="font-len" htmlFor="cantidad_beneficiarios">Cantidad de beneficiarios:</label>
-              <TextInput type="number" className="form-control" id="cantidad_beneficiarios" name="cantidad_beneficiarios"  required value={this.state.cantidad_beneficiarios} onChange={this.handleChange} />
+              <TextInput key="beneficiario" type="number" className="form-control" id="cantidad_beneficiarios" name="cantidad_beneficiarios"  value={this.state.cantidad_beneficiarios} onChange={this.handleChange} required />
             </div>
-            <hr/>
-          </div>
+          <hr/>
 
           <div className={"form-group d-none"}>
-              <TextInput type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
+              <TextInput key ="usuario" type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
           </div>
 
           <div className="row">

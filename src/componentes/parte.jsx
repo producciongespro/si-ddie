@@ -1,28 +1,3 @@
-import React, { Component, useState } from 'react';
-import {ValidationForm, TextInput, SelectGroup, Checkbox} from 'react-bootstrap4-form-validation';
- //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
-//  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
-
-import axios from 'axios';
-
-import mostrarAlerta from './Alerta.js';
-
-import referenciasJson from '../data/referencias.json';
-
-import LoadingSpinner from './spinner/LoadingSpinner';
-
-const referencias = referenciasJson[0];
-
-  var poblacion = [],
-      idUser = sessionStorage.getItem("id_usuario"),
-      me;
-
-export default function Produccion() {
-  const [revista, setRevista]= useState(false)
-
-}
-
-
 class Produccion extends Component {
   constructor(props) {
     super(props);

@@ -1,15 +1,15 @@
 [
     {
         "version" : "1.0",
-        "img"  : "http://pruebarecursos.mep.go.cr/server_assets/si-ddie/img/",
-        "servicios" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/",   
-       "consultageneral": "http://pruebarecursos.mep.go.cr/webservices/si-ddie/consultas_generales.php",
-       "consultaespecifica": "http://pruebarecursos.mep.go.cr/webservices/si-ddie/consultas_especificas.php",
-       "guardaconsulta" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/registro_consulta.php",
-       "actualizaconsulta" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/consulta_generico.php",
-       "registroUsuario" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/registro.php",
-       "recuperarContrasena" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/recupera.php",
-       "login" : "http://pruebarecursos.mep.go.cr/webservices/si-ddie/login.php"
+        "img"  : "http://localhost/server_assets/si-ddie/img/",
+        "servicios" : "http://localhost/webservices/si-ddie/",   
+       "consultageneral": "http://localhost/webservices/si-ddie/consultas_generales.php",
+       "consultaespecifica": "http://localhost/webservices/si-ddie/consultas_especificas.php",
+       "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
+       "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",
+       "registroUsuario" : "http://localhost/webservices/si-ddie/registro.php",
+       "recuperarContrasena" : "http://localhost/webservices/si-ddie/recupera.php",
+       "login" : "http://localhost/webservices/si-ddie/login.php"
 
     }
 ]

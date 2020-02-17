@@ -14,7 +14,7 @@ import LoadingSpinner from './spinner/LoadingSpinner';
 const referencias = referenciasJson[0];
 
 var  me,
-    hoy = new Date(),
+    fechaActual = new Date(),
     idUser = sessionStorage.getItem("id_usuario");
 
 class Basededatos extends Component {
@@ -32,11 +32,14 @@ class Basededatos extends Component {
       portada         : "",
       texto_completo  : "",
       enlace          : "",
-      fecha           :  hoy,
+      fecha           : fechaActual,
+      anno            : "",
+      mes             : "",
       
       tipo_ingreso : [],
       alertaActiva : false,
       loading: false, 
+      classSuccess : false,
     
       immediate:true,   //estado de validación del form
       setFocusOnError:true,
@@ -79,6 +82,9 @@ class Basededatos extends Component {
     this.setState({
       [estado] : e.target.value
     })
+    if (e.target.name === 'id_ingreso') {
+      e.target.value === '3'?this.setState({ classSuccess: true }):this.setState({ classSuccess: false });
+    }
   }
 
   resetForm = () => {
@@ -87,7 +93,13 @@ class Basededatos extends Component {
   }
 
   enviarDatosForm = (ingresos) => {
-      me = this;      
+      me = this;     
+      if (ingresos.anno === ""){
+        delete ingresos["anno"];
+      };
+      if (ingresos.mes === ""){
+        delete ingresos["mes"];
+      } 
        this.setState({ loading: true }, () => {
         axios.post(referencias.guardaconsulta+"?tabla_destino=ingresos", ingresos)    
           .then(function (response) {
@@ -117,7 +129,9 @@ class Basededatos extends Component {
       portada         : "",
       texto_completo  : "",
       enlace          : "",
-      fecha           :  hoy,
+      anno            : "",
+      mes             : "",
+      fecha           :  fechaActual
       })
     );
     me.resetForm(); 
@@ -125,8 +139,8 @@ class Basededatos extends Component {
 
 
     render() { 
-    const  loading  = this.state.loading;
-
+    const  loading  = this.state.loading,
+           classSuccess  = this.state.classSuccess;
     return (
       <React.Fragment>
         <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
@@ -140,7 +154,7 @@ class Basededatos extends Component {
             }
           }
         >
-          <h1 className="header-1">Ingreso a la base de datos</h1>
+          <h1 className="header-1">Base de datos</h1>
           <hr/>
           <div className="row">
             <div className="form-group col-sm-6">
@@ -165,29 +179,41 @@ class Basededatos extends Component {
               <TextInput  key="kdescriptor" type="number" className="form-control form-basedatos" id="descriptor" name="descriptor" min="1"  placeholder="Digite la cantidad" required value={this.state.descriptor} onChange={this.handleChange} />
             </div>
           </div>
-          <div className="row">  
+          <div className={"row"+ (classSuccess? "":" d-none")}>  
             <div className="form-group col-sm-6">
-              <label  className="font-len"  htmlFor="portada">Portada:</label>
-              <TextInput key ="kportada" type="number" className="form-control form-basedatos" id="portada" name="portada" min="1" placeholder="Digite la cantidad" required value={this.state.portada} onChange={this.handleChange} />
+              <label  className="font-len"  htmlFor="mes">Mes:</label>
+              <TextInput type="number" className="form-control form-basedatos" id="mes" name="mes" min="1" max='12' placeholder="Digite el mes"  value={this.state.mes} onChange={this.handleChange} />
             </div>
             <div className="form-group col-sm-6">
-              <label  className="font-len"  htmlFor="texto_completo">Texto completo:</label>
-              <TextInput key="ktextocompleto" type="number" className="form-control form-basedatos" id="texto_completo" name="texto_completo" min="1" placeholder="Digite la cantidad" required value={this.state.texto_completo} onChange={this.handleChange} />
+              <label  className="font-len"  htmlFor="anno">Año:</label>
+              <TextInput type="number" className="form-control form-basedatos" id="anno" name="anno" placeholder="Digite el año de la publicación"  value={this.state.anno} onChange={this.handleChange} />
             </div>
           </div>
           <div className="row">  
             <div className="form-group col-sm-6">
+              <label  className="font-len"  htmlFor="portada">Portada:</label>
+              <TextInput type="number" className="form-control form-basedatos" id="portada" name="portada" min="1" placeholder="Digite la cantidad" required value={this.state.portada} onChange={this.handleChange} />
+            </div>
+            <div className="form-group col-sm-6">
+              <label  className="font-len"  htmlFor="texto_completo">Texto completo:</label>
+              <TextInput type="number" className="form-control form-basedatos" id="texto_completo" name="texto_completo" min="1" placeholder="Digite la cantidad" required value={this.state.texto_completo} onChange={this.handleChange} />
+            </div>
+          </div>
+          <br/>
+
+          <div className="row">  
+            <div className="form-group col-sm-6">
               <label  className="font-len"  htmlFor="enlace">Enlace:</label>
-              <TextInput key="kenlace" type="number" className="form-control form-basedatos" id="enlace" name="enlace" min="1"  placeholder="Digite la cantidad" required value={this.state.enlace} onChange={this.handleChange} />
+              <TextInput type="number" className="form-control form-basedatos" id="enlace" name="enlace" min="1"  placeholder="Digite la cantidad" required value={this.state.enlace} onChange={this.handleChange} />
             </div>
             <div className="form-group col-sm-6">
               <label  className="font-len" htmlFor="fecha">Fecha</label>
-              <TextInput key="kfecha" type="date" className="form-control" id="fecha" name="fecha" required onChange={this.handleChange}  value={this.state.fecha} errorMessage={{ required:"Este campo es requerido"}}/>
+              <TextInput type="date" className="form-control" id="fecha" name="fecha" required onChange={this.handleChange}  value={this.state.fecha} errorMessage={{ required:"Este campo es requerido"}}/>
             </div>
           </div>
           <hr/>
           <div className={"form-group d-none"}>
-              <TextInput key ="usuario" type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
+              <TextInput type="text" className="form-control" name="id_usuario" id="id_usuario" value ={idUser}/>    
           </div>
           <div className="row">
               <div className="col-md-6 center">
