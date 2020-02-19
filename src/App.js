@@ -7,7 +7,7 @@ import Consultas from './componentes/Consultas';
 import Basededatos  from './componentes/Basededatos';
 import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
-import Produccion from './componentes/Produccion';
+import Produccion from './componentes/Produccion.js';
 import Respuestas  from './componentes/Respuestas';
 import Calendario  from './componentes/Calendario';
 import Acerca  from './componentes/Acerca';
