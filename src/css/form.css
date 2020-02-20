@@ -1,8 +1,8 @@
-p {
+p.errors {
   color: #bf1650;
 }
 
-p::before {
+p.errors::before {
   /* display: inline; */
   content: "⚠ ";
 }

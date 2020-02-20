@@ -1,13 +1,10 @@
 import React from 'react';
 
-
 export default function InputItem( props ) {
-  console.log("entré"); 
   return (    
-        <div className={props.elementClass}>
+        <React.Fragment>
           <label className="font-len" htmlFor={props.nombre}>{props.textlabel}</label>
-          <input type={props.tipo}  className="form-control" id={props.nombre} name={props.nombre} ref={props.referencia} />
-          {/* {errors[props.nombre] && 'Last name is required'} */}
-        </div>
+          <input type={props.tipo}  className="form-control" id={props.nombre} name={props.nombre} ref={props.referencia} placeholder={props.placeholderText} />
+        </React.Fragment>
   );
 }

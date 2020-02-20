@@ -122,13 +122,12 @@ body
 }
 
 
-/* #txtUsuario::placeholder, */
-::placeholder { 
+.form-control.input-ingreso::placeholder{ 
   color: #e5e1e1!important;
 }
 
-.form-basedatos::placeholder { 
-  color:black!important;
+::placeholder { 
+  color:#6c6969 !important
 }
 
 .input-otro::placeholder {
