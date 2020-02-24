@@ -50,13 +50,13 @@ class Logueo extends Component {
               <div className="textos control-group form-group mt-2">
                 <div className="row">
                     <div className="col-md-12 ">
-                        <TextInput key="usuario" type="text" className="form-control input-ingreso" placeholder="Digite el correo electrónico" id="correo" name="correo" required/> <br />
+                        <TextInput key="usuario" type="text" className="form-control input-ingreso" placeholder="Digite el correo electrónico" id="correo" name="correo" required value="ana.araya.salazar@mep.go.cr"/> <br />
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-12">
-                        <TextInput key="contraseña" type="password" className="form-control input-ingreso" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" required/>
+                        <TextInput key="contraseña" type="password" className="form-control input-ingreso" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" value="a" required/>
                     </div>
                 </div>
                 <br/>

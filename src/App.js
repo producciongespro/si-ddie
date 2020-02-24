@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Ingreso from './componentes/Ingreso';
 import Botones from './componentes/Botones';
 import Consultas from './componentes/Consultas';
-import Basededatos  from './componentes/Basededatos';
+import Basededatos  from './componentes/Basededatos.js';
 import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion.js';

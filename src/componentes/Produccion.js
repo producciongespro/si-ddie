@@ -5,6 +5,10 @@ import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 import CheckBox from '../componentes/CheckBox';
 import InputItem from '../componentes/InputItem';
 
+import moment from 'moment';
+import 'moment/locale/es';
+
+
 // import axios from 'axios';
 
 // import mostrarAlerta from './Alerta.js';
@@ -27,6 +31,9 @@ export default function Form1() {
     
     //Estado que maneja el producto seleccionado por el usuario
     const [producto, setProducto] = useState(null);
+
+    //Estado que maneja el mes seleccionado por el usuario
+    const [mesSel, setMesSel] = useState(null);
 
     //Estado que carga las poblaciones del json del servidor
     const [poblaciones, setPoblaciones] = useState(null);
@@ -89,6 +96,13 @@ export default function Form1() {
     const handleChangeCheck =(e)=>{
       (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
     }
+
+    const handleMonthSelect =(e)=>{
+      //obtiene el valor de seleccion
+      clearError();
+      setMesSel(parseInt(e.target.value));
+  }
+
     return (        
             cargado ?                    
       (
@@ -108,15 +122,15 @@ export default function Form1() {
                }
             </select>
           </div>
-          {(producto > 2 && producto < 7 )&&
+          {(producto > 1 && producto < 7 )&&
               <div className="form-group col-sm-6 my-2">
-                <InputItem  elementClass= "col-sm-6 my-2 form-group"  placeholderText="Digite el número consecutivo" tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
+                <InputItem placeholderText="Digite el número consecutivo" tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}
               </div>
               }
             {producto === 7 &&
               <div className="form-group col-sm-6 my-2">
-                  <InputItem  elementClass= ""  tipo="text" placeholderText="Escriba el tema del video" nombre= "tema_video_divulgacion" textlabel="Tema del video"  referencia={register({required: true})} />
+                  <InputItem tipo="text" placeholderText="Escriba el tema del video" nombre= "tema_video_divulgacion" textlabel="Tema del video"  referencia={register({required: true})} />
                   {errors.tema_video_divulgacion && <p className="errors">Este campo es requerido</p>}
               </div>
             }   
@@ -155,8 +169,15 @@ export default function Form1() {
                 {errors.numero_revista && <p className="errors">Este campo es requerido</p>}
               </div>
               <div className="form-group col-sm-3 my-2">
-                <InputItem tipo="number" nombre= "mes_revista" placeholderText="Escriba el mes" textlabel="Mes" referencia={register({required: true})}  />
-                {errors.mes_revista && <p className="errors">Este campo es requerido</p>}
+               <label className="font-len" htmlFor="mes_revista">Mes:</label>
+                  <select className="custom-select"  defaultValue="" onChange={handleMonthSelect} name="mes_revista" id="mes_revista" ref={register({required: true})}>
+                  {errors.mes_revista && <p className="errors">Este campo es requerido</p>}
+                    <option value="" disabled>Seleccione...</option>
+                      {
+                        moment.months().map((label, i) => (
+                        <option key={"mes"+label} value={i+1}>{label}</option>
+                        ))}
+                  </select>
               </div>
               <div className="form-group col-sm-3 my-2">
                 <InputItem tipo="number" nombre= "anno_revista" textlabel="Año" placeholderText="Escriba el año" referencia={register({required: true})}  />
