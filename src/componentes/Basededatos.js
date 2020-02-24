@@ -97,8 +97,8 @@ var  me,
               (
             
                 <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className="row">
-    <div className="col-4">
+                      {/* <div className="row"> */}
+    {/* <div className="col-4">
       <a href="#"><img src="../images/iconos/agregar.png" alt=""/></a>
     </div>
     <div className="col-4">
@@ -106,7 +106,7 @@ var  me,
     </div>
     <div className="col-4">
        <a href="#"><img src="../images/iconos/borrar.png" alt=""/></a>
-    </div> </div>
+    </div> </div> */}
                   <div className="row">
                     <div className="form-group col-sm-6 ">
                         <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
