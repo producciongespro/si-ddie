@@ -1,18 +1,30 @@
 [
     {
-        "etiqueta": "Inicio",
-        "ref": "inicio"
+        "nombre": "Consultas",
+        "ref": "consultas"
     },
     {
-        "etiqueta": "Productos",
-        "ref": "productos"
+        "nombre": "Respuestas",
+        "ref": "respuestas"
     },
     {
-        "etiqueta": "Pedidos",
-        "ref": "pedidos"
+        "nombre": "Base de datos",
+        "ref": "basedeDatos"
     },
     {
-        "etiqueta": "Acerca de",
-        "ref": "acerca_de"
+        "nombre": "Producción",
+        "ref": "produccion"
+    },
+    {
+        "nombre": "Estadísticas",
+        "ref": "estadisticas"
+    },
+    {
+        "nombre": "Bitacora",
+        "ref": "bitacora"
+    },
+    {
+        "nombre": "Calendario",
+        "ref": "calendario"
     }
 ]

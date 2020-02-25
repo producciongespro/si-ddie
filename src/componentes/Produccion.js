@@ -159,31 +159,35 @@ export default function Form1() {
              }
 
           {producto === 1 && (
-            <div className="row">
-              <div className="form-group col-sm-3 my-2">
-                <InputItem tipo="number" nombre= "volumen_revista" placeholderText="Escriba el volumen" textlabel="Volumen"  referencia={register({required: true})} />
-                {errors.volumen_revista && <p className="errors">Este campo es requerido</p>}
+            <React.Fragment>
+              <div className="row">
+                <div className="form-group col-sm-6 my-2">
+                  <InputItem tipo="number" nombre= "volumen_revista" placeholderText="No. volumen" textlabel="Volumen"  referencia={register({required: true})} />
+                  {errors.volumen_revista && <p className="errors">Este campo es requerido</p>}
+                </div>
+                <div className="form-group col-sm-6 my-2">
+                  <InputItem  tipo="number" nombre= "numero_revista"  placeholderText="No. revista" textlabel="Número"   referencia={register({required: true})} />
+                  {errors.numero_revista && <p className="errors">Este campo es requerido</p>}
+                </div>
               </div>
-              <div className="form-group col-sm-3 my-2">
-                <InputItem  tipo="number" nombre= "numero_revista"  placeholderText="Escriba el  número de la revista" textlabel="Número"   referencia={register({required: true})} />
-                {errors.numero_revista && <p className="errors">Este campo es requerido</p>}
+              <div className="row">
+                <div className="form-group col-sm-6 my-2">
+                <label className="font-len" htmlFor="mes_revista">Mes:</label>
+                    <select className="custom-select"  defaultValue="" onChange={handleMonthSelect} name="mes_revista" id="mes_revista" ref={register({required: true})}>
+                    {errors.mes_revista && <p className="errors">Este campo es requerido</p>}
+                      <option value="" disabled>Seleccione...</option>
+                        {
+                          moment.months().map((label, i) => (
+                          <option key={"mes"+label} value={i+1}>{label}</option>
+                          ))}
+                    </select>
+                </div>
+                <div className="form-group col-sm-6 my-2">
+                  <InputItem tipo="number" nombre= "anno_revista" textlabel="Año" placeholderText="Digite el año" referencia={register({required: true})}  />
+                  {errors.anno_revista && <p className="errors">Este campo es requerido</p>}
+                </div>
               </div>
-              <div className="form-group col-sm-3 my-2">
-               <label className="font-len" htmlFor="mes_revista">Mes:</label>
-                  <select className="custom-select"  defaultValue="" onChange={handleMonthSelect} name="mes_revista" id="mes_revista" ref={register({required: true})}>
-                  {errors.mes_revista && <p className="errors">Este campo es requerido</p>}
-                    <option value="" disabled>Seleccione...</option>
-                      {
-                        moment.months().map((label, i) => (
-                        <option key={"mes"+label} value={i+1}>{label}</option>
-                        ))}
-                  </select>
-              </div>
-              <div className="form-group col-sm-3 my-2">
-                <InputItem tipo="number" nombre= "anno_revista" textlabel="Año" placeholderText="Escriba el año" referencia={register({required: true})}  />
-                {errors.anno_revista && <p className="errors">Este campo es requerido</p>}
-              </div>
-            </div>
+            </React.Fragment>
             )
           }
           <div className="row">
