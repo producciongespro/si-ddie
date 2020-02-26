@@ -47,12 +47,11 @@ class Ingreso extends Component {
             <div className={classModalBody} >
               <Tabs activeKey={this.state.key} onSelect={key => this.setState({ key })} transition={false} id="noanim-tab">
                 <Tab className="" eventKey="ingresar" title="Ingresar">
-                  {/* <Logueo handlerLogin={this.props.handlerLogin} /> */}
-                  <Record/>
+                  <Loguin />
                 </Tab>
                 <Tab className="" eventKey="inscribir" title="Inscribirse">
                   {/* <Registro handlerCerrarModal={this.props.handlerCerrarModal}/> */}
-                  <Record/>
+                  <Registro/>
                 </Tab>
                 <Tab className="" eventKey="recuperar" title="Recuperar contraseña">
                   <Recuperar />

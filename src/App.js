@@ -14,7 +14,13 @@ import Calendario  from './componentes/Calendario';
 // import Acerca  from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
 
-import Ingreso from './componentes/Ingreso';
+
+import Logueo from './componentes/Logueo';
+import MyContext from './modulos/MyContext';
+
+
+
+// import Ingreso from './componentes/Ingreso';
 import MyProvider from './modulos/MyProvider';
 // import PantallaFondo from './componentes/PantallaFondo';
 
@@ -30,17 +36,26 @@ import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 import referenciasJson from './data/referencias.json';
 import paginas from './data/paginas.json';
+// import Logueo from './componentes/Logueo';
 
 const referencias = referenciasJson[0];
 
 const componentes = [<Consultas/>,<Respuestas/>, <Basededatos />,<Produccion />,<Estadisticas />,<Bitacora />,<Calendario />];
 
 function App() {
+  // const [usuario, setUsuario] = useState("ana.araya.salazar@mep.go.cr");
+  // const [usuario, setUsuario] = useState({correo:"ana.araya.salazar@mep.go.cr", idUsuario:"7",tipoUsuario:"administrador"});
+  
+  // estado para controlar si el usuario se ha logueado exitosamente
+  const [accesado, setAccesado] = useState(false);
+  const [usuario, setUsuario] = useState({correo:"vacío", idUsuario:"",tipoUsuario:"", isAccesado: accesado});
+  const value = { usuario, setUsuario };
+  
+  log("usuario datos iniciales", usuario)
     
-    const [componente, setComponente] = useState(null);
+  const [componente, setComponente] = useState(null);
 
-    // estado para controlar si el usuario se ha logueado exitosamente
-    const [accesado, setAccesado] = useState(false);
+    
     
     // controla cantidades de columnas segun disponsitivo
     const [colUno, setColUno] = useState("col-sm-3");
@@ -88,62 +103,7 @@ const handleCargarComponentes = (e) => {
     setComponente( componentes[e.target.value] );
   }
 
-  // const handlerLogin = (user, password) => {
-  //   //    console.log("user desde app", user);
-  //   //    console.log("pass desde app", password);   
-  //   let data = {
-  //     "usuario": user,
-  //     "clave": password
-  //   }
-  // }
-    // handlerLogin = (data) => {
-      const handlerLogin = (data) => {
-      // const me = this;
-  
-      axios.post(referencias.login, data)
-        .then(function (response) {
-          const mensajeError = response.data.error_msg;
-          // console.log("response",response/*  */)
-          if (response.data.error === false) {    
-  
-            //Almacenamiento en session el objeto usuario                    
-            sessionStorage.setItem("correo",  JSON.stringify(response.data.correo)  );                             
-            sessionStorage.setItem("tipo_usuario",  JSON.stringify(response.data.tipoUsuario)  );                             
-            sessionStorage.setItem("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
-            //Asigna valores en caso de que el login fue exitoso.
-            console.log("correo",  JSON.stringify(response.data.correo)  );                             
-            console.log("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
-            console.log("tipo_usuario",  JSON.stringify(response.data.tipoidUsuario)  );                             
-            
-            correoUsuario= response.data.correo;
-            setAccesado(true);
-            setModalActivo(false);
-            // me.setState({componenteActual : <Consultas/> });
-            // me.setState({componenteActivo : 'consultas' });
-          } else {
-            console.log("Error IF acceso usuario");
-            alertify
-              .alert("Aviso", mensajeError, function () {
-                // document.getElementById("idUser").value = "";
-                // document.getElementById("txtPwd").value = "";
-              });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(() => {
-          // me.setState({
-          //   ajaxOcupado: false
-          // })
-        });
-  
-    }
-
-
-
-
-  return ( 
+   return ( 
     <div className="App">
     {
       accesado ?
@@ -168,19 +128,33 @@ const handleCargarComponentes = (e) => {
           </div>
         </React.Fragment>
       :
+      // <div>
       <React.Fragment>
-          <MyProvider>
-              {/* <Ingreso handlerLogin={handlerLogin}/> */}
-              <Ingreso />
-              {/* <Record/> */}
-         {/* <Ingreso mostrarModal={this.handlerMostrarModal} data-tipo="registro" handlerLogin={this.handlerLogin} usuario="usuario" /> */}
-              <div className="contModal row">
-                <div className="col-12">
-                  {/* {modalActivo && modalComponent} */}
-                </div>
-              </div>
-          </MyProvider>
+        <MyContext.Provider value={value}>
+          <h2>Correo del usuario actual: {usuario['correo']}</h2>
+          <h2>Id del usuario actual: {usuario['idUsuario']}</h2>
+          <h2>Id del tipo de usuario actual: {usuario['tipoUsuario']}</h2>
+          <p>Click para cambiar el usuario</p>
+      {/* <div> */}
+          <Logueo />
+      {/* </div> */}
+        </MyContext.Provider>
       </React.Fragment>
+
+      // </div>
+      // </div>
+          //  <MyProvider> 
+              // {/* <Ingreso handlerLogin={handlerLogin}/> */}
+      //         {/* <Ingreso /> */}
+      //         {/* <Logueo/> */}
+      //    {/* <Ingreso mostrarModal={this.handlerMostrarModal} data-tipo="registro" handlerLogin={this.handlerLogin} usuario="usuario" /> */}
+      //         {/* <div className="contModal row"> */}
+      //           {/* <div className="col-12"> */}
+      //             {/* {modalActivo && modalComponent} */}
+      //           {/* </div> */}
+      //         {/* </div> */}
+      //     {/* </MyProvider> */}
+      // // </React.Fragment>
     }
     </div>
   )

@@ -1,35 +1,25 @@
-import React, { Component } from 'react';
+import React, { useSate} from 'react';
 import MyContext from './MyContext';
+import { useState } from 'react';
 
-class MyProvider extends Component {
-    state = {
-          // user: "ana araya salazar"
-        // user: {
-        //     correo: "ana.araya.salazar@mep.go.cr",
-        //     tipoUsuario: "administrador",
-        //     idUsuario: "7"
-        //     //Asigna valores en caso de que el login fue exitoso.
-        // }
-        user: {
-          data001: { 
+function MyProvider() {
+ 
+  const user = ({
+            datos : {
             correo: "ana.araya.salazar@mep.go.cr",
             tipoUsuario: "administrador",
-            idUsuario: "7"
-        }
-      }
-    };
-
-    render() {
-        return (
-            <MyContext.Provider
-                value={{
-                    user: this.state.user,
-                    }}>
-                {this.props.children}
-                {/* {console.log("ESTADO...",this.state.user['data001'].correo)} */}
-                
-            </MyContext.Provider>
-        );
-    }
+            idUsuario: "7" },
+        setUser : () => {}
+  });
+      
+  return (
+        <MyContext.Provider
+            value={{
+                user: user,
+                }}>
+            {/* {props.children} */}
+            {console.log("ESTADO...",user)}            
+        </MyContext.Provider>
+    );
 };
 export default MyProvider;

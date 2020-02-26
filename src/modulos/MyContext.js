@@ -1,8 +1,13 @@
 import React from 'react';
 
-// this is the equivalent to the createStore method of Redux
-// https://redux.js.org/api/createstore
-
-const MyContext = React.createContext();
+// set the defaults
+const MyContext = React.createContext({
+    usuario : {
+      correo: "",
+      idUsuario: "",
+      tipoUsuario: "",
+      isAccesado: false},
+    setUsuario : () => {}
+});
 
 export default MyContext;
