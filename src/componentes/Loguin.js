@@ -1,4 +1,5 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useContext } from 'react';
+
 
 // context con los datos del usuario
 import MyContext from '../modulos/MyContext';
@@ -6,8 +7,13 @@ import MyContext from '../modulos/MyContext';
 import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
-// import referenciasJson from '../data/referencias.json';
-// const referencias = referenciasJson[0];
+
+//Librerias
+import alertify from 'alertifyjs';
+import axios from 'axios';
+
+import referenciasJson from '../data/referencias.json';
+const referencias = referenciasJson[0];
 
 export default function Loguin() {
   const [loading, setLoading] = useState(false);
@@ -18,28 +24,32 @@ export default function Loguin() {
   //   handlerLogin(formData);
   // }
 
-  handleErrorSubmit = (e,formData, errorInputs) => {
+  const handleErrorSubmit = (e,formData, errorInputs) => {
       console.log("handleErrorSubmit", errorInputs)
   }
 
-  handleSubmit = (data) => {
+  const sendDatas = (data) => { 
+          
+    var datosUsuario = {
+      correo: data.correo,
+      idUsuario: data.idUsuario,
+      tipoUsuario: data.tipoUsuario,
+      isAccesado : true};
+      const { usuario, setUsuario } = useContext(MyContext);
+      console.log("usuario LOGUEO", usuario);
+      console.log("usuario nuevo", datosUsuario);
+      setUsuario(nuevosDatos);
+
+  }
+
+  const handleSubmit = (e, data) => {
     e.preventDefault();
     axios.post(referencias.login, data)
       .then(function (response) {
         const mensajeError = response.data.error_msg;
         // console.log("response",response/*  */)
         if (response.data.error === false) {
-          
-          var datosUsuario = {
-            correo: response.data.correo,
-            idUsuario: response.data.idUsuario,
-            tipoUsuario: response.data.tipoUsuario,
-            isAccesado : true};
-            const { usuario, setUsuario } = useContext(MyContext);
-            console.log("usuario LOGUEO", usuario);
-            console.log("usuario nuevo", datosUsuario);
-            setUsuario(nuevosDatos);
-
+          sendDatas = (data);
 
           //Almacenamiento en session el objeto usuario                    
           // sessionStorage.setItem("correo",  JSON.stringify(response.data.correo)  );                             
@@ -53,7 +63,7 @@ export default function Loguin() {
 
           // me.correoUsuario= response.data.correo;
           // me.setState({isAccesado: true});
-          me.setState({ isModalActivo:false  });
+          // me.setState({ isModalActivo:false  });
           // me.setState({componenteActual : <Consultas/> });
           // me.setState({componenteActivo : 'consultas' });
         } else {
@@ -80,8 +90,6 @@ export default function Loguin() {
     formRef.resetValidationState(this.state.clearInputOnReset);
   }
 
-    render() {
-      const  loading  = this.state.loading;
       return (
         <React.Fragment>
           <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
@@ -115,7 +123,4 @@ export default function Loguin() {
           </ValidationForm>
         </React.Fragment>
       );
-  }
 }
-
-export default Logueo;

@@ -15,7 +15,8 @@ import Calendario  from './componentes/Calendario';
 import MenuBotones from './componentes/MenuBotones';
 
 
-import Logueo from './componentes/Logueo';
+// import Logueo from './componentes/Logueo';
+import Loguin from './componentes/Loguin';
 import MyContext from './modulos/MyContext';
 
 
@@ -26,7 +27,7 @@ import MyProvider from './modulos/MyProvider';
 
 //Librerias
 import alertify from 'alertifyjs';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 //CSS
@@ -51,7 +52,7 @@ function App() {
   const [usuario, setUsuario] = useState({correo:"vacío", idUsuario:"",tipoUsuario:"", isAccesado: accesado});
   const value = { usuario, setUsuario };
   
-  log("usuario datos iniciales", usuario)
+  console.log("usuario datos iniciales", usuario)
     
   const [componente, setComponente] = useState(null);
 
@@ -131,12 +132,12 @@ const handleCargarComponentes = (e) => {
       // <div>
       <React.Fragment>
         <MyContext.Provider value={value}>
-          <h2>Correo del usuario actual: {usuario['correo']}</h2>
+          {/* <h2>Correo del usuario actual: {usuario['correo']}</h2>
           <h2>Id del usuario actual: {usuario['idUsuario']}</h2>
           <h2>Id del tipo de usuario actual: {usuario['tipoUsuario']}</h2>
-          <p>Click para cambiar el usuario</p>
+          <p>Click para cambiar el usuario</p> */}
       {/* <div> */}
-          <Logueo />
+          <Loguin />
       {/* </div> */}
         </MyContext.Provider>
       </React.Fragment>
