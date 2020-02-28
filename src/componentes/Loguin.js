@@ -1,4 +1,5 @@
 import React, { Component, useState, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 
 
 // context con los datos del usuario
@@ -16,56 +17,33 @@ import referenciasJson from '../data/referencias.json';
 const referencias = referenciasJson[0];
 
 export default function Loguin() {
+  const { register, handleSubmit, errors, clearError } = useForm();
+
   const [loading, setLoading] = useState(false);
+  const { usuario, setUsuario } = useContext(MyContext);
 
-
-  // handleSubmit = (e, formData, inputs) => {
-  //   e.preventDefault();
-  //   handlerLogin(formData);
-  // }
-
-  const handleErrorSubmit = (e,formData, errorInputs) => {
-      console.log("handleErrorSubmit", errorInputs)
-  }
-
-  const sendDatas = (data) => { 
-          
+  const sendDatas = (data) => {         
+    console.log("data desde sendatas", data);
+     
     var datosUsuario = {
       correo: data.correo,
       idUsuario: data.idUsuario,
       tipoUsuario: data.tipoUsuario,
       isAccesado : true};
-      const { usuario, setUsuario } = useContext(MyContext);
       console.log("usuario LOGUEO", usuario);
       console.log("usuario nuevo", datosUsuario);
-      setUsuario(nuevosDatos);
+      setUsuario(datosUsuario);
 
   }
 
-  const handleSubmit = (e, data) => {
+  const onSubmit = (data, e) => {
     e.preventDefault();
     axios.post(referencias.login, data)
       .then(function (response) {
         const mensajeError = response.data.error_msg;
         // console.log("response",response/*  */)
         if (response.data.error === false) {
-          sendDatas = (data);
-
-          //Almacenamiento en session el objeto usuario                    
-          // sessionStorage.setItem("correo",  JSON.stringify(response.data.correo)  );                             
-          // sessionStorage.setItem("tipo_usuario",  JSON.stringify(response.data.tipoUsuario)  );                             
-          // sessionStorage.setItem("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
-          // //Asigna valores en caso de que el login fue exitoso.
-          // console.log("correo",  JSON.stringify(response.data.correo)  );                             
-          // console.log("id_usuario",  JSON.stringify(response.data.idUsuario)  );                             
-          // console.log("tipo_usuario",  JSON.stringify(response.data.tipoidUsuario)  );                             
-          
-
-          // me.correoUsuario= response.data.correo;
-          // me.setState({isAccesado: true});
-          // me.setState({ isModalActivo:false  });
-          // me.setState({componenteActual : <Consultas/> });
-          // me.setState({componenteActivo : 'consultas' });
+          sendDatas(response.data);
         } else {
           console.log("Error IF acceso usuario");
           alertify
@@ -84,43 +62,30 @@ export default function Loguin() {
 
   }
 
-  resetForm = () => {
-    me = this;
-    let formRef = me.formRef.current;    
-    formRef.resetValidationState(this.state.clearInputOnReset);
-  }
-
       return (
         <React.Fragment>
-          <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
-            ref={this.formRef}
-            immediate={this.state.immediate}
-            setFocusOnError={this.state.setFocusOnError}
-            defaultErrorMessage = {
-              { required : "Este campo es requerido"}
-            }>
-              <div className="textos control-group form-group mt-2">
-                <div className="row">
-                    <div className="col-md-12 ">
-                        <TextInput key="usuario" type="text" className="form-control input-ingreso" placeholder="Digite el correo electrónico" id="correo" name="correo" required value="ana.araya.salazar@mep.go.cr"/> <br />
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-12">
-                        <TextInput key="contraseña" type="password" className="form-control input-ingreso" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" value="a" required/>
-                    </div>
-                </div>
-                <br/>
-              </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="textos control-group form-group mt-2">
               <div className="row">
+                <div className="form-group col-sm-12">
+                  <input className="form-control input-ingreso" type="text" placeholder="Digite el correo electrónico" id="correo" name="correo" ref={register({required: true})} /><br />
+                  {errors.correo && <p className="errors">Este campo es requerido</p>}
+                </div>
+              </div>
+
+              <div className="row">
+                  <div className="col-12">
+                    <input className="form-control input-ingreso" type="password" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" ref={register({required: true})} /><br />
+                    {errors.claveEncriptada && <p className="errors">Este campo es requerido</p>} </div>
+              </div>
+              <br/>
+            </div>
+            <div className="row">
               <div className="col-md-12">
-                <button className="btn btn-ingreso float-right"> 
-                  Enviar {loading ? <LoadingSpinner key="loading" elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner  key="loading" elementClass={"d-none"} /> } 
-                </button>
-             </div>
-            </div> 
-          </ValidationForm>
+                <input className="btn btn-ingreso float-right" type="submit" value="Guardar registro" />
+              </div>
+            </div>
+        </form>
         </React.Fragment>
       );
 }

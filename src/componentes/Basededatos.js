@@ -91,22 +91,11 @@ var  me,
         
     }
     
-      return (      
-              
+      return ( 
               cargado ?   
               (
-            
                 <form onSubmit={handleSubmit(onSubmit)}>
-                      {/* <div className="row"> */}
-    {/* <div className="col-4">
-      <a href="#"><img src="../images/iconos/agregar.png" alt=""/></a>
-    </div>
-    <div className="col-4">
-      <a href="#"><img src="../images/iconos/editar.png" alt=""/></a>
-    </div>
-    <div className="col-4">
-       <a href="#"><img src="../images/iconos/borrar.png" alt=""/></a>
-    </div> </div> */}
+                  <h1 className="header-1">Base de datos</h1>
                   <div className="row">
                     <div className="form-group col-sm-6 ">
                         <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>

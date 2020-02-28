@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 // import Logueo from './Logueo';
+import Loguin from './Loguin';
 import Recuperar from './Recuperar';
 import  Registro from './Registro';
-import  Record from './Record';
+// import  Record from './Record';
 
 import Imagen from './Imagen';
 // import referenciasJSON from '../data/referencias.json';

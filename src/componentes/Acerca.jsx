@@ -11,18 +11,19 @@ class Acerca extends Component {
     }
     render() { 
         return (
-        <React.Fragment>          
-            <h1 className="header-1">Créditos</h1>       
-            <hr/>
-            <p className="acercade text-center">Ministerio de Educación Pública de Costa Rica <br />
-                Dirección de Recursos Tecnológicos en Educación<br />
-                Departamento de Gestión y Producción - GESPRO <br /><br />
-                Desarrolladores: <br />
-                Patricia Hernández, Ana Araya, <br />
-                Luis Chacón, Óscar Pérez<br /><br />
+        <React.Fragment>     
+             {/* <div id="col2" className={"visor col-sm-9"}> */}
+                <h1 className="header-1">Créditos</h1>       
                 <hr/>
-                Derechos reservados ©2020 </p>
-            {/* <div className="acercade"><img className="img-fluid" src={fondo} alt="imagen de créditos"/></div> */}
+                <p className="acercade text-center">Ministerio de Educación Pública de Costa Rica <br />
+                    Dirección de Recursos Tecnológicos en Educación<br />
+                    Departamento de Gestión y Producción - GESPRO <br /><br />
+                    Desarrolladores: <br />
+                    Patricia Hernández, Ana Araya, <br />
+                    Luis Chacón, Óscar Pérez<br /><br />
+                    <hr/>
+                    Derechos reservados ©2020 </p>
+            {/* </div> */}
         </React.Fragment>
      );
 };

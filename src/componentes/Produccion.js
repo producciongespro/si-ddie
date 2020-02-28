@@ -22,7 +22,7 @@ const referencias = referenciasJson[0];
 
 var idUser = sessionStorage.getItem("id_usuario");
 
-
+// console.log("usuario datos posteriores", usuario)   
 export default function Form1() {
     const { register, handleSubmit, errors, clearError } = useForm();
 
@@ -108,8 +108,9 @@ export default function Form1() {
       (
         <div className="col-12">
         <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="row">
-          <div className="form-group col-sm-6 ">
+        <h1 className="header-1">Producción</h1><br/>
+          <div className="row">
+            <div className="form-group col-sm-6 ">
               <label className="font-len" htmlFor="id_producto">Seleccione el tipo de producto:&nbsp;&nbsp;</label>
             <select className="custom-select"  defaultValue="" onChange={handleSeleccionarProducto} name="id_producto" ref={register({required: true})}>
             {errors.id_producto && <p className="errors">Este campo es requerido</p>}
@@ -121,7 +122,7 @@ export default function Form1() {
                    ))
                }
             </select>
-          </div>
+            </div>
           {(producto > 1 && producto < 7 )&&
               <div className="form-group col-sm-6 my-2">
                 <InputItem placeholderText="Digite el número consecutivo" tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
