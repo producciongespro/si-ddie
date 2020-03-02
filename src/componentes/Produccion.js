@@ -23,7 +23,7 @@ const referencias = referenciasJson[0];
 var idUser = sessionStorage.getItem("id_usuario");
 
 // console.log("usuario datos posteriores", usuario)   
-export default function Form1() {
+export default function Produccion() {
     const { register, handleSubmit, errors, clearError } = useForm();
 
     //Estado para controlar la carga del json de productos:
@@ -44,7 +44,6 @@ export default function Form1() {
       //Cargado se cambia a True cuando se termina la carga de json del servidor
       const [otraPoblacion, setOtraPoblacion] = useState(false);
 
-    // const onSubmit = data => console.log(data);
     const onSubmit = (data, e) => {
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
 
@@ -91,7 +90,6 @@ export default function Form1() {
         clearError();
         parseInt(e.target.value)
         setProducto(parseInt(e.target.value));
-        
     }
     const handleChangeCheck =(e)=>{
       (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);

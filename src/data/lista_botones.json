@@ -4,10 +4,6 @@
         "ref": "consultas"
     },
     {
-        "nombre": "Respuestas",
-        "ref": "respuestas"
-    },
-    {
         "nombre": "Base de datos",
         "ref": "basedeDatos"
     },

@@ -257,6 +257,40 @@ body
   overflow: hidden;
 }
 
+.btn-dropdown{
+  height: 40px;
+  /* background: linear-gradient(to bottom,#de8801  0%, #b99164 100%);  */
+  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); 
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  border-bottom: 4px solid #2b8bc6;
+  color: #fbfbfb!important;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 1.25rem!important;
+  text-align: left!important;
+  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
+
+/* Just for presentation */  
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.dropdown-menu {
+  min-width: 95%!important;
+}
+.dropdown-item.menu-lateral{
+  color: #288dc9!important;
+}
+.svg-inline--fa.fa-w-10 {
+  width: 1.625em!important;
+}
 .btn-main.inactivo {
   color: #e74803 !important;
   text-shadow: 2px 2px 2px #070707;

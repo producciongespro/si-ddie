@@ -4,10 +4,6 @@
         "etiqueta": "Consultas"
     },
     {
-        "id": "respuestas",
-        "etiqueta": "Respuestas"
-    },
-    {
         "id": "basedeDatos",
         "etiqueta": "Base de Datos"
     },

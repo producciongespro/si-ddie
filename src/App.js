@@ -8,7 +8,6 @@ import Basededatos  from './componentes/Basededatos.js';
 import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion.js';
-import Respuestas  from './componentes/Respuestas';
 import Calendario  from './componentes/Calendario';
 import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
@@ -24,7 +23,7 @@ import "./css/master.css";
 import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 
-const componentes = [<Consultas/>,<Respuestas/>, <Basededatos />,<Produccion />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
+const componentes = [<Consultas/>,<Basededatos />,<Produccion />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
 
 function App() {
 
@@ -48,7 +47,7 @@ const handleCargarComponentes = (e) => {
   // console.log("e.target", e.target);
   
    if ( e.target.tagName.toUpperCase() =='A') { // EXCEPCION para cargar página de créditos
-    setComponente( componentes[7] );
+    setComponente( componentes[componente.length] );
   }
   else {
     setComponente( componentes[e.target.value] );  
