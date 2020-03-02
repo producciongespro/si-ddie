@@ -12,8 +12,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Menu(props) {  
   const { usuario, setUsuario } = useContext(MyContext);
 
+  // const llamaCreditos  = (e) => { 
+  //   props.handleCargarComponentes()
+  //  }
   console.log("usuario desde MENU",usuario.correo);
-  
+  const handlerCerrarSesion = (e) => {    
+    var datosUsuario = {
+      correo: "",
+      idUsuario: "",
+      tipoUsuario: "",
+      isAccesado : false};
+      setUsuario(datosUsuario);
+  }
+
         return (
           <React.Fragment>
                 <div className="div-encabezado">
@@ -32,9 +43,9 @@ export default function Menu(props) {
                 <Nav className="dropdown dropleft float-right">
                   <NavDropdown title="Opciones" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/usuario"><FontAwesomeIcon icon={faUserAlt} size="1x" /> Usuario: {usuario.correo}</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/creditos" onClick={props.handleCargarComponentes} ><FontAwesomeIcon icon={faAddressCard} size="1x" /> Créditos</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/creditos" value='7' onClick={props.handleCargarComponentes}><FontAwesomeIcon icon={faAddressCard} size="1x" /> Créditos</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    {/* <NavDropdown.Item href="#action/salir" onClick = {this.props.handlerCerrarSesion} ><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item> */}
+                    <NavDropdown.Item href="#action/salir" onClick = {handlerCerrarSesion} ><FontAwesomeIcon icon={faSignOutAlt} size="1x" /> Salir</NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
               </Navbar.Collapse>

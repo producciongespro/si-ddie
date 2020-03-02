@@ -41,17 +41,19 @@ function App() {
   const [componente, setComponente] = useState(null);
 
   useEffect(() => {
-    // if(document.getElementsById("btn0")){
-    // var elementDefaul = document.getElementsById("btn0");
-    // elementDefaul.classList.add("inactivo","btn", "disabled");
-    // }
     //Acción que se ejecuta al montar el componente en el DOM
 }, []); 
 
 const handleCargarComponentes = (e) => {    
-  console.log("e.target.value", e.target.value);
+  // console.log("e.target", e.target);
   
-  setComponente( componentes[e.target.value] );
+   if ( e.target.tagName.toUpperCase() =='A') { // EXCEPCION para cargar página de créditos
+    setComponente( componentes[7] );
+  }
+  else {
+    setComponente( componentes[e.target.value] );  
+  }  
+  // setComponente( componentes[e.target.value] );
   var btns = document.getElementsByName("botones"); 
   for (var i = 0; i < btns.length; i++) {
       var element = btns[i];

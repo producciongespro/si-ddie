@@ -68,14 +68,14 @@ export default function Loguin() {
             <div className="textos control-group form-group mt-2">
               <div className="row">
                 <div className="form-group col-sm-12">
-                  <input className="form-control input-ingreso" type="text" placeholder="Digite el correo electrónico" id="correo" name="correo" ref={register({required: true})} /><br />
+                  <input className="form-control input-ingreso" type="text" placeholder="Digite el correo electrónico" id="correo" name="correo" ref={register({required: true})} value="ana.araya.salazar@mep.go.cr"/><br />
                   {errors.correo && <p className="errors">Este campo es requerido</p>}
                 </div>
               </div>
 
               <div className="row">
                   <div className="col-12">
-                    <input className="form-control input-ingreso" type="password" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" ref={register({required: true})} /><br />
+                    <input className="form-control input-ingreso" type="password" placeholder="Digite la contraseña" id="claveEncriptada" name="claveEncriptada" ref={register({required: true})} value='a' /><br />
                     {errors.claveEncriptada && <p className="errors">Este campo es requerido</p>} </div>
               </div>
               <br/>
