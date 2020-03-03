@@ -4,10 +4,13 @@ import React, {useRef, useState, useEffect}  from 'react';
 
 import Ingreso from './componentes/Ingreso';
 import Consultas from './componentes/Consultas';
+import ConsultasVer from './componentes/ConsultasVer';
 import Basededatos  from './componentes/Basededatos.js';
+import BasededatosVer  from './componentes/BasededatosVer.js';
 import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion.js';
+import ProduccionVer from './componentes/ProduccionVer.js';
 import Calendario  from './componentes/Calendario';
 import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
@@ -23,7 +26,7 @@ import "./css/master.css";
 import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 
-const componentes = [<Consultas/>,<Basededatos />,<Produccion />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
+const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion />,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
 
 function App() {
 
@@ -35,7 +38,7 @@ function App() {
   const [usuario, setUsuario] = useState({correo:"", idUsuario:"",tipoUsuario:"", isAccesado: false});
   const value = { usuario, setUsuario };
   
-  console.log("usuario datos iniciales", usuario)
+  // console.log("usuario datos iniciales", usuario)
     
   const [componente, setComponente] = useState(null);
 
@@ -43,13 +46,27 @@ function App() {
     //Acción que se ejecuta al montar el componente en el DOM
 }, []); 
 
-const handleCargarComponentes = (e) => {    
-  // console.log("e.target", e.target);
+// const handleCargarComponentes2 =(e)=>{
+//   e.preventDefault();
+//   console.log( "Componente:", e.target.dataset.componente);
   
-   if ( e.target.tagName.toUpperCase() =='A') { // EXCEPCION para cargar página de créditos
-    setComponente( componentes[componente.length] );
+// }
+
+
+const handleCargarComponentes = (e) => {    
+  console.log("e.target", e.target);
+  
+   if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
+    console.log("entre al if, valor dataset", e.target.dataset.referencia);
+    
+    e.preventDefault();
+    setComponente( componentes[parseInt(e.target.dataset.referencia)] );
+    console.log( "componentes[e.target.dataset.componente]", componentes[e.target.dataset.referencia] );
+    
   }
   else {
+    console.log("componentes[e.target.value] ", componentes[e.target.value] );
+    
     setComponente( componentes[e.target.value] );  
   }  
   // setComponente( componentes[e.target.value] );
@@ -73,7 +90,7 @@ const handleCargarComponentes = (e) => {
           <React.Fragment>
               <Menu  handleCargarComponentes={handleCargarComponentes}   />
               <div className="row">
-                <MenuBotones handleCargarComponentes={handleCargarComponentes}/>  
+                <MenuBotones handleCargarComponentes={handleCargarComponentes}  />  
                 {
                   componente !== null ?
                   (

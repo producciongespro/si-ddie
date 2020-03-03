@@ -23,15 +23,15 @@ export default function Loguin() {
   const { usuario, setUsuario } = useContext(MyContext);
 
   const sendDatas = (data) => {         
-    console.log("data desde sendatas", data);
+    // console.log("data desde sendatas", data);
      
     var datosUsuario = {
       correo: data.correo,
       idUsuario: data.idUsuario,
       tipoUsuario: data.tipoUsuario,
       isAccesado : true};
-      console.log("usuario LOGUEO", usuario);
-      console.log("usuario nuevo", datosUsuario);
+      // console.log("usuario LOGUEO", usuario);
+      // console.log("usuario nuevo", datosUsuario);
       setUsuario(datosUsuario);
 
   }

@@ -11,7 +11,7 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
-export default function Consultas() {
+export default function ConsultasVer() {
 
 
   const { register, handleSubmit, errors, clearError } = useForm();

@@ -1,26 +1,35 @@
-[
-    {
-        "nombre": "Consultas",
-        "ref": "consultas"
+ [
+    {   
+        "textoboton": "Consultas",
+        "opciones": [
+            {"ref":"0"},
+            {"ref":"1"}          
+            ]    
+    },
+    {   
+        "textoboton": "Base de datos",
+        "opciones": [
+            {"ref":"2"},
+            {"ref":"3"}          
+            ]    
+    },
+    {   
+        "textoboton": "Producción",
+        "opciones": [
+            {"ref":"4"},
+            {"ref":"5"}          
+            ]    
     },
     {
-        "nombre": "Base de datos",
-        "ref": "basedeDatos"
+        "textoboton": "Estadísticas",
+        "ref": "6"
     },
     {
-        "nombre": "Producción",
-        "ref": "produccion"
+        "textoboton": "Bitacora",
+        "ref": "7"
     },
     {
-        "nombre": "Estadísticas",
-        "ref": "estadisticas"
-    },
-    {
-        "nombre": "Bitacora",
-        "ref": "bitacora"
-    },
-    {
-        "nombre": "Calendario",
-        "ref": "calendario"
+        "textoboton": "Calendario",
+        "ref": "8"
     }
 ]

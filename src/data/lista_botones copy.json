@@ -1,0 +1,26 @@
+[
+    {
+        "nombre": "Consultas",
+        "ref": "consultas"
+    },
+    {
+        "nombre": "Base de datos",
+        "ref": "basedeDatos"
+    },    
+    {
+        "nombre": "Producción",
+        "ref": "produccion"
+    },
+    {
+        "nombre": "Estadísticas",
+        "ref": "estadisticas"
+    },
+    {
+        "nombre": "Bitacora",
+        "ref": "bitacora"
+    },
+    {
+        "nombre": "Calendario",
+        "ref": "calendario"
+    }
+]

@@ -7,25 +7,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import "../css/dropdown.css";
 
 function MenuBotones (props) {   
-    
+    // botones.map((item, i)=>(
+    //     i<3 &&
+    //             // console.log("item ==>",i,":",item['textoboton'],
+    //         console.log("item opciones==>",i,":",item['opciones'][0]['ref'])
+    // ))
     return (
         <React.Fragment>
+             {/* {botones.map((item, i)=>(console.log("item ==>",i,":",item['textoboton'])
+             ))} */}
             <div id="col1" className={"col-botonera col-sm-3"}>
             {
-                botones.map((item, i)=>(
-                    (i <= 3)?
-                    <div class="dropdown">
-                    <button class=" btn-main btn-lg btn-block " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {item.nombre}  <span className="float-right">  <FontAwesomeIcon icon={faCaretDown} size="1x" /></span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item menu-lateral" href="#">Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item menu-lateral" href="#">Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>
-                    </div>
+                botones.map((item, i)=>(               
+                    (i < 3)?
+                    <div className="dropdown">
+                        <button className=" btn-main btn-lg btn-block " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {item['textoboton']}  <span className="float-right">  <FontAwesomeIcon icon={faCaretDown} size="1x" /></span>
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item menu-lateral" href="www.nada.com"  onClick={props.handleCargarComponentes} data-referencia={item['opciones'][0]['ref']}>Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a>
+                            <div className="dropdown-divider"></div>
+                            <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} data-referencia={item['opciones'][1]['ref']}>Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>
+                        </div>
                     </div>
                     :
-                    <button onClick={props.handleCargarComponentes} value={i}  id={"btn"+i} className="btn-main btn-lg btn-block" key={"btn"+i} name="botones" >  {item.nombre}  </button>
+                    <button onClick={props.handleCargarComponentes} value={item['ref']}  id={"btn"+item['ref']} className="btn-main btn-lg btn-block" key={"btn"+item['ref']} name="botones" >  {item['textoboton']}  </button>
                     )
                 )
             }
