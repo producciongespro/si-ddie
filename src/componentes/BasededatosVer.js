@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import obtener from '../modulos/obtener';
-import Cintillo from '../modulos/Cintillo';
 import InputItem from './InputItem';
 import moment from 'moment';
 import 'moment/locale/es';
