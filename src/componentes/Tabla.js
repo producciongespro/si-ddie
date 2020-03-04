@@ -6,12 +6,13 @@ function Tabla(props) {
             <thead>
                 <tr>
                     <th className="text-center" scope="col">#</th>
-                    <th className="text-center" scope="col">Nombre</th>
-                    {
+                    <th className="text-center" scope="col">Tipo intervención</th>
+                    {/* {
                         props.modo === "papelera" &&                    
-                        <th className="text-center" scope="col"> Asignatura </th>                        
-                    }
-                    <th className="text-center" scope="col">Año</th>                                                 
+                        <th className="text-center" scope="col">Tipo solicitante </th>                        
+                    } */}
+                    <th className="text-center" scope="col">Tipo solicitante</th>                                                 
+                    <th className="text-center" scope="col">Tipo solicitud</th>  
                     {
                         props.modo === "visor" &&                    
                         <th  className="text-center" scope="col"> Editar </th>
@@ -35,7 +36,7 @@ function Tabla(props) {
                     props.array !== null &&
                     (
                         props.array.map((item, i) => (
-                            <tr key={"recurso" + i}>
+                            <tr key={"item" + i}>
                                 <th scope="row">{i + 1}</th>
                                 <td >{item.nombre}</td>
                                 {
@@ -46,12 +47,12 @@ function Tabla(props) {
                                 }
                                 <td className="text-center" >{item.anno}</td>
  
-                                {
+                                {/* {
                                     props.modo === "papelera" &&   
                                     <td className="text-center">
                                             <i id={item.id} onClick={props.handleRecuperarRecurso} className="fas fa-recycle"></i>
                                     </td>                                    
-                                } 
+                                }  */}
                                 {
                                     props.modo === "visor" &&   
                                      <td>

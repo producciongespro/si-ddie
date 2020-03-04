@@ -11,7 +11,7 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
-export default function Consultas() {
+export default function ConsultasVer() {
 
 
   const { register, handleSubmit, errors, clearError } = useForm();
@@ -53,7 +53,7 @@ export default function Consultas() {
     e.target.reset(); // reset after form submit
 
 };
-// console.log("errors",errors);
+console.log("errors",errors);
 
   useEffect(() => {
     //Acción que se ejecuta una vez que se monta el componente
@@ -119,7 +119,7 @@ export default function Consultas() {
       (
         <div className="col-12">
           <form onSubmit={handleSubmit(onSubmit)}>
-          <h1 className="header-1">Agregar consulta</h1><hr/>
+          <h1 className="header-1">Consultas</h1><hr/>
             <div className="row">
               <div className="form-group col-sm-12 ">
                 <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label>

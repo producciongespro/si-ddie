@@ -82,7 +82,7 @@ export default function Loguin() {
             </div>
             <div className="row">
               <div className="col-md-12">
-                <input className="btn btn-ingreso float-right" type="submit" value="Guardar registro" />
+                <input className="btn btn-ingreso float-right" type="submit" value="Enviar" />
               </div>
             </div>
         </form>

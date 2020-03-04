@@ -15,7 +15,7 @@ export default function Menu(props) {
   // const llamaCreditos  = (e) => { 
   //   props.handleCargarComponentes()
   //  }
-  console.log("usuario desde MENU",usuario.correo);
+  // console.log("usuario desde MENU",usuario.correo);
   const handlerCerrarSesion = (e) => {    
     var datosUsuario = {
       correo: "",

@@ -292,9 +292,8 @@ body
   width: 1.625em!important;
 }
 .btn-main.inactivo {
-  color: #e74803 !important;
-  text-shadow: 2px 2px 2px #070707;
-  font-weight: bold;
+  color: #c9c6c5 !important;
+  text-shadow: 2px 2px 2px  #000;
 }
 .btn-group-lg>.btn, .btn-lg {
   padding: .2rem 1rem;

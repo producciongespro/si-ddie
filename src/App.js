@@ -53,19 +53,13 @@ function App() {
 // }
 
 
-const handleCargarComponentes = (e) => {    
-  console.log("e.target", e.target);
-  console.log("ID del target", e.target.id);
+const handleCargarComponentes = (e) => {     
   
-  
-  
-   if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
-    console.log("entre al if, valor dataset", e.target.dataset.referencia);
-    
-    e.preventDefault();
-    setComponente( componentes[parseInt(e.target.dataset.referencia)] );
-    console.log( "componentes[e.target.dataset.componente]", componentes[e.target.dataset.referencia] );
-    
+     if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
+    // console.log("entre al if, valor dataset", e.target.dataset.referencia);
+     e.preventDefault();
+     setComponente( componentes[parseInt(e.target.dataset.referencia)] );
+    // console.log( "componentes[e.target.dataset.componente]", componentes[e.target.dataset.referencia] );
   }
   else {
     console.log("componentes[e.target.value] ", componentes[e.target.value] );
@@ -77,9 +71,7 @@ const handleCargarComponentes = (e) => {
     
   for (var i = 0; i < btns.length; i++) {
       var element = btns[i];
-      if (element.id[0] === e.target.id[0]){
-        console.log("si son iguales");
-        
+      if (element.id[0] === e.target.id[0]){        
         element.classList.add("inactivo");
       }
       else {
@@ -122,7 +114,7 @@ const handleCargarComponentes = (e) => {
               <div className="contModal row">
                 <div className="col-12">              </div>
               </div>
-            {console.log("usuario datos posteriores", usuario)}          
+            {/* {console.log("usuario datos posteriores", usuario)}           */}
           </React.Fragment>
       }
       </MyContext.Provider>
