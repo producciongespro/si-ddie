@@ -21,17 +21,17 @@ function MenuBotones (props) {
                 botones.map((item, i)=>(               
                     (i < 3)?
                     <div className="dropdown">
-                        <button className=" btn-main btn-lg btn-block " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button className=" btn-main btn-lg btn-block " type="button" id={item['botonprincipal']+"dropdownMenuButton"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  name="botones">
                         {item['textoboton']}  <span className="float-right">  <FontAwesomeIcon icon={faCaretDown} size="1x" /></span>
                         </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item menu-lateral" href="www.nada.com"  onClick={props.handleCargarComponentes} data-referencia={item['opciones'][0]['ref']}>Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a>
+                        <div className="dropdown-menu" aria-labelledby={item['botonprincipal']+"dropdownMenuButton"}>
+                            <a className="dropdown-item menu-lateral" href="www.nada.com"  onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][0]['ref']}>Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a>
                             <div className="dropdown-divider"></div>
-                            <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} data-referencia={item['opciones'][1]['ref']}>Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>
+                            <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][1]['ref']}>Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>
                         </div>
                     </div>
                     :
-                    <button onClick={props.handleCargarComponentes} value={item['ref']}  id={"btn"+item['ref']} className="btn-main btn-lg btn-block" key={"btn"+item['ref']} name="botones" >  {item['textoboton']}  </button>
+                    <button onClick={props.handleCargarComponentes} value={item['ref']}  id={item['botonprincipal']} className="btn-main btn-lg btn-block" key={"btn"+item['ref']} name="botones" >  {item['textoboton']}  </button>
                     )
                 )
             }

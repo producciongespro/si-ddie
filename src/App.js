@@ -26,7 +26,7 @@ import "./css/master.css";
 import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 
-const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion />,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
+const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion/>,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
 
 function App() {
 
@@ -55,6 +55,9 @@ function App() {
 
 const handleCargarComponentes = (e) => {    
   console.log("e.target", e.target);
+  console.log("ID del target", e.target.id);
+  
+  
   
    if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
     console.log("entre al if, valor dataset", e.target.dataset.referencia);
@@ -69,15 +72,18 @@ const handleCargarComponentes = (e) => {
     
     setComponente( componentes[e.target.value] );  
   }  
-  // setComponente( componentes[e.target.value] );
   var btns = document.getElementsByName("botones"); 
+  // console.log("btns", btns);
+    
   for (var i = 0; i < btns.length; i++) {
       var element = btns[i];
-      if (element.value === e.target.value){
-        element.classList.add("inactivo","btn", "disabled");
+      if (element.id[0] === e.target.id[0]){
+        console.log("si son iguales");
+        
+        element.classList.add("inactivo");
       }
       else {
-        element.classList.remove("inactivo","btn", "disabled");
+        element.classList.remove("inactivo");
       }
     }
 }

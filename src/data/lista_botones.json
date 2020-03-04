@@ -1,6 +1,7 @@
  [
     {   
         "textoboton": "Consultas",
+        "botonprincipal": "0",
         "opciones": [
             {"ref":"0"},
             {"ref":"1"}          
@@ -8,6 +9,7 @@
     },
     {   
         "textoboton": "Base de datos",
+        "botonprincipal": "1",
         "opciones": [
             {"ref":"2"},
             {"ref":"3"}          
@@ -15,6 +17,7 @@
     },
     {   
         "textoboton": "Producción",
+        "botonprincipal": "2",
         "opciones": [
             {"ref":"4"},
             {"ref":"5"}          
@@ -22,14 +25,17 @@
     },
     {
         "textoboton": "Estadísticas",
+        "botonprincipal": "3",
         "ref": "6"
     },
     {
-        "textoboton": "Bitacora",
+        "textoboton": "Bitácora",
+        "botonprincipal": "4",
         "ref": "7"
     },
     {
         "textoboton": "Calendario",
+        "botonprincipal": "5",
         "ref": "8"
     }
 ]
