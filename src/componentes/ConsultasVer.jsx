@@ -226,3 +226,11 @@ const handleEliminarConsulta = (e) => {
     
     );
 }
+
+// consultasgenerales script INNER JOIN
+// if ($tabla === 'consultas'){
+//   $sql="SELECT consultas.id_intervencion, tipo_intervencion.tipo AS tipo_intervencion  FROM consultas INNER JOIN tipo_intervencion ON tipo_intervencion.id= consultas.id_intervencion";
+// }
+// else {
+//   $sql="SELECT * FROM $tabla";     
+// }
