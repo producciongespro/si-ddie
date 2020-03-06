@@ -2,7 +2,7 @@ function filtrar (array, llave, valor ) {
     
     //console.log("*********Filtro por criterio llave", llave);    
     //console.log("******Valor de la llave", valor );    
-    console.log("aaray recibido para filtrar", array);         
+    console.log("ARRAY ORIGINAL (PARA FILTRAR)", array);         
 
     
     if (array.length > 0) {

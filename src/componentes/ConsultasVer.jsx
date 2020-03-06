@@ -16,6 +16,13 @@ const referencias = referenciasJson[0];
 
 var intervenciones = null;
 
+  // carga de los JSON de los selects
+  var urlConsultas = referencias.consultageneral+"?tabla=consultas",
+  urlIntervencion = referencias.consultageneral+"?tabla=tipo_intervencion",
+  urlSolicitante = referencias.consultageneral+"?tabla=tipo_solicitante",
+  urlSolicitud= referencias.consultageneral+"?tabla=tipo_solicitud",    
+  urlRespuesta = referencias.consultageneral+"?tabla=tipo_respuesta";
+
 export default function ConsultasVer() {
 
   const [datosFiltrados, setDatosFiltrados] = useState(null);
@@ -42,112 +49,81 @@ export default function ConsultasVer() {
   //Estado para controlar la carga del json respectivo
   const [id_solicitud, setIdSolicitud] = useState(null);
 
-  //Estado que maneja  la seleccion del usuario
-  const [solicitud, setSolicitud] = useState(null);
+  // //Estado que maneja  la seleccion del usuario
+  // const [solicitud, setSolicitud] = useState(null);
 
   //Estado para controlar la carga del json respectivo
   const [tipo_solicitante, setTipoSolicitante] = useState(null);
   //Estado que maneja  la seleccion del usuario
-  const [solicitante, setSolicitante] = useState(null);
+  // const [solicitante, setSolicitante] = useState(null);
 
   //Estado para controlar la carga del json respectivo
   const [tipo_respuesta, setTipoRespuesta] = useState(null);      
-  //Estado que maneja  la seleccion del usuario
-  const [respuesta, setRespuesta] = useState(null);      
+  // //Estado que maneja  la seleccion del usuario
+  // const [respuesta, setRespuesta] = useState(null);      
 
 
+  async function obtenerDatos() {
+    // 1 Consultas       
+    let response1 = await fetch(urlConsultas);        
+    console.log("response1",response1);    
+    const tmpConsultas = await response1.json()
+    setConsultas(tmpConsultas);  
+    setDatosFiltrados(tmpConsultas);    
+    
 
-  useEffect(() => {
-    //Acción que se ejecuta una vez que se monta el componente
-    // console.log("Componente montado");
+    // 2 Intervención
+    let response2 = await fetch(urlIntervencion);    
+    // datosJson1 = await response1.json();
+    // setConsultas(datosJson1);
+    setTipoIntervencion(await response2.json());
 
-    // carga de los JSON de los selects
-    let urlConsultas = referencias.consultageneral+"?tabla=consultas",
-        urlIntervencion = referencias.consultageneral+"?tabla=tipo_intervencion",
-        urlSolicitante = referencias.consultageneral+"?tabla=tipo_solicitante",
-        urlSolicitud= referencias.consultageneral+"?tabla=tipo_solicitud",    
-        urlRespuesta = referencias.consultageneral+"?tabla=tipo_respuesta";
+    //3 Solicitante
+    let response3 = await fetch(urlSolicitante);    
+    // datosJson1 = await response1.json();
+    // setConsultas(datosJson1);
+    setTipoSolicitante(await response3.json());
 
+    // 4 Solicitud
+    let response4 = await fetch(urlSolicitud);    
+    // datosJson1 = await response1.json();
+    // setConsultas(datosJson1);
+    setIdSolicitud(await response4.json());
 
-    obtener(urlIntervencion, function (data) {
-      // console.log("datos", data);
-      setTipoIntervencion(data);
-      //Carga el segundo select en el callback del primer "obtner":
-      obtener(urlSolicitante, function (data) {  
-          //Callback del segundo obtener
-          setTipoSolicitante(data);
-          //Activa cargado para que meuistre el formulario:
-          obtener(urlSolicitud, function (data) {  
-            //Callback del segundo obtener
-            setIdSolicitud(data);
-            obtener(urlRespuesta, function (data) {  
-              //Callback del segundo obtener
-                setTipoRespuesta(data);
-                obtener(urlConsultas, function (data) {  
-                  console.log("data consultas", data);
-                  
-                  console.log("url consultas",urlConsultas);
-                  
-                  //Callback del segundo obtener
-                    setConsultas(data);
-                    setCargado(true)
-                  });        
-            });
-          });
-        })
-      })
-  }, []);
+    // 4 Respuesta
+    let response5 = await fetch(urlRespuesta);    
+    // datosJson1 = await response1.json();
+    // setConsultas(datosJson1);
+    setTipoRespuesta(await response5.json());
+    // console.log("CONSULTAS",consultas);
+    
+    //  setDatosFiltrados(consultas);    
+    setCargado(true);    
+  };
+  
 
+    useEffect(() => {
+      console.log("comp montado");      
+      obtenerDatos();
+    },[])
+
+  
   const handlerSeleccionarIntervencion = (e) => {
 
-
-    
     var idIntervencion = parseInt(e.target.value);
     
-    // intervenciones = filtrar(tipoIntervencion, "id", idIntervencion)[0].asignaturas;
     intervenciones = filtrar(consultas, "id_intervencion", idIntervencion);
-    console.log("intervenciones",intervenciones);        
-    //Filtra array por nivel y lo carga en el estado datosFiltrados:
-    // datosPorNivel = filtrar(datosJson, "id_nivel", idNivel);
+    console.log("intervenciones FILTRADO",intervenciones);        
 
     setDatosFiltrados(intervenciones);
-
-    let arrConsulta = intervenciones;
-    // console.log("arrConsulta", arrConsulta[]);
-    
-    // for (const prop in arrConsulta) {
-    //   console.log(`arrConsulta[0].${prop} = ${arrConsulta[0][prop]}`);
-    // }
-    for (let index = 0; index < arrConsulta.length; index++) {
-      const element = arrConsulta[index].id_intervencion;
-      // console.log("idintervencion",index,":", element);
-      // console.log(tipo_intervencion);
-      const array = tipo_intervencion;
-      // for (let index = 0; index < array.length; index++) {
-      //   const element = array[index];
-      //   var x = element.indexOf(element);     
-      //   console.log("X", x);
-        
-      }
-      let idFiltrado =  arrConsulta[0].id_intervencion
-      console.log("tipo_intervnecion", tipo_intervencion);
-      
-      console.log("lo encontró en: ",tipo_intervencion.map(item => item.id).indexOf(idFiltrado));
-      var posElement = tipo_intervencion.map(item => item.id).indexOf(idFiltrado);
-      if(posElement === -1){
-        console.log("Elemento no existe");        
-      }
-      else{
-      console.log("id: ",tipo_intervencion[posElement].id," nombre: ", tipo_intervencion[posElement].tipo);
-      }
-      
-      // array.indexOf(2);   
-      // var idx = array.indexOf(element);
-    // }
 }
+
 
 const handleEditarConsulta = (e) => {
   const id = e.target.id;
+  alert("Borrar!")
+  console.log("itemid", id);
+  
   // let arrConsulta = consultas;
   // for (const prop in arrConsulta) {
   //   console.log(`arrConsulta.${prop} = ${arrConsulta[prop]}`);
@@ -189,8 +165,10 @@ const handleEliminarConsulta = (e) => {
         <div className="col-12">
           <h1 className="header-1">Ver consultas</h1><hr/>
             <div className="row">
-              <div className="form-group col-sm-12 ">
-                <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label>
+              <div className="col-sm-8 input-group mb-3 input-group-sm">
+                <div className="input-group-prepend">
+                  <span className="font-len input-group-text">Tipo de Intervención</span>
+                </div>
                 <select className="custom-select"  key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
                 {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
                 <option value="" disabled>Seleccione...</option>
@@ -202,14 +180,34 @@ const handleEliminarConsulta = (e) => {
                   }
                 </select>
               </div>
-            </div>
+              </div>
+              
+              {/* <div className="form-group col-sm-6 ">
+                <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label> */}
+                {/* <select className="custom-select"  key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
+                {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
+                {/* <option value="" disabled>Seleccione...</option>
+                  {
+                      
+                      tipo_intervencion.map((item,i)=>(
+                      <option key={"intervencion"+i} value={item.id}>{item.tipo}</option>
+                      ))
+                  } */}
+                {/* </select>  */}
+              {/* </div>
+            </div> */}
+
+            {
+              console.log("datosFiltrados",datosFiltrados)
+              
+            }
             {
                 esperando ?
                     (
                         <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
                     ) :
                     (
-                        <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleShow={handleEditarConsulta} clase="table table-striped"  modo="visor"/>
+                        <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped"  modo="visor"/>
                     )
             }
 
@@ -226,11 +224,3 @@ const handleEliminarConsulta = (e) => {
     
     );
 }
-
-// consultasgenerales script INNER JOIN
-// if ($tabla === 'consultas'){
-//   $sql="SELECT consultas.id_intervencion, tipo_intervencion.tipo AS tipo_intervencion  FROM consultas INNER JOIN tipo_intervencion ON tipo_intervencion.id= consultas.id_intervencion";
-// }
-// else {
-//   $sql="SELECT * FROM $tabla";     
-// }

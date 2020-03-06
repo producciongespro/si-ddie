@@ -15,6 +15,7 @@ import Calendario  from './componentes/Calendario';
 import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
 import Menu from './componentes/Menu';
+import Bienvenida from './componentes/Bienvenida';
 
 import MyContext from './modulos/MyContext';
 
@@ -54,10 +55,11 @@ function App() {
 
 
 const handleCargarComponentes = (e) => {     
-  
+  console.log("componentes[e.target] ", componentes[e.target] );
+    e.preventDefault();
+
      if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
     // console.log("entre al if, valor dataset", e.target.dataset.referencia);
-     e.preventDefault();
      setComponente( componentes[parseInt(e.target.dataset.referencia)] );
     // console.log( "componentes[e.target.dataset.componente]", componentes[e.target.dataset.referencia] );
   }
@@ -101,7 +103,7 @@ const handleCargarComponentes = (e) => {
                   (
                     <React.Fragment>
                       <div id="col2" className={"visor "+colDos}>
-                        <Consultas/>
+                        <Bienvenida/>
                       </div>
                     </React.Fragment>
                   )

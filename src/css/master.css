@@ -13,6 +13,7 @@
   src: url("../fonts/poetsen_one/PoetsenOne-Regular.ttf");
 }
 
+@import url('https://fonts.googleapis.com/css?family=Tangerine&display=swap');
 
 /* figuras geométricas */
 .triangle-down {
@@ -49,6 +50,14 @@ body
   font-family: 'Fjalla One', sans-serif;
 }
 
+.texto-title {
+  font-family: 'Tangerine', cursive;
+  font-size: 6rem;
+}
+.texto-title-2 {
+  font-family: 'Tangerine', cursive;
+  font-size: 2rem;
+}
 .modal-content {
   background-color: #0D67B3!important;
 }
@@ -468,6 +477,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
   }
   .div-menu-1 {
     display: none!important;
+  }
+
+  .texto-title {
+    font-family: 'Tangerine', cursive;
+    font-size: 4rem;
+  }
+  .texto-title-2 {
+    font-family: 'Tangerine', cursive;
+    font-size: 1.5rem;
   }
   
 }
