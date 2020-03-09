@@ -466,13 +466,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
     font-size: 1rem!important;
     overflow: hidden;
   }
-  /* .botones {
-    display: block!important;
-  }
-  .botones-grandes {
-    display: none!important;
-  } */
-  .div-menu-2 {
+
+    .div-menu-2 {
     display: block!important;
   }
   .div-menu-1 {

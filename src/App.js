@@ -18,7 +18,7 @@ import Menu from './componentes/Menu';
 import Bienvenida from './componentes/Bienvenida';
 
 import MyContext from './modulos/MyContext';
-
+import useCurrentWitdh from './modulos/cambiancho';
 // import Inicio from './componentes/Inicio';
 
 
@@ -29,12 +29,17 @@ import  'pretty-checkbox/src/pretty-checkbox.scss';
 
 const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion/>,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
 
-function App() {
 
+function App() {
+  let width = useCurrentWitdh();
   // controla cantidades de columnas segun dispositivo
+
   const [colUno, setColUno] = useState("col-sm-3");
   const [colDos, setColDos] = useState("col-sm-9");
 
+  const [hideNav, setHideNav] = useState(null);
+    // save current window width in the state object
+  // const [width, setWidth] = useState(getWidth());
 
   const [usuario, setUsuario] = useState({correo:"", idUsuario:"",tipoUsuario:"", isAccesado: false});
   const value = { usuario, setUsuario };
@@ -43,9 +48,39 @@ function App() {
     
   const [componente, setComponente] = useState(null);
 
+  // function resizeListener () {
+  //       console.log("set resize listener");
+  //     setHideNav(window.innerWidth <= 760);
+  //     console.log("hideNav",hideNav);
+      
+  //     if(hideNav === 'true')
+  //      {
+  //       setColUno("col-sm-5");
+  //       setColDos("col-sm-7");
+  //     }
+  //     else {
+  //       setColUno("col-sm-3");
+  //       setColDos("col-sm-9");
+  //     }
+// }
   useEffect(() => {
-    //Acción que se ejecuta al montar el componente en el DOM
-}, []); 
+    
+    console.log("ANCHO", width);
+    if(width <= 760)
+         {
+           console.log("ENTRE A MENOR");
+           
+          setColUno("col-sm-5");
+          setColDos("col-sm-7");
+        }
+
+        else {
+          console.log("Entré a mayor");
+          
+          setColUno("col-sm-3");
+          setColDos("col-sm-9");
+        }
+}); 
 
 // const handleCargarComponentes2 =(e)=>{
 //   e.preventDefault();
@@ -53,6 +88,21 @@ function App() {
   
 // }
 
+
+
+
+// const handleResize = () => {     
+//   this.setState({hideNav: window.innerWidth <= 760});
+//   // console.log("ancho menor de 760?",this.state.hideNav);
+//   if (this.state.hideNav) {
+//     this.setState({colUno: "col-sm-5"});
+//     this.setState({colDos: "col-sm-7"});
+//   }
+//   else {
+//     this.setState({colUno: "col-sm-3"});
+//     this.setState({colDos: "col-sm-9"});
+//   }
+// }
 
 const handleCargarComponentes = (e) => {     
   console.log("componentes[e.target] ", componentes[e.target] );
@@ -95,7 +145,7 @@ const handleCargarComponentes = (e) => {
                   componente !== null ?
                   (
                     <React.Fragment>
-                      <div id="col2" className={"visor "+colDos}>
+                      <div id="col2" className={"visor "+colUno}>
                         {componente}
                       </div>
                     </React.Fragment>
