@@ -1,9 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
+import { Button, Modal } from 'react-bootstrap';
+import Consultas1 from './Consultas1';
 
 import Tabla from './Tabla';
 
 import MyContext from '../modulos/MyContext';
+import Modalc from './Modalc';
 
 // import enviar from '../modulos/enviar';
 import obtener from '../modulos/obtener';
@@ -14,6 +17,8 @@ import referenciasJson from '../data/referencias.json';
 
 const referencias = referenciasJson[0];
 
+var tmpConsultas= [],
+    tmpEditar =[];
 var intervenciones = null;
 
   // carga de los JSON de los selects
@@ -46,6 +51,11 @@ export default function ConsultasVer() {
   //Estado que maneja  la seleccion del usuario
   // const [intervencion, setIntervencion] = useState(null);
 
+  //Estado para ocultar o mostrar un modal
+  const [show, setShow] = useState(false);
+  //cerrar modal
+  const handleClose = () => setShow(false);
+
   //Estado para controlar la carga del json respectivo
   const [id_solicitud, setIdSolicitud] = useState(null);
 
@@ -62,13 +72,20 @@ export default function ConsultasVer() {
   // //Estado que maneja  la seleccion del usuario
   // const [respuesta, setRespuesta] = useState(null);      
 
+  // registro de consulta a editar
+  const [consultaEditar,setConsultaEditar] = useState(null);
+
+  //Estado para ocultar o mostrar un modal
+  // const [show, setShow] = useState(false);
 
   async function obtenerDatos() {
     // 1 Consultas       
     let response1 = await fetch(urlConsultas);        
-    console.log("response1",response1);    
-    const tmpConsultas = await response1.json()
+    // console.log("response1",response1);    
+    tmpConsultas = await response1.json()
     setConsultas(tmpConsultas);  
+    console.log("temporal consultas", tmpConsultas);
+    
     setDatosFiltrados(tmpConsultas);    
     
 
@@ -102,38 +119,41 @@ export default function ConsultasVer() {
   };
   
 
+    // useEffect(() => {
+    //   // console.log("comp montado");      
+    //   obtenerDatos();
+    // },[])
+
     useEffect(() => {
       console.log("comp montado");      
       obtenerDatos();
+      // obtenerDatos(function(){
+      //   // setDatosFiltrados(consultas);
+      //   // console.log("datos fitlrado desde effect", datosFiltrados);
+      //           // setCargado(true);    
+      // });
     },[])
-
   
   const handlerSeleccionarIntervencion = (e) => {
 
     var idIntervencion = parseInt(e.target.value);
     
     intervenciones = filtrar(consultas, "id_intervencion", idIntervencion);
-    console.log("intervenciones FILTRADO",intervenciones);        
+    // console.log("intervenciones FILTRADO",intervenciones);        
 
     setDatosFiltrados(intervenciones);
 }
 
 
 const handleEditarConsulta = (e) => {
-  const id = e.target.id;
-  alert("Borrar!")
-  console.log("itemid", id);
+  const id = parseInt(e.target.id);
+  // alert("Editar")
+  console.log("itemid EDICION", id);
+  tmpEditar = filtrar(tmpConsultas, "id", id);
+  setConsultaEditar(tmpEditar[0]);
+  console.log("CONSULTA A EDITAR", tmpEditar);
+  setShow(true)
   
-  // let arrConsulta = consultas;
-  // for (const prop in arrConsulta) {
-  //   console.log(`arrConsulta.${prop} = ${arrConsulta[prop]}`);
-  // }
-  //console.log("idItem", id);
-  // const tmpConsulta = filtrar(datosPorNivel, "id", id);
-  // //console.log("tmpRecursos", tmpRecurso[0]);
-  // setDetalleRecurso(tmpConsulta[0]);
-
-  // setShow(true);
 }
 
 const handleEliminarConsulta = (e) => {
@@ -180,27 +200,7 @@ const handleEliminarConsulta = (e) => {
                   }
                 </select>
               </div>
-              </div>
-              
-              {/* <div className="form-group col-sm-6 ">
-                <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label> */}
-                {/* <select className="custom-select"  key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
-                {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
-                {/* <option value="" disabled>Seleccione...</option>
-                  {
-                      
-                      tipo_intervencion.map((item,i)=>(
-                      <option key={"intervencion"+i} value={item.id}>{item.tipo}</option>
-                      ))
-                  } */}
-                {/* </select>  */}
-              {/* </div>
-            </div> */}
-
-            {
-              console.log("datosFiltrados",datosFiltrados)
-              
-            }
+             </div>
             {
                 esperando ?
                     (
@@ -210,6 +210,22 @@ const handleEliminarConsulta = (e) => {
                         <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped"  modo="visor"/>
                     )
             }
+               { <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edición</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {
+                          <Consultas1 valoresIniciales ={tmpEditar} />
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={handleClose}>
+                            <i className="far fa-save"></i>
+                        </Button>
+                    </Modal.Footer>
+                      </Modal> }
+
 
       </div>
       )

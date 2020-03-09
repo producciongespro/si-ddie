@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect}  from 'react';
 //componentes
 
 import Ingreso from './componentes/Ingreso';
-import Consultas from './componentes/Consultas';
+import Consultas from './componentes/Consultas1';
 import ConsultasVer from './componentes/ConsultasVer';
 import Basededatos  from './componentes/Basededatos.js';
 import BasededatosVer  from './componentes/BasededatosVer.js';
@@ -48,35 +48,16 @@ function App() {
     
   const [componente, setComponente] = useState(null);
 
-  // function resizeListener () {
-  //       console.log("set resize listener");
-  //     setHideNav(window.innerWidth <= 760);
-  //     console.log("hideNav",hideNav);
-      
-  //     if(hideNav === 'true')
-  //      {
-  //       setColUno("col-sm-5");
-  //       setColDos("col-sm-7");
-  //     }
-  //     else {
-  //       setColUno("col-sm-3");
-  //       setColDos("col-sm-9");
-  //     }
-// }
   useEffect(() => {
     
     console.log("ANCHO", width);
     if(width <= 760)
-         {
-           console.log("ENTRE A MENOR");
-           
+         {           
           setColUno("col-sm-4");
           setColDos("col-sm-8");
         }
 
         else {
-          console.log("Entré a mayor");
-          
           setColUno("col-sm-3");
           setColDos("col-sm-9");
         }
@@ -144,7 +125,6 @@ const handleCargarComponentes = (e) => {
               <div className="contModal row">
                 <div className="col-12">              </div>
               </div>
-            {/* {console.log("usuario datos posteriores", usuario)}           */}
           </React.Fragment>
       }
       </MyContext.Provider>
