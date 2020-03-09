@@ -70,8 +70,8 @@ function App() {
          {
            console.log("ENTRE A MENOR");
            
-          setColUno("col-sm-5");
-          setColDos("col-sm-7");
+          setColUno("col-sm-4");
+          setColDos("col-sm-8");
         }
 
         else {
@@ -81,28 +81,6 @@ function App() {
           setColDos("col-sm-9");
         }
 }); 
-
-// const handleCargarComponentes2 =(e)=>{
-//   e.preventDefault();
-//   console.log( "Componente:", e.target.dataset.componente);
-  
-// }
-
-
-
-
-// const handleResize = () => {     
-//   this.setState({hideNav: window.innerWidth <= 760});
-//   // console.log("ancho menor de 760?",this.state.hideNav);
-//   if (this.state.hideNav) {
-//     this.setState({colUno: "col-sm-5"});
-//     this.setState({colDos: "col-sm-7"});
-//   }
-//   else {
-//     this.setState({colUno: "col-sm-3"});
-//     this.setState({colDos: "col-sm-9"});
-//   }
-// }
 
 const handleCargarComponentes = (e) => {     
   console.log("componentes[e.target] ", componentes[e.target] );
@@ -139,13 +117,13 @@ const handleCargarComponentes = (e) => {
         usuario.isAccesado ?
           <React.Fragment>
               <Menu  handleCargarComponentes={handleCargarComponentes}   />
-              <div className="row">
-                <MenuBotones handleCargarComponentes={handleCargarComponentes}  />  
+              <div className={"row "}>
+                <MenuBotones handleCargarComponentes={handleCargarComponentes} col={colUno} />  
                 {
                   componente !== null ?
                   (
                     <React.Fragment>
-                      <div id="col2" className={"visor "+colUno}>
+                      <div id="col2" className={"visor "+colDos}>
                         {componente}
                       </div>
                     </React.Fragment>

@@ -16,7 +16,7 @@ function MenuBotones (props) {
         <React.Fragment>
              {/* {botones.map((item, i)=>(console.log("item ==>",i,":",item['textoboton'])
              ))} */}
-            <div id="col1" className={"col-botonera col-sm-3"}>
+            <div id="col1" className={"col-botonera "+props.col}>
             {
                 botones.map((item, i)=>(               
                     (i < 3)?

@@ -459,15 +459,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
   }
 }
 
-@media only screen and (max-width: 700px) 
+@media only screen and (min-width: 561px) and (max-width: 700px) 
 {
   .btn-main{
     font-weight: 400;
     font-size: 1rem!important;
     overflow: hidden;
   }
-
-    .div-menu-2 {
+}
+@media only screen and (max-width: 700px) 
+{
+  .div-menu-2 {
     display: block!important;
   }
   .div-menu-1 {
@@ -483,4 +485,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
     font-size: 1.5rem;
   }
   
+}
+@media only screen and (max-width: 560px) 
+{
+  .btn-main{
+    font-size: 1.3rem!important;
+  }
 }
