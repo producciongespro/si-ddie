@@ -14,7 +14,7 @@ const referencias = referenciasJson[0];
 
 
 export default function Consultas1(props) {
-  console.log("registro a editar", props.valoresIniciales);
+  console.log("registro a editar", props.valoresIniciales[0]);
 
   const { register, handleSubmit, errors, clearError } = useForm();
   
@@ -129,7 +129,7 @@ export default function Consultas1(props) {
                 <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label>
                 <select className="custom-select"  key="iditervencion" defaultValue={props.valoresIniciales.id_intervencion} onChange={handlerSeleccion} name="id_intervencion" ref={register({required: true})}>
                 {errors.id_intervencion && <p className="errors">Este campo es requerido</p>}
-                // <option value="" disabled>Seleccione...</option>
+                <option value="" disabled>Seleccione...</option>
                   {
                       
                       tipo_intervencion.map((item,i)=>(
@@ -164,7 +164,7 @@ export default function Consultas1(props) {
             <div className="row">
               <div className="form-group col-sm-12 ">
                 <label className="font-len" htmlFor="id_solicitud">Tipo de solicitud:</label>
-                <select className="custom-select" key="idsolicitud" defaultValue={props.valoresIniciales.solicitante_otro} onChange={handlerSeleccion} name="id_solicitud" ref={register({required: true})}>
+                <select className="custom-select" key="idsolicitud" defaultValue={props.valoresIniciales.id_solicitud} onChange={handlerSeleccion} name="id_solicitud" ref={register({required: true})}>
                 {errors.id_solicitud && <p className="errors">Este campo es requerido</p>}
                 <option value="" disabled>Seleccione...</option>
                   {
@@ -186,7 +186,7 @@ export default function Consultas1(props) {
           <div className="row">
             <div className="form-group col-sm-12">
               <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
-              <input  type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" faultValue={props.valoresIniciales.fecha_solicitud} placeholder="Digite la fecha" ref={register({required: true})} />
+              <input  type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" defaultValue={props.valoresIniciales.fecha_solicitud} placeholder="Digite la fecha" ref={register({required: true})} />
               {errors.fecha_solicitud && <p className="errors">Este campo es requerido</p>}
             </div>
           </div>

@@ -34,9 +34,9 @@ class Ingreso extends Component {
     return ( 
       
       <div>
-        <div className="modal fade show element-top" id="modalScreen"   >      
+        <div className="modal fade show element-top modal-ingreso" id="modalScreen"   >      
         <div className={modalAncho} role="document">
-          <div className="modal-content animated bounceInDown">
+          <div className="modal-content modal-content-ingreso animated bounceInDown">
 
             <div className="col-12 col-logo">
               {/* <Imagen classElement="logoMep" origen= {referencias.img+"logo_mep.png"} /> */}
@@ -64,7 +64,7 @@ class Ingreso extends Component {
         </div>
       </div>
 
-      <div className="modal-backdrop show"></div>
+      <div className="modal-backdrop-ingreso modal-backdrop show"></div>
     </div>
      );
   }

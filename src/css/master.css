@@ -45,7 +45,7 @@ body
   font-family: 'Convergence', sans-serif;
   font-size: 1.7rem;
 }
-.modal {
+.modal.modal-ingreso{
   display: block!important;
   font-family: 'Fjalla One', sans-serif;
 }
@@ -58,10 +58,10 @@ body
   font-family: 'Tangerine', cursive;
   font-size: 2rem;
 }
-.modal-content {
+.modal-content-ingreso.modal-content{
   background-color: #0D67B3!important;
 }
-.modal-backdrop.show {
+.modal-backdrop-ingreso.modal-backdrop.show {
   opacity: 9!important;
   background: url('../images/noisy2.png') repeat center center;
 }
