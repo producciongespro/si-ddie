@@ -6,12 +6,13 @@ import Tabla from './Tabla';
 
 import MyContext from '../modulos/MyContext';
 
-import obtenerJson from '../modulos/obtenerJson';
-import obtener from '../modulos/obtener';
 
 import enviar from '../modulos/enviar';
 import filtrar from '../modulos/filtrar';
 
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.min.css';
+import 'alertifyjs/build/css/themes/default.min.css';
 
 // import axios from 'axios';
 import mostrarAlerta from './Alerta.js'
@@ -173,27 +174,34 @@ useEffect(() => {
   }
 
   const handleEliminarConsulta = (e) => {
-    const id = e.target.id;
-    // const data = { "id": id, "id_usuario": "106" };
+    const idConsulta = e.target.id;
 
-    // alertify.confirm("¿Desea realmente eliminar el recurso?",
-    //     function () {
-    //         enviar(config.servidor + "Faro/webservices/eliminar_recurso.php", data, function (param) {
-    //             //console.log("param",param);  
-    //             alertify.success(param);
-    //             setEsperando(true);
-    //             obtenerDatos(function () {
-    //                 //Array filtrado Por nivel
-    //                 datosPorNivel = filtrar(datosJson, "id_nivel", idNivel);
-    //                 //Asignatura
-    //                 filtrarPorAsignatura();
-    //                 setEsperando(false);
-    //             });
-    //         })
-    //     });
+    alertify.confirm("¿Desea realmente eliminar el recurso?",
+      function () {    
+        var data = {};
+        let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
+        // console.log("url desde submit", url);
+        
+        data.borrado = 1;   
+        // console.log("DATA",data);
+        
+
+        enviar(url, data, function (resp) {
+                mostrarAlerta("Alerta", resp.msj);
+                actualizaDatos(function () {
+                  if(intervencionId){
+                    tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
+                  }
+                  else {
+                    tmpEditar=tmpConsultas;
+                  }
+                  console.log("LARGO", tmpEditar.lenght);        
+                  setDatosFiltrados(tmpEditar);
+                  setEsperando(false);
+            })
+        });
+    });
   }
-
-
 
   return (
     datosListos ?
@@ -240,7 +248,8 @@ useEffect(() => {
               {
                 <>
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    {tmpEditar &&
+                    {/* {tmpEditar !== null || tmpEditar[0] !== undefined  && */}
+                    {(tmpEditar && tmpEditar[0]) &&
                       <React.Fragment>
                         <div className="row">
                           <div className="form-group col-sm-6 ">
