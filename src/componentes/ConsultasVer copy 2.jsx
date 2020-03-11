@@ -113,17 +113,19 @@ export default function ConsultasVer() {
     // e.target.reset(); // reset after form submit
 
   };
-  async function obtenerDatosSelect() {
+  async function obtenerDatos() {
     // Obtiene los datos de los select's
 
 
     // // 1 Consultas       
-    let response1 = await fetch(urlConsultas);
-    // console.log("response1",response1);    
-    tmpConsultas = await response1.json()
+    // let response1 = await fetch(urlConsultas);
+    // // console.log("response1",response1);    
+    // tmpConsultas = await response1.json()
 
-    setConsultasDatos(tmpConsultas);
+    // setConsultas(tmpConsultas);
     // // console.log("temporal consultas", tmpConsultas);
+
+    // setDatosFiltrados(tmpConsultas);
 
     // 2 Intervención
     let response2 = await fetch(urlIntervencion);
@@ -147,25 +149,34 @@ export default function ConsultasVer() {
     setDatosListos(true);
   };
 
-  async function obtenerDatos(cb) {
-    datosJson = await obtenerJson(urlConsultas);
-    cb();        
-}
+//   async function obtenerDatos2(cb) {
+//     datosJson = await obtenerJson(config.servidor + "faro/webservices/obtener_recursos.php");
+//     //console.log("datosJson", datosJson);
+//     cb()
+//     //TODO: niveles = await obtener("http://localhost/Faro-Admin/src/data/niveles.php")        
+// }
 
+  // async function obtenerDatosConsulta(cb) {
+  //   console.log("en obtenerdatos consulta");
+    
+  //   // carga la tabla de consultas completa   en un temporal y luego al estado
+  //   // let response1 = await fetch(urlConsultas);
+  //   tmpConsultas = await obtenerJson(urlConsultas);
+  //   console.log("tmpConsultas", tmpConsultas);
+  //   setConsultasDatos(tmpConsultas);
+  //   console.log("datosCOnsultas", consultasDatos);
+    
+  //   cb();
+  // };
 
-useEffect(() => {
-    console.log("Componente montado");
-    //console.log("Usuario", usuario.idUsuario);        
-    obtenerDatos(function () {
-        setDatosListos(true);
-    });
-}, []);
+  // useEffect(() => {
+  //   // console.log("comp montado");      
+  //   obtenerDatos();
+  // },[])
 
   useEffect(() => {
-    // console.log("comp montado");      
-    obtenerDatos();
-  },[])
-
+      obtenerDatos();
+  }, [])
 
   const handlerSeleccionarIntervencion = (e) => {
 
