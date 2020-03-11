@@ -452,6 +452,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
   color:black;
 }
 
+.fas-editar {
+  cursor: pointer;
+}
+
+.fas-editar:hover {
+  color: white;
+  background-color: #1384c6;  
+}
 @media only screen and (max-width: 992px) 
 {
   .navbar-light .navbar-nav .nav-link {

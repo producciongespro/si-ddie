@@ -26,7 +26,8 @@ var tmpConsultas = null,
   idSolicitud = null,
   tipoRespuesta = null,
   tmpEditar = null,
-  intervenciones = null;
+  intervenciones = null,
+  intervencionId = null;
 
 // carga de los JSON de los selects
 var urlConsultas = referencias.consultageneral + "?tabla=consultas",
@@ -45,9 +46,6 @@ export default function ConsultasVer() {
   const { register, handleSubmit, errors, clearError } = useForm();
 
   const { usuario, setUsuario } = useContext(MyContext);
-
-  // Id de la intervencion filtrado
-  const [intervencionId, setIntervencionId] = useState(null);
 
 
   //Cargado se cambia a True cuando se termina la carga de json del servidor
@@ -102,78 +100,90 @@ export default function ConsultasVer() {
     enviar(url, data, function (resp) {
       console.log("respuesta", resp);
       handleClose();
-      mostrarAlerta("Alerta", resp.msj)
-          setEsperando(false);
-          obtenerDatos(function () {
-            tmpEditar = filtrar(consultasDatos, "id", intervencionId);
-            setEsperando(false);
-        });
+      setEsperando(true);
+      mostrarAlerta("Alerta", resp.msj);
+      actualizaDatos(function () {
+        if(intervencionId){
+          tmpEditar = filtrar(tmpConsultas, "id", intervencionId);
+        }
+        else {
+          tmpEditar=tmpConsultas;
+        }
+        console.log("tmpEditar actualizado", tmpEditar);
+        
+        setDatosFiltrados(tmpEditar);
+        setEsperando(false);
+    });
     });
     // setIntervencion(0);
     // e.target.reset(); // reset after form submit
 
   };
-  async function obtenerDatosSelect() {
-    // Obtiene los datos de los select's
-
-
-    // // 1 Consultas       
+  async function actualizaDatos(cb) {
+     
     let response1 = await fetch(urlConsultas);
-    // console.log("response1",response1);    
     tmpConsultas = await response1.json()
-
-    setConsultasDatos(tmpConsultas);
-    // // console.log("temporal consultas", tmpConsultas);
-
-    // 2 Intervención
-    let response2 = await fetch(urlIntervencion);
-    tipoIntervencion = await response2.json();
-
-    //3 Solicitante
-    let response3 = await fetch(urlSolicitante);
-    tipoSolicitante = await response3.json();
-
-
-    // 4 Solicitud
-    let response4 = await fetch(urlSolicitud);
-    idSolicitud = await response4.json();
-
-    // 5 Respuesta
-    let response5 = await fetch(urlRespuesta);
-    tipoRespuesta = await response5.json();
-
-    //  setDatosFiltrados(consultas);    
-    // setCargado(true);
-    setDatosListos(true);
-  };
+    console.log("tmpCOnwsultas actualizado", tmpConsultas);
+    cb();
+    
+  }
 
   async function obtenerDatos(cb) {
-    datosJson = await obtenerJson(urlConsultas);
-    cb();        
-}
+   
+    // // 1 Consultas       
+    let response1 = await fetch(urlConsultas);
+    tmpConsultas = await response1.json()
+    // setConsultasDatos(tmpConsultas);
+    // if(!setDatosListos)
+    // {
+       
+        // 2 Intervención
+        let response2 = await fetch(urlIntervencion);
+        tipoIntervencion = await response2.json();
+
+        //3 Solicitante
+        let response3 = await fetch(urlSolicitante);
+        tipoSolicitante = await response3.json();
+
+
+        // 4 Solicitud
+        let response4 = await fetch(urlSolicitud);
+        idSolicitud = await response4.json();
+
+        // 5 Respuesta
+        let response5 = await fetch(urlRespuesta);
+        tipoRespuesta = await response5.json();
+    // }
+    cb();   
+
+  };
+
+//   async function obtenerDatos(cb) {
+//     tmpConsultas = await obtenerJson(urlConsultas);
+//     cb();        
+// }
 
 
 useEffect(() => {
     console.log("Componente montado");
-    //console.log("Usuario", usuario.idUsuario);        
+    // console.log("datos", datosListos);        
     obtenerDatos(function () {
-        setDatosListos(true);
-    });
+      setDatosListos(true);
+      setConsultasDatos(tmpConsultas);
+      setDatosFiltrados(tmpConsultas);
+  });
 }, []);
 
-  useEffect(() => {
-    // console.log("comp montado");      
-    obtenerDatos();
-  },[])
+  // useEffect(() => {
+  //   // console.log("comp montado");      
+  //   obtenerDatos();
+  // },[])
 
 
   const handlerSeleccionarIntervencion = (e) => {
-
-    setIntervencionId(parseInt(e.target.value));
-
+    intervencionId = parseInt(e.target.value);
+    console.log("e.target.value", e.target.value);
     intervenciones = filtrar(consultasDatos, "id_intervencion", intervencionId);
-    // console.log("intervenciones FILTRADO",intervenciones);        
-
     setDatosFiltrados(intervenciones);
   }
 
@@ -207,7 +217,7 @@ useEffect(() => {
     // setIntervencionID(id);
     // alert("Editar")
     // console.log("itemid EDICION DEL ESTADO", intervencionID);
-    tmpEditar = filtrar(consultasDatos, "id", id);
+    tmpEditar = filtrar(tmpConsultas, "id", id);
     // tmpEditar= tmpEditar[0];
     console.log("tmpEditar[0]", tmpEditar[0]);
     console.log("CONSULTA A EDITAR id", tmpEditar[0].id);

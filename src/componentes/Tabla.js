@@ -64,16 +64,16 @@ function Tabla(props) {
                                 }  */}
                                 {
                                     props.modo === "visor" &&   
-                                     <td>
+                                     <td className="fas-editar text-center">
                                         {/* <span id={item.id} onClick={props.handleShow}>Borrar<FontAwesomeIcon icon={faCaretDown} size="1x" /></span> */}
-                                        <i id={item.id} onClick={props.handleEditarConsulta} className="fas fa-pencil-alt"></i>
+                                        <i id={item.id} onClick={props.handleEditarConsulta} className="fas fa-pencil-alt fas-editar"></i>
                                     </td>
 
                                 }
                                 {
                                     props.modo === "visor" &&   
-                                    <td className="text-center" >
-                                        <i id={item.id} onClick={props.handleEliminarRecurso} className="far fa-trash-alt"></i>
+                                    <td className= "fas-editar text-center" >
+                                        <i id={item.id} onClick={props.handleEliminarRecurso} className="far fa-trash-alt fas-editar"></i>
                                     </td>
                                 }                                                                  
                                         
