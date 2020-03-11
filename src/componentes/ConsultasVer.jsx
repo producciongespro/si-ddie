@@ -47,17 +47,7 @@ export default function ConsultasVer() {
 
   const { usuario, setUsuario } = useContext(MyContext);
 
-
-  //Cargado se cambia a True cuando se termina la carga de json del servidor
-  // const [cargado, setCargado] = useState(false);
-
-  // //Estado para controlar la carga del json respectivo
-  // const [tipo_intervencion, setTipoIntervencion] = useState(null);
-
-  //  Estado que maneja  información de consultas
-  const [consultasDatos, setConsultasDatos] = useState(null);
-
-  //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
+ //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
   const [esperando, setEsperando] = useState(false);
 
   //Estado que maneja  la seleccion del usuario
@@ -68,64 +58,46 @@ export default function ConsultasVer() {
   //cerrar modal
   const handleClose = () => setShow(false);
 
-  //Estado para controlar la carga del json respectivo
-  // const [id_solicitud, setIdSolicitud] = useState(null);
-
   //Estado que maneja  la seleccion del usuario
   const [solicitud, setSolicitud] = useState(null);
 
-  //Estado para controlar la carga del json respectivo
-  // const [tipo_solicitante, setTipoSolicitante] = useState(null);
-
   //Estado que maneja  la seleccion del usuario
   const [solicitante, setSolicitante] = useState(null);
-
-  //Estado para controlar la carga del json respectivo
-  // const [tipo_respuesta, setTipoRespuesta] = useState(null);
-
-  // //Estado que maneja  la seleccion del usuario
+  
+  //Estado que maneja  la seleccion del usuario
   const [respuesta, setRespuesta] = useState(null);
 
 
   const onSubmit = (data, e) => {
     let idConsulta = tmpEditar[0].id;
-    console.log("idConsulta a ACTUALIZAR",idConsulta);
     
     data.fecha_respuesta === "" && delete data["fecha_respuesta"];
     data.id_respuesta === "" && delete data["id_respuesta"];
 
     let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
-    console.log("url desde submit", url);
+    // console.log("url desde submit", url);
 
     enviar(url, data, function (resp) {
-      console.log("respuesta", resp);
       handleClose();
       setEsperando(true);
       mostrarAlerta("Alerta", resp.msj);
       actualizaDatos(function () {
         if(intervencionId){
-          tmpEditar = filtrar(tmpConsultas, "id", intervencionId);
+          tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
         }
         else {
           tmpEditar=tmpConsultas;
-        }
-        console.log("tmpEditar actualizado", tmpEditar);
-        
+        }        
         setDatosFiltrados(tmpEditar);
         setEsperando(false);
     });
     });
-    // setIntervencion(0);
-    // e.target.reset(); // reset after form submit
-
   };
-  async function actualizaDatos(cb) {
-     
+  
+  async function actualizaDatos(cb) {     
     let response1 = await fetch(urlConsultas);
-    tmpConsultas = await response1.json()
-    console.log("tmpCOnwsultas actualizado", tmpConsultas);
-    cb();
-    
+    tmpConsultas = await response1.json();    
+    cb();    
   }
 
   async function obtenerDatos(cb) {
@@ -158,40 +130,22 @@ export default function ConsultasVer() {
 
   };
 
-//   async function obtenerDatos(cb) {
-//     tmpConsultas = await obtenerJson(urlConsultas);
-//     cb();        
-// }
-
-
 useEffect(() => {
-    console.log("Componente montado");
-    // console.log("datos", datosListos);        
+    // console.log("Componente montado");
     obtenerDatos(function () {
       setDatosListos(true);
-      setConsultasDatos(tmpConsultas);
-      setDatosFiltrados(tmpConsultas);
+      setDatosFiltrados(tmpConsultas);     
   });
 }, []);
 
-  // useEffect(() => {
-  //   // console.log("comp montado");      
-  //   obtenerDatos();
-  // },[])
-
-
   const handlerSeleccionarIntervencion = (e) => {
     intervencionId = parseInt(e.target.value);
-    console.log("e.target.value", e.target.value);
-    intervenciones = filtrar(consultasDatos, "id_intervencion", intervencionId);
+    // console.log("e.target.value", e.target.value);
+    intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
     setDatosFiltrados(intervenciones);
   }
 
   const handlerSeleccion = (e) => {
-    console.log("seleccion target NAME", e.target.name);
-    console.log("e.target.value", e.target.value);
-    // console.log("solicitante", solicitante);
-
     clearError();
     parseInt(e.target.value);
     switch (e.target.name) {
@@ -214,15 +168,8 @@ useEffect(() => {
 
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
-    // setIntervencionID(id);
-    // alert("Editar")
-    // console.log("itemid EDICION DEL ESTADO", intervencionID);
     tmpEditar = filtrar(tmpConsultas, "id", id);
-    // tmpEditar= tmpEditar[0];
-    console.log("tmpEditar[0]", tmpEditar[0]);
-    console.log("CONSULTA A EDITAR id", tmpEditar[0].id);
-    setShow(true)
-
+    setShow(true);
   }
 
   const handleEliminarConsulta = (e) => {
@@ -363,7 +310,7 @@ useEffect(() => {
                         <div className="row">
                           <div className="form-group col-sm-6 ">
                             <label className="font-len" htmlFor="id_respuesta">Tipo de respuesta:</label>
-                            <select className="custom-select" key="id_respuesta" defaultValue={tmpEditar.id_respuesta} onChange={handlerSeleccion} name="id_respuesta" ref={register}>
+                            <select className="custom-select" key="id_respuesta" defaultValue={tmpEditar[0].id_respuesta} onChange={handlerSeleccion} name="id_respuesta" ref={register}>
                               {errors.id_respuesta && <p className="errors">Este campo es requerido</p>}
                               <option value="" disabled>Seleccione...</option>
                               {
@@ -375,7 +322,7 @@ useEffect(() => {
                           </div>
                           <div className="form-group col-sm-6">
                             <label className="font-len" htmlFor="fecha_respuesta">Fecha:</label>
-                            <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" defaultValue={tmpEditar.fecha_respuesta} placeholder="Digite la fecha" ref={register} />
+                            <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" defaultValue={tmpEditar[0].fecha_respuesta} placeholder="Digite la fecha" ref={register} />
                             {errors.fecha_respuesta && <p className="errors">Este campo es requerido</p>}
                           </div>
                         </div>

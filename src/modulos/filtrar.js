@@ -9,8 +9,6 @@ function filtrar (array, llave, valor ) {
         const limite = array.length;
         var tmpData = [];
         for (let index = 0; index < limite; index++) { 
-            //TODO Esta validación se debe quitar ya que hace menos eficiente el filtrado
-            //Pero para ello sedebe indexar el campo materia en recursos
                 
                     if ( parseInt( array[index][ llave ]) === valor  ) {
                         tmpData.push(array[index]);
@@ -24,7 +22,7 @@ function filtrar (array, llave, valor ) {
 
                 
         }                 
-    //console.log("Arreglo retornado", tmpData);    
+    console.log("Arreglo retornado", tmpData);    
     return tmpData;
 }
 
