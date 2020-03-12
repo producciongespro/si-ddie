@@ -80,7 +80,6 @@ export default function ConsultasVer() {
 
     enviar(url, data, function (resp) {
       handleClose();
-      setEsperando(true);
       mostrarAlerta("Alerta", resp.msj);
       actualizaDatos(function () {
         if(intervencionId){
@@ -147,29 +146,30 @@ useEffect(() => {
   }
 
   const handlerSeleccion = (e) => {
-    clearError();
-    parseInt(e.target.value);
-    switch (e.target.name) {
-      case "id_intervencion":
-        setIntervencion(parseInt(e.target.value));
-        break;
-      case "id_solicitud":
-        setSolicitud(parseInt(e.target.value));
-        break;
-      case "id_solicitante":
-        setSolicitante(parseInt(e.target.value));
-        break;
-      case "tipo_respuesta":
-        setRespuesta(parseInt(e.target.value));
-        break;
-      default:
-        break;
-    }
+    // clearError();
+    // parseInt(e.target.value);
+    // switch (e.target.name) {
+    //   case "id_intervencion":
+    //     setIntervencion(parseInt(e.target.value));
+    //     break;
+    //   case "id_solicitud":
+    //     setSolicitud(parseInt(e.target.value));
+    //     break;
+    //   case "id_solicitante":
+    //     setSolicitante(parseInt(e.target.value));
+    //     break;
+    //   case "tipo_respuesta":
+    //     setRespuesta(parseInt(e.target.value));
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
     tmpEditar = filtrar(tmpConsultas, "id", id);
+    setEsperando(true);
     setShow(true);
   }
 
@@ -185,7 +185,6 @@ useEffect(() => {
         data.borrado = 1;   
         // console.log("DATA",data);
         
-
         enviar(url, data, function (resp) {
                 mostrarAlerta("Alerta", resp.msj);
                 actualizaDatos(function () {
@@ -237,18 +236,19 @@ useEffect(() => {
           {<Modal
             show={show}
             onHide={handleClose}
-            size="lg"
+            size="xl"
+            backdrop = "static"
           // aria-labelledby="contained-modal-title-vcenter"
           // centered
+
           >
-            <Modal.Header closeButton>
-              <Modal.Title className="header-1">Edición</Modal.Title>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Modal.Header closeButton className="modal-header-edicion">
+              <Modal.Title ><h1>Edición</h1></Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {
                 <>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* {tmpEditar !== null || tmpEditar[0] !== undefined  && */}
                     {(tmpEditar && tmpEditar[0]) &&
                       <React.Fragment>
                         <div className="row">
@@ -338,17 +338,16 @@ useEffect(() => {
                         <div className="form-group d-none">
                           <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue={usuario.idUsuario} ref={register} />
                         </div>
-                        <div className="row">
-                          <div className="offset-sm-8 col-sm-4 text-center">
-                            <input className="btn btn-block btn-main text-center" type="submit" value="Guardar" onClick={handleClose}></input>
-                          </div>
-                        </div>
                       </React.Fragment>
                     }
-                  </form>
                 </>
               }
             </Modal.Body>
+            <Modal.Footer className="modal-footer-edicion">
+              <input className="btn btn-main text-center" type="submit" value="Guardar" onClick={handleClose}></input>
+            </Modal.Footer>
+
+           </form>
           </Modal>}
         </div>
       )

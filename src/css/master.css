@@ -399,7 +399,19 @@ body
   padding: 10px;
 }
 
-.alertify .ajs-dialog {
+.modal-header-edicion, .modal-footer-edicion {
+  background-color: white!important;
+  background: url('../images/patterns-css/light_grey.png') repeat center center;
+  font-family: "myfontJun";
+  text-transform: uppercase;
+  color: #e74803;
+  text-shadow: 2px 2px 2px #999;
+}
+
+.modal-header-edicion{ 
+  border-bottom: 3px solid #d4cdcd !important;
+}
+.alertify .ajs-dialog, .modal-header {
   background-color: white!important;
   background: url('../images/patterns-css/light_grey.png') repeat center center;
 }
@@ -456,9 +468,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
   cursor: pointer;
 }
 
-.fas-editar:hover {
-  color: white;
-  background-color: #1384c6;  
+.fas-editar:hover{
+  color: #1384c6; 
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  /* background-color: #1384c6;   */
 }
 @media only screen and (max-width: 992px) 
 {

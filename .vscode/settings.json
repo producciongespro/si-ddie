@@ -7,7 +7,7 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "window.zoomLevel": 0,
   "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "Base16 Atelier Dune",
+  "workbench.colorTheme": "Base16 Dark Twilight",
   "editor.tabSize": 2,
   "editor.fontSize": 15,
   "editor.tabCompletion": "on"
