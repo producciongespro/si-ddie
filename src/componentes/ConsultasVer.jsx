@@ -18,6 +18,7 @@ import 'alertifyjs/build/css/themes/default.min.css';
 import mostrarAlerta from './Alerta.js'
 
 import referenciasJson from '../data/referencias.json';
+import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 
 const referencias = referenciasJson[0];
 
@@ -51,13 +52,16 @@ export default function ConsultasVer() {
  //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
   const [esperando, setEsperando] = useState(false);
 
-  //Estado que maneja  la seleccion del usuario
-  const [intervencion, setIntervencion] = useState(null);
+
 
   //Estado para ocultar o mostrar un modal
   const [show, setShow] = useState(false);
   //cerrar modal
   const handleClose = () => setShow(false);
+
+  
+  //Estado que maneja  la seleccion del usuario
+  const [intervencion, setIntervencion] = useState(null);
 
   //Estado que maneja  la seleccion del usuario
   const [solicitud, setSolicitud] = useState(null);
@@ -144,26 +148,32 @@ useEffect(() => {
     intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
     setDatosFiltrados(intervenciones);
   }
-
+  const valor = () => {
+    console.log("id_respuesta",tmpEditar[0].id_respuesta); 
+    let valor="", val=""; 
+    tmpEditar[0].id_respuesta!==null ?(valor = tmpEditar[0].id_respuesta): valor=""; 
+    return valor 
+  }
+  
   const handlerSeleccion = (e) => {
-    // clearError();
-    // parseInt(e.target.value);
-    // switch (e.target.name) {
-    //   case "id_intervencion":
-    //     setIntervencion(parseInt(e.target.value));
-    //     break;
-    //   case "id_solicitud":
-    //     setSolicitud(parseInt(e.target.value));
-    //     break;
-    //   case "id_solicitante":
-    //     setSolicitante(parseInt(e.target.value));
-    //     break;
-    //   case "tipo_respuesta":
-    //     setRespuesta(parseInt(e.target.value));
-    //     break;
-    //   default:
-    //     break;
-    // }
+    clearError();
+    parseInt(e.target.value);
+    switch (e.target.name) {
+      case "id_intervencion":
+        setIntervencion(parseInt(e.target.value));
+        break;
+      case "id_solicitud":
+        setSolicitud(parseInt(e.target.value));
+        break;
+      case "id_solicitante":
+        setSolicitante(parseInt(e.target.value));
+        break;
+      case "tipo_respuesta":
+        setRespuesta(parseInt(e.target.value));
+        break;
+      default:
+        break;
+    }
   }
 
   const handleEditarConsulta = (e) => {
@@ -279,7 +289,7 @@ useEffect(() => {
                             </select>
                           </div>
                         </div>
-                        {solicitante === 5 &&
+                        {solicitante === 5 && 
                           <div className="row">
                             <div className="form-group col-sm-12">
                               <label className="font-len" htmlFor="solicitante_otro">Descripción:</label>
@@ -319,7 +329,7 @@ useEffect(() => {
                         <div className="row">
                           <div className="form-group col-sm-6 ">
                             <label className="font-len" htmlFor="id_respuesta">Tipo de respuesta:</label>
-                            <select className="custom-select" key="id_respuesta" defaultValue={tmpEditar[0].id_respuesta} onChange={handlerSeleccion} name="id_respuesta" ref={register}>
+                            <select className="custom-select" key="id_respuesta" defaultValue={valor() } onChange={handlerSeleccion} name="id_respuesta" ref={register}>
                               {errors.id_respuesta && <p className="errors">Este campo es requerido</p>}
                               <option value="" disabled>Seleccione...</option>
                               {

@@ -27,7 +27,7 @@ function MenuBotones (props) {
                         <div className="dropdown-menu" aria-labelledby={item['botonprincipal']+"dropdownMenuButton"}>
                             {/* <a className="dropdown-item menu-lateral" href="www.nada.com"  onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][0]['ref']}>Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a> */}
                             <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][0]['ref']}>Agregar <FontAwesomeIcon className="float-right" icon={faPlus} size="1x" /></a>
-                            <div className="dropdown-divider"></div>
+                            <div className="dropdown-divider dropdown-divider-menu"></div>
                             <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][1]['ref']}>Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>
                         </div>
                     </div>

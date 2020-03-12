@@ -293,9 +293,16 @@ body
 
 .dropdown-menu {
   min-width: 95%!important;
+  padding:0.1rem 0!important;
 }
+
 .dropdown-item.menu-lateral{
   color: #288dc9!important;
+}
+
+.dropdown-divider.dropdown-divider-menu {
+  margin: .1rem 0;
+
 }
 .svg-inline--fa.fa-w-10 {
   width: 1.625em!important;

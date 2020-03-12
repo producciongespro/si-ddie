@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect}  from 'react';
 //componentes
 
 import Ingreso from './componentes/Ingreso';
-import Consultas from './componentes/Consultas1';
+import Consultas from './componentes/Consultas';
 import ConsultasVer from './componentes/ConsultasVer';
 import Basededatos  from './componentes/Basededatos.js';
 import BasededatosVer  from './componentes/BasededatosVer.js';
