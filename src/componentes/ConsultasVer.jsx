@@ -144,8 +144,8 @@ export default function ConsultasVer() {
 
     // 6 Eliminados
     let response6 = await fetch(urlEliminadosConsultas);
-    datosEliminados = await response6.json();
-    console.log("eliminados", datosEliminados);
+    tmpEliminados = await response6.json();
+    console.log("eliminados", tmpEliminados);
     
     cb();   
 
@@ -239,7 +239,34 @@ useEffect(() => {
     });
   }
 
-  const handleRecupera= (e) => {
+  const handleRecuperarRegistro= (e) => {
+  //   let idConsulta = tmpEditar[0].id;
+    
+  //   data.fecha_respuesta === "" && delete data["fecha_respuesta"];
+  //   data.id_respuesta === "" && delete data["id_respuesta"];
+
+  //   let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
+  //   // console.log("url desde submit", url);
+
+  //   enviar(url, data, function (resp) {
+  //     handleClose();
+  //     mostrarAlerta("Alerta", resp.msj);
+  //     actualizaDatos(function () {
+  //       if(intervencionId){
+  //         tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
+  //       }
+  //       else {
+  //         tmpEditar=tmpConsultas;
+  //       }        
+  //       setDatosFiltrados(tmpEditar);
+  //       setEsperando(false);
+  //   });
+  //   });
+  // };
+    console.log("e.target", e.target);
+    
+    console.log("Ha recuperar");
+    
 
   }
 
@@ -266,15 +293,15 @@ useEffect(() => {
               </select>
             </div>
             <div className="col-sm-4">
-              {datosEliminados.length== 0 ?
+              {tmpEliminados.length== 0 ?
               (   
                 <Imagen classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
               :
               (
-                <input className="btn btn-main text-center" type="button" value="Papelera" onClick={handlePapelera}></input>
+                // <input className="btn btn-main text-center" type="button" value="Papelera" onClick={handlePapelera}></input>
                   // classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
-                // <Imagen classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
+                <Imagen classElement="img-papelera float-right" origen={papelera}  handlerPapelera={handlePapelera}/>
               )
               }
               {/* <Imagen classElement="img-papelera float-right" origen={papelera} /> */}
@@ -283,7 +310,8 @@ useEffect(() => {
           {  
             !modoVisor ?
             (
-              <h1>Modo papelera</h1>
+              // <h1>Modo papelera</h1>
+              <Tabla array={tmpEliminados} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
             )
             :
             (

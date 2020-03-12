@@ -39,16 +39,14 @@ function Tabla(props) {
                             <tr key={"item" + i}>
                                 <th scope="row">{i + 1}</th>
                                 <td >{item.tipo_intervencion}</td>
-                                {/* {
+                                {
                                     props.modo === "papelera" &&   
                                     <td className="text-center">
-                                            {item.materia}
+                                            {item.tipo_intervencion}  
+                                            {/* revisar */}
                                     </td>                                    
-                                } */}
-                                <td className="text-center" >{item.tema}</td>
-                                {console.log("respuesta", item.id_respuesta)}
-                                {/* <td className="text-center" >{item.tipo_respuesta}</td>  */}
-                               
+                                }
+                                <td className="text-center" >{item.tema}</td>                               
                                 {item.id_respuesta ?
                                     <td className="text-center" >{item.tipo_respuesta}</td>
                                 :
@@ -56,12 +54,12 @@ function Tabla(props) {
                                 
                                 }
  
-                                {/* {
+                                {
                                     props.modo === "papelera" &&   
                                     <td className="text-center">
                                             <i id={item.id} onClick={props.handleRecuperarRecurso} className="fas fa-recycle"></i>
                                     </td>                                    
-                                }  */}
+                                } 
                                 {
                                     props.modo === "visor" &&   
                                      <td className="text-center">
