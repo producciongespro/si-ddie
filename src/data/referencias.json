@@ -4,6 +4,7 @@
        "img"  : "http://localhost/projects/si-ddie/server_assets/si-ddie/img/",
        "servicios" : "http://localhost/webservices/si-ddie/",   
        "consultageneral": "http://localhost/webservices/si-ddie/consultas_generales.php",
+       "consultaeliminados": "http://localhost/webservices/si-ddie/consultas_eliminados.php",
        "consultaespecifica": "http://localhost/webservices/si-ddie/consultas_especificas.php",
        "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",

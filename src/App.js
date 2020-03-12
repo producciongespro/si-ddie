@@ -16,11 +16,11 @@ import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
 import Menu from './componentes/Menu';
 import Bienvenida from './componentes/Bienvenida';
+// import Papelera from './componentes/Papelera';
 
 import MyContext from './modulos/MyContext';
 import useCurrentWitdh from './modulos/cambiancho';
 // import Inicio from './componentes/Inicio';
-
 
 // hojas de estilos
 import "./css/master.css";

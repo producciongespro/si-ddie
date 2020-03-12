@@ -14,11 +14,14 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.min.css';
 import 'alertifyjs/build/css/themes/default.min.css';
 
-// import axios from 'axios';
-import mostrarAlerta from './Alerta.js'
+import mostrarAlerta from './Alerta.js';
+
+import Papelera from './Papelera1js';
+import Imagen from './Imagen';
+import papeleraVacia from '../images/papelera-vacia.png';
+import papelera from '../images/papelera.png';
 
 import referenciasJson from '../data/referencias.json';
-import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 
 const referencias = referenciasJson[0];
 
@@ -27,12 +30,15 @@ var tmpConsultas = null,
   tipoSolicitante = null,
   idSolicitud = null,
   tipoRespuesta = null,
+  datosEliminados = null,
   tmpEditar = null,
+  tmpEliminados = null,
   intervenciones = null,
   intervencionId = null;
 
 // carga de los JSON de los selects
 var urlConsultas = referencias.consultageneral + "?tabla=consultas",
+  urlEliminadosConsultas = referencias.consultaeliminados + "?tabla=consultas",
   urlIntervencion = referencias.consultageneral + "?tabla=tipo_intervencion",
   urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
   urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
@@ -52,7 +58,8 @@ export default function ConsultasVer() {
  //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
   const [esperando, setEsperando] = useState(false);
 
-
+  // Estado que indica el desplegar la tabla en modo papelera
+  const [modoVisor, setModoVisor] = useState(true);
 
   //Estado para ocultar o mostrar un modal
   const [show, setShow] = useState(false);
@@ -72,6 +79,7 @@ export default function ConsultasVer() {
   //Estado que maneja  la seleccion del usuario
   const [respuesta, setRespuesta] = useState(null);
 
+  const handlePapelera = () => setModoVisor(false);
 
   const onSubmit = (data, e) => {
     let idConsulta = tmpEditar[0].id;
@@ -104,32 +112,41 @@ export default function ConsultasVer() {
     cb();    
   }
 
+  async function actualizaDatosEliminados(cb) {     
+    let response1 = await fetch(urlEliminadosConsultas);
+    tmpEliminados = await response1.json();    
+    cb();    
+  }
+
   async function obtenerDatos(cb) {
    
     // // 1 Consultas       
     let response1 = await fetch(urlConsultas);
     tmpConsultas = await response1.json()
-    // setConsultasDatos(tmpConsultas);
-    // if(!setDatosListos)
-    // {
+
        
-        // 2 Intervención
-        let response2 = await fetch(urlIntervencion);
-        tipoIntervencion = await response2.json();
+    // 2 Intervención
+    let response2 = await fetch(urlIntervencion);
+    tipoIntervencion = await response2.json();
 
-        //3 Solicitante
-        let response3 = await fetch(urlSolicitante);
-        tipoSolicitante = await response3.json();
+    //3 Solicitante
+    let response3 = await fetch(urlSolicitante);
+    tipoSolicitante = await response3.json();
 
 
-        // 4 Solicitud
-        let response4 = await fetch(urlSolicitud);
-        idSolicitud = await response4.json();
+    // 4 Solicitud
+    let response4 = await fetch(urlSolicitud);
+    idSolicitud = await response4.json();
 
-        // 5 Respuesta
-        let response5 = await fetch(urlRespuesta);
-        tipoRespuesta = await response5.json();
-    // }
+    // 5 Respuesta
+    let response5 = await fetch(urlRespuesta);
+    tipoRespuesta = await response5.json();
+
+    // 6 Eliminados
+    let response6 = await fetch(urlEliminadosConsultas);
+    datosEliminados = await response6.json();
+    console.log("eliminados", datosEliminados);
+    
     cb();   
 
   };
@@ -148,13 +165,23 @@ useEffect(() => {
     intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
     setDatosFiltrados(intervenciones);
   }
+  // const handlePapelera = (e)=>{
+  //   console.log("targer", e.target);
+    
+  //   console.log("presioné PAPELERA");
+  //   setModoVisor(false);
+
+  // }
+
+  
+
   const valor = () => {
     console.log("id_respuesta",tmpEditar[0].id_respuesta); 
     let valor="", val=""; 
     tmpEditar[0].id_respuesta!==null ?(valor = tmpEditar[0].id_respuesta): valor=""; 
     return valor 
   }
-  
+
   const handlerSeleccion = (e) => {
     clearError();
     parseInt(e.target.value);
@@ -212,6 +239,11 @@ useEffect(() => {
     });
   }
 
+  const handleRecupera= (e) => {
+
+  }
+
+
   return (
     datosListos ?
       (
@@ -220,7 +252,7 @@ useEffect(() => {
           <div className="row">
             <div className="col-sm-8 input-group mb-3 input-group-sm">
               <div className="input-group-prepend">
-                <span className="font-len input-group-text">Tipo de Intervención</span>
+                <span className="font-len">Tipo de Intervención:</span>&nbsp;&nbsp; 
               </div>
               <select className="custom-select" key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
                 {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
@@ -233,16 +265,38 @@ useEffect(() => {
                 }
               </select>
             </div>
-          </div>
-          {
-            esperando ?
-              (
-                <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
-              ) :
-              (
-                <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
+            <div className="col-sm-4">
+              {datosEliminados.length== 0 ?
+              (   
+                <Imagen classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
-          }
+              :
+              (
+                <input className="btn btn-main text-center" type="button" value="Papelera" onClick={handlePapelera}></input>
+                  // classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
+                // <Imagen classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
+              )
+              }
+              {/* <Imagen classElement="img-papelera float-right" origen={papelera} /> */}
+            </div>
+          </div>
+          {  
+            !modoVisor ?
+            (
+              <h1>Modo papelera</h1>
+            )
+            :
+            (
+              esperando ?
+                (  
+                  <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
+                )
+                :
+                (
+                  <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
+                )
+             )
+           }
           {<Modal
             show={show}
             onHide={handleClose}
