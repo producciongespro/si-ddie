@@ -57,7 +57,7 @@ function Tabla(props) {
                                 {
                                     props.modo === "papelera" &&   
                                     <td className="text-center">
-                                            <i id={item.id} onClick={props.handleRecuperarRecurso} className="fas fa-recycle"></i>
+                                            <i id={item.id} onClick={props.handleRecuperar} className="fas fa-recycle"></i>
                                     </td>                                    
                                 } 
                                 {
@@ -71,7 +71,7 @@ function Tabla(props) {
                                 {
                                     props.modo === "visor" &&   
                                     <td className= "text-center" >
-                                        <i id={item.id} onClick={props.handleEliminarRecurso} className="far fa-trash-alt fas-editar"></i>
+                                        <i id={item.id} onClick={props.handleEliminarConsulta} className="far fa-trash-alt fas-editar"></i>
                                     </td>
                                 }                                                                  
                                         

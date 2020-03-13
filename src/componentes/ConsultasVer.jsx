@@ -19,9 +19,10 @@ import mostrarAlerta from './Alerta.js';
 import Papelera from './Papelera1js';
 import Imagen from './Imagen';
 import papeleraVacia from '../images/papelera-vacia.png';
-import papelera from '../images/papelera.png';
+import papelera from '../images/papelera-full.png';
 
 import referenciasJson from '../data/referencias.json';
+import { Alert } from 'react-bootstrap';
 
 const referencias = referenciasJson[0];
 
@@ -34,7 +35,8 @@ var tmpConsultas = null,
   tmpEditar = null,
   tmpEliminados = null,
   intervenciones = null,
-  intervencionId = null;
+  intervencionId = null,
+  mensaje = "";
 
 // carga de los JSON de los selects
 var urlConsultas = referencias.consultageneral + "?tabla=consultas",
@@ -165,15 +167,7 @@ useEffect(() => {
     intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
     setDatosFiltrados(intervenciones);
   }
-  // const handlePapelera = (e)=>{
-  //   console.log("targer", e.target);
-    
-  //   console.log("presioné PAPELERA");
-  //   setModoVisor(false);
 
-  // }
-
-  
 
   const valor = () => {
     console.log("id_respuesta",tmpEditar[0].id_respuesta); 
@@ -239,36 +233,39 @@ useEffect(() => {
     });
   }
 
-  const handleRecuperarRegistro= (e) => {
-  //   let idConsulta = tmpEditar[0].id;
-    
-  //   data.fecha_respuesta === "" && delete data["fecha_respuesta"];
-  //   data.id_respuesta === "" && delete data["id_respuesta"];
-
-  //   let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
-  //   // console.log("url desde submit", url);
-
-  //   enviar(url, data, function (resp) {
-  //     handleClose();
-  //     mostrarAlerta("Alerta", resp.msj);
-  //     actualizaDatos(function () {
-  //       if(intervencionId){
-  //         tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
-  //       }
-  //       else {
-  //         tmpEditar=tmpConsultas;
-  //       }        
-  //       setDatosFiltrados(tmpEditar);
-  //       setEsperando(false);
-  //   });
-  //   });
-  // };
-    console.log("e.target", e.target);
+  const handleRecuperarRegistro = (e) => {
+    console.log("e.target de registro a recuperar", e.target.id);
     
     console.log("Ha recuperar");
-    
 
-  }
+    let idRecuperar = e.target.id;
+    const data = {    
+            "borrado" : 0
+          }
+
+    let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idRecuperar + "";
+
+    enviar(url, data, function (resp) {
+      mensaje =  resp.data.mensaje 
+   
+      actualizaDatosEliminados(function(){
+        if(tmpEliminados.length === 0){
+          mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
+          mostrarAlerta("Alerta",  mensaje);
+          mensaje = "";
+          setEsperando(true);  
+          setModoVisor(true); 
+        }
+        else {
+          mensaje += ". Se ha recuperado el registro"
+          mostrarAlerta("Alerta", mensaje);
+          setModoVisor(false); 
+        }
+      });
+    });
+      
+    // }
+  };  
 
 
   return (
@@ -321,7 +318,7 @@ useEffect(() => {
                 )
                 :
                 (
-                  <Tabla array={datosFiltrados} handleEliminarRecurso={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
+                  <Tabla array={datosFiltrados} handleEliminarConsulta={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
                 )
              )
            }
