@@ -70,7 +70,6 @@ export default function ConsultasVer() {
   //cerrar modal
   const handleClose = () => setShow(false);
 
-  
   //Estado que maneja  la seleccion del usuario
   const [intervencion, setIntervencion] = useState(null);
 
@@ -94,7 +93,7 @@ export default function ConsultasVer() {
 
     let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
     // console.log("url desde submit", url);
-
+    setEsperando(true);
     enviar(url, data, function (resp) {
       handleClose();
       mostrarAlerta("Alerta", resp.msj);
@@ -168,6 +167,10 @@ useEffect(() => {
   });
 }, []);
 
+useEffect(()=>{
+  console.log("Esperando", esperando);
+  
+})
   const handlerSeleccionarIntervencion = (e) => {
     intervencionId = parseInt(e.target.value);
     // console.log("e.target.value", e.target.value);
@@ -204,6 +207,17 @@ useEffect(() => {
     }
   }
 
+  const handleModoVisor = () => {
+    setModoVisor(true); 
+    obtenerDatos(
+      function () {
+      setDatosListos(true);
+      setDatosFiltrados(tmpConsultas);     
+    }
+    );
+  };
+  
+
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
     tmpEditar = filtrar(tmpConsultas, "id", id);
@@ -214,7 +228,7 @@ useEffect(() => {
   const handleEliminarConsulta = (e) => {
     const idConsulta = e.target.id;
 
-    alertify.confirm("¿Desea realmente eliminar el recurso?",
+    alertify.confirm("¿Desea realmente eliminar la consulta?",
       function () {    
         var data = {};
         let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
@@ -222,7 +236,7 @@ useEffect(() => {
         
         data.borrado = 1;   
         // console.log("DATA",data);
-        
+        setEsperando(true);
         enviar(url, data, function (resp) {
                 mostrarAlerta("Alerta", resp.msj);
                 actualizaDatos(function () {
@@ -232,6 +246,9 @@ useEffect(() => {
                   else {
                     tmpEditar=tmpConsultas;
                   }
+                  //actualizando el registro de eliminados
+                  actualizaDatosEliminados(function(){
+                    setDatosEliminados(tmpEliminados);})
                   console.log("LARGO", tmpEditar.lenght);        
                   setDatosFiltrados(tmpEditar);
                   setEsperando(false);
@@ -251,7 +268,7 @@ useEffect(() => {
           }
 
     let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idRecuperar + "";
-
+    setEsperando(true);
     enviar(url, data, function (resp) {
       mensaje =  resp.data.mensaje 
    
@@ -262,13 +279,13 @@ useEffect(() => {
           mostrarAlerta("Alerta",  mensaje);
           mensaje = "";
           // setDatosEliminados(tmpEliminados);
-          setEsperando(true);  
+          setEsperando(false);  
           setModoVisor(true); 
         }
         else {
           mensaje += ". Se ha recuperado el registro"
           mostrarAlerta("Alerta", mensaje);
-          // setDatosEliminados(tmpEliminados);
+          setEsperando(false);  
         }
       });
     });
@@ -301,13 +318,23 @@ useEffect(() => {
             <div className="col-sm-4">
               {datosEliminados.length== 0 ?
               (   
-                <Imagen classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
+                <Imagen  classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
               :
               (
                 // <input className="btn btn-main text-center" type="button" value="Papelera" onClick={handlePapelera}></input>
                   // classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
-                <Imagen classElement="img-papelera float-right" origen={papelera}  handlerPapelera={handlePapelera}/>
+                  esperando ?
+                  (  
+                    <Imagen  classElement="img-papelera float-right disabled" origen={papelera}/>
+                  )
+                  :
+                  (  
+                    <>
+                      <Imagen  classElement="img-papelera float-right" origen={papelera}  handlerPapelera={handlePapelera}/>
+                      {/* <button onClick={handleModoVisor}>Regresar</button> */}
+                    </>
+                  )
               )
               }
               {/* <Imagen classElement="img-papelera float-right" origen={papelera} /> */}
@@ -316,14 +343,42 @@ useEffect(() => {
           {  
             !modoVisor ?
             (
-              // <h1>Modo papelera</h1>
-              <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+              esperando ?
+              
+              (
+                <>
+                <div>
+                  <span className="spinner-grow spinner-grow-lg text-danger"></span>
+                  <span className=""> En proceso... Por favor espere.</span>
+                </div> 
+                <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" /> 
+              </>
+              )
+              :
+              (
+                <>
+                <div className="row">
+                  <hr/>
+                  <div className="float-right divBoton">
+                    <button className="btn btn-regresar float-right"onClick={handleModoVisor}> Regresar</button>
+                  </div>
+                </div>
+                <Tabla array={datosEliminados}  clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+                {/* <button onClick={handleModoVisor}>Regresar</button> */}
+                </>              
+              )
             )
             :
             (
               esperando ?
                 (  
-                  <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
+                  <>
+                    <div>
+                      <span className="spinner-grow spinner-grow-lg text-danger"></span>
+                      <span className=""> En proceso... Por favor espere.</span>
+                    </div> 
+                    <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
+                  </>
                 )
                 :
                 (

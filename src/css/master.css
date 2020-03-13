@@ -355,6 +355,17 @@ body
   border-radius: 0 5px 5px 0;  
 }
 
+.btn-regresar {
+    color: #fff!important;
+    background-color: #288ec9!important;
+    border-color: #298fca!important;
+    text-shadow: 2px 2px 2px  #000;
+}
+
+.divBoton{
+  margin: 5px;
+  padding-left: 5px;
+}
 .header-1 {
   /* font: 400 40px 'Open Sans'; */
   font-family: "myfontJun";
