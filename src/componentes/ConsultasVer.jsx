@@ -50,7 +50,9 @@ export default function ConsultasVer() {
 
   const [datosFiltrados, setDatosFiltrados] = useState(null);
 
-   //Bandera que indica que la solicitud y retorno de datos están resuletos
+  const [datosEliminados, setDatosEliminados] = useState(null);
+
+   //Bandera que indica que la solicitud y retorno de datos están resueltos
    const [datosListos, setDatosListos] = useState(false);
 
   const { register, handleSubmit, errors, clearError } = useForm();
@@ -82,6 +84,7 @@ export default function ConsultasVer() {
   const [respuesta, setRespuesta] = useState(null);
 
   const handlePapelera = () => setModoVisor(false);
+  // const handlePapelera = () => {setDatosEliminados(datosEliminados);setModoVisor(false)};
 
   const onSubmit = (data, e) => {
     let idConsulta = tmpEditar[0].id;
@@ -117,6 +120,7 @@ export default function ConsultasVer() {
   async function actualizaDatosEliminados(cb) {     
     let response1 = await fetch(urlEliminadosConsultas);
     tmpEliminados = await response1.json();    
+    // setDatosEliminados(tmpEliminados)
     cb();    
   }
 
@@ -158,6 +162,9 @@ useEffect(() => {
     obtenerDatos(function () {
       setDatosListos(true);
       setDatosFiltrados(tmpConsultas);     
+  });
+  actualizaDatosEliminados(function () {
+    setDatosEliminados(tmpEliminados)
   });
 }, []);
 
@@ -249,17 +256,19 @@ useEffect(() => {
       mensaje =  resp.data.mensaje 
    
       actualizaDatosEliminados(function(){
+        setDatosEliminados(tmpEliminados);
         if(tmpEliminados.length === 0){
           mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
           mostrarAlerta("Alerta",  mensaje);
           mensaje = "";
+          // setDatosEliminados(tmpEliminados);
           setEsperando(true);  
           setModoVisor(true); 
         }
         else {
           mensaje += ". Se ha recuperado el registro"
           mostrarAlerta("Alerta", mensaje);
-          setModoVisor(false); 
+          // setDatosEliminados(tmpEliminados);
         }
       });
     });
@@ -290,7 +299,7 @@ useEffect(() => {
               </select>
             </div>
             <div className="col-sm-4">
-              {tmpEliminados.length== 0 ?
+              {datosEliminados.length== 0 ?
               (   
                 <Imagen classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
@@ -308,7 +317,7 @@ useEffect(() => {
             !modoVisor ?
             (
               // <h1>Modo papelera</h1>
-              <Tabla array={tmpEliminados} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+              <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
             )
             :
             (
