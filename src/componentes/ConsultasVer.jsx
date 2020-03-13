@@ -70,6 +70,9 @@ export default function ConsultasVer() {
   //cerrar modal
   const handleClose = () => setShow(false);
 
+//controla si las consultas están filtradas o no  
+  const[sinFiltro, setSinFiltro] = useState(true); 
+
   //Estado que maneja  la seleccion del usuario
   const [intervencion, setIntervencion] = useState(null);
 
@@ -176,6 +179,7 @@ useEffect(()=>{
     // console.log("e.target.value", e.target.value);
     intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
     setDatosFiltrados(intervenciones);
+    setSinFiltro(false);
   }
 
 
@@ -227,8 +231,7 @@ useEffect(()=>{
 
   const handleEliminarConsulta = (e) => {
     const idConsulta = e.target.id;
-
-    alertify.confirm("¿Desea realmente eliminar la consulta?",
+    alertify.confirm('Eliminar', '¿Desea realmente eliminar la consulta?',
       function () {    
         var data = {};
         let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id="+idConsulta + "";
@@ -254,7 +257,7 @@ useEffect(()=>{
                   setEsperando(false);
             })
         });
-    });
+    }, function(){ });
   }
 
   const handleRecuperarRegistro = (e) => {
@@ -292,6 +295,15 @@ useEffect(()=>{
       
     // }
   };  
+  const handleSinFiltro = (e) => {
+    if(e.target.checked){
+      setTimeout(() => { let element = document.getElementById("selectIntervencion");
+      element.value="";
+      setSinFiltro(true);
+      setDatosFiltrados(tmpConsultas);
+    }, 500);
+    }
+  }
 
 
   return (
@@ -299,47 +311,24 @@ useEffect(()=>{
       (
         <div className="col-12">
           <h1 className="header-1">Ver consultas</h1><hr />
-          <div className="row">
-            <div className="col-sm-8 input-group mb-3 input-group-sm">
-              <div className="input-group-prepend">
-                <span className="font-len">Tipo de Intervención:</span>&nbsp;&nbsp; 
-              </div>
-              <select className="custom-select" key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
-                {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
-                <option value="" disabled>Seleccione...</option>
-                {
-
-                  tipoIntervencion.map((item, i) => (
-                    <option key={"intervencion" + i} value={item.id}>{item.tipo}</option>
-                  ))
-                }
-              </select>
-            </div>
-            <div className="col-sm-4">
+         
+            <div className="col-sm-12">
               {datosEliminados.length== 0 ?
               (   
                 <Imagen  classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
               :
-              (
-                // <input className="btn btn-main text-center" type="button" value="Papelera" onClick={handlePapelera}></input>
-                  // classElement="img-papelera float-right" origen={papelera}  onClick={handleClose} onClick={handlePapelera}/>
-                  esperando ?
+              (  esperando ?
                   (  
                     <Imagen  classElement="img-papelera float-right disabled" origen={papelera}/>
                   )
                   :
                   (  
-                    <>
-                      <Imagen  classElement="img-papelera float-right" origen={papelera}  handlerPapelera={handlePapelera}/>
-                      {/* <button onClick={handleModoVisor}>Regresar</button> */}
-                    </>
+                    <Imagen  classElement="img-papelera float-right" origen={papelera}  handlerPapelera={handlePapelera}/>
                   )
               )
               }
-              {/* <Imagen classElement="img-papelera float-right" origen={papelera} /> */}
             </div>
-          </div>
           {  
             !modoVisor ?
             (
@@ -357,22 +346,53 @@ useEffect(()=>{
               :
               (
                 <>
-                <div className="row">
-                  <hr/>
-                  <div className="float-right divBoton">
-                    <button className="btn btn-regresar float-right"onClick={handleModoVisor}> Regresar</button>
+                  <div className="row">
+                    <hr/>
+                    <div className="float-right divBoton">
+                      <button className="btn btn-regresar float-right"onClick={handleModoVisor}> Regresar</button>
+                    </div>
                   </div>
-                </div>
-                <Tabla array={datosEliminados}  clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+                  <Tabla array={datosEliminados}  clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
                 {/* <button onClick={handleModoVisor}>Regresar</button> */}
                 </>              
               )
             )
             :
             (
-              esperando ?
+             <> 
+              <div className="row">
+                  <div className="col-sm-8 input-group mb-3 input-group-sm">
+                    <div className="input-group-prepend">
+                      <span className="font-len">Tipo de Intervención:</span>&nbsp;&nbsp; 
+                    </div>
+                    <select id="selectIntervencion" className="custom-select" key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
+                      {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
+                      <option value="" disabled>Seleccione...</option>
+                      {
+
+                        tipoIntervencion.map((item, i) => (
+                          <option key={"intervencion" + i} value={item.id}>{item.tipo}</option>
+                        ))
+                      }
+                    </select>
+                  </div>
+                
+                {!sinFiltro &&                 
+                  <div className="col-sm-4">
+                    <div  className="pretty p-switch p-fill">
+                      <input type="checkbox" value="" onChange={handleSinFiltro}/>                      
+                      <div className="state">
+                          <label>Ver todos</label>
+                      </div>
+                    </div>
+                  </div>
+                    
+                }
+              </div>
+              {esperando ?
                 (  
                   <>
+           
                     <div>
                       <span className="spinner-grow spinner-grow-lg text-danger"></span>
                       <span className=""> En proceso... Por favor espere.</span>
@@ -384,6 +404,8 @@ useEffect(()=>{
                 (
                   <Tabla array={datosFiltrados} handleEliminarConsulta={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
                 )
+              }
+             </>
              )
            }
           {<Modal

@@ -448,8 +448,8 @@ body
   padding: 20px!important;
 }
 .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok, 
-.ajs-button.ajs-cancel {
-  color: white;
+.alertify .ajs-footer .ajs-buttons .ajs-button {
+  color: white!important;
   font-size: 20px;
   border-radius: 50px;
   /* background-color: #203483; */
