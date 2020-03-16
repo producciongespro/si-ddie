@@ -15,16 +15,16 @@
   ],
   [
     {
-        "nombre": "Consultas1",
-        "ref": "consultas"
+        "nombre": "Intervención",
+        "ref": "tipo_intervencion"
     },
     {
-        "nombre": "Base de datos1",
-        "ref": "basedeDatos"
+        "nombre": "Tema",
+        "ref": "tema"
     },    
     {
-        "nombre": "Producción1",
-        "ref": "produccion"
+        "nombre": "Respuesta",
+        "ref": "tipo_respuesta"
     }
   ],
   [

@@ -23,8 +23,12 @@ import papelera from '../images/papelera-full.png';
 import referenciasJson from '../data/referencias.json';
 import { Alert } from 'react-bootstrap';
 
+import contenidosJson from '../data/contenidos.json';
+
+const contenidos = contenidosJson[1];
 const referencias = referenciasJson[0];
 
+console.log("contenidos de VERCONSULTA", contenidos);
 var tmpConsultas = null,
   tipoIntervencion = null,
   tipoSolicitante = null,
@@ -396,12 +400,12 @@ useEffect(()=>{
                       <span className="spinner-grow spinner-grow-lg text-danger"></span>
                       <span className=""> En proceso... Por favor espere.</span>
                     </div> 
-                    <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
+                    <Tabla array={datosFiltrados}   contenidos={contenidos} clase="table table-striped sombreado" modo="visor" />
                   </>
                 )
                 :
                 (
-                  <Tabla array={datosFiltrados} handleEliminarConsulta={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
+                  <Tabla array={datosFiltrados}  contenidos={contenidos} handleEliminarConsulta={handleEliminarConsulta} handleEditarConsulta={handleEditarConsulta} clase="table table-striped" modo="visor" />
                 )
               }
              </>
