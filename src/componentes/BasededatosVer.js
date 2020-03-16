@@ -31,14 +31,21 @@ import mostrarAlerta from './Alerta.js';
 
 
 const referencias = referenciasJson[0];
-var   ingresos = null,
-      ingresosId = null,
-      tmpEditar = null,
-      tmpIngresos = null,
-      tmpEliminados = null;
+
+var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
+    urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
+    urlIngreso= referencias.consultageneral+"?tabla=tipo_ingreso",
+    ingresos = null,
+    ingresosId = null,
+    tmpEditar = null,
+    tmpIngresos = null,
+    tipoIngresos = null,
+    tmpEliminados = null,
+    mensaje = "";
+
 // intervenciones = null
 
-var idUser = sessionStorage.getItem("id_usuario");
+// var idUser = sessionStorage.getItem("id_usuario");
 // , {months: 'Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre'});
 // moment.locale('es');
 
@@ -71,29 +78,18 @@ export default function BasededatosVer() {
 
   const { register, handleSubmit, errors, clearError } = useForm();
 
-  // //Estado para controlar la carga del json de ingresos:
-  // const [ingreso, setIngreso] = useState(null);
-
-  // //Estado que maneja el ingreso seleccionado por el usuario
-  // const [ingresoSel, setIngresoSel] = useState(null);
-
-  // //Estado que maneja el mes seleccionado por el usuario
-  // const [mesSel, setMesSel] = useState(null);
-
-  // //Cargado se cambia a True cuando se termina la carga de json del servidor
-  // const [cargado, setCargado] = useState(false);
-
-  // const onSubmit = data => console.log(data);
+  const [mesSel, setMesSel] = useState(null);
+  //se requiere?
 
 
   async function actualizaDatos(cb) {     
-    let response1 = await fetch(urlConsulta);
-    tmpConsultas = await response1.json();    
+    let response1 = await fetch(urlIngresos);
+    tmpIngresos = await response1.json();    
     cb();    
   }
 
   async function actualizaDatosEliminados(cb) {     
-    let response1 = await fetch(urlEliminadosConsultas);
+    let response1 = await fetch(urlEliminadosIngresos);
     tmpEliminados = await response1.json();    
     // setDatosEliminados(tmpEliminados)
     cb();    
@@ -102,34 +98,19 @@ export default function BasededatosVer() {
   async function obtenerDatos(cb) {
    
     // // 1 Consultas       
-    let response1 = await fetch(urlConsultas);
-    tmpConsultas = await response1.json()
+    let response1 = await fetch(urlIngresos);
+    tmpIngresos = await response1.json()
 
        
     // 2 Intervención
-    let response2 = await fetch(urlIntervencion);
-    tipoIntervencion = await response2.json();
-
-    //3 Solicitante
-    let response3 = await fetch(urlSolicitante);
-    tipoSolicitante = await response3.json();
-
-
-    // 4 Solicitud
-    let response4 = await fetch(urlSolicitud);
-    idSolicitud = await response4.json();
-
-    // 5 Respuesta
-    let response5 = await fetch(urlRespuesta);
-    tipoRespuesta = await response5.json();
+    let response2 = await fetch(urlIngreso);
+    tipoIngresos = await response2.json();
 
     // 6 Eliminados
-    let response6 = await fetch(urlEliminadosConsultas);
+    let response6 = await fetch(urlEliminadosIngresos);
     tmpEliminados = await response6.json();
     console.log("eliminados", tmpEliminados);
-    
     cb();   
-
   };
 
 
@@ -176,15 +157,15 @@ export default function BasededatosVer() {
 
 useEffect(() => {
   moment.locale('es');
-  //Acción que se ejecuta una vez que se monta el componente
-  // console.log("Componente montado");
-  let urlIngreso = referencias.consultageneral + "?tabla=tipo_ingreso";
   //Carga el primer json:
-  obtener(urlIngreso, function (data) {
+  obtenerDatos(function (data) {
     console.log("datos", data);
-    setIngreso(data);
+    setDatosListos(true);
     //Activa cargado para que meuistre el formulario:
-    setCargado(true);
+    setDatosFiltrados(tmpIngresos);
+  });
+  actualizaDatosEliminados(function(){
+    setDatosEliminados(tmpEliminados);
   })
 }, []);
 
@@ -197,7 +178,7 @@ const handleSeleccionarIngreso = (e) => {
   ingresosId = parseInt(e.target.value);
   // console.log("e.target.value", e.target.value);
   ingresos = filtrar(tmpIngresos, "id_intervencion", ingresosId);
-  setDatosFiltrados(intervenciones);
+  setDatosFiltrados(ingresos);
   setSinFiltro(false);
 
   // setIngresoSel(parseInt(e.target.value));
@@ -272,6 +253,42 @@ const handleEliminarIngreso = (e) => {
   }, function(){ });
 }
 
+const handleRecuperarRegistro = (e) => {
+  console.log("e.target de registro a recuperar", e.target.id);
+  
+  console.log("Ha recuperar");
+
+  let idRecuperar = e.target.id;
+  const data = {    
+          "borrado" : 0
+        }
+
+  let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id="+idRecuperar + "";
+  setEsperando(true);
+  enviar(url, data, function (resp) {
+    mensaje =  resp.data.mensaje 
+ 
+    actualizaDatosEliminados(function(){
+      setDatosEliminados(tmpEliminados);
+      if(tmpEliminados.length === 0){
+        mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
+        mostrarAlerta("Alerta",  mensaje);
+        mensaje = "";
+        // setDatosEliminados(tmpEliminados);
+        setEsperando(false);  
+        setModoVisor(true); 
+      }
+      else {
+        mensaje += ". Se ha recuperado el registro"
+        mostrarAlerta("Alerta", mensaje);
+        setEsperando(false);  
+      }
+    });
+  });
+    
+  // }
+};  
+
 return (
   datosListos ?
     (
@@ -334,7 +351,7 @@ return (
                   {/* {errors.id_ingreso && <p className="errors">Este campo es requerido</p>} */}
                   <option value="" disabled>Seleccione...</option>
                   {
-                    ingreso.map((item, i) => (
+                    tipoIngresos.map((item, i) => (
                       <option key={"ingreso" + i} value={item.id}>{item.tipo}</option>
                     ))
                   }
