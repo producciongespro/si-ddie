@@ -1,0 +1,44 @@
+[
+  [
+    {
+        "nombre": "Ingreso",
+        "campo": "id_ingreso"
+    },
+    {
+        "nombre": "Descriptor",
+        "campo": "descriptor"
+    },    
+    {
+        "nombre": "Fecha",
+        "campo": "fecha"
+    }
+  ],
+  [
+    {
+        "nombre": "Consultas1",
+        "ref": "consultas"
+    },
+    {
+        "nombre": "Base de datos1",
+        "ref": "basedeDatos"
+    },    
+    {
+        "nombre": "Producción1",
+        "ref": "produccion"
+    }
+  ],
+  [
+    {
+        "nombre": "Consultas2",
+        "ref": "consultas"
+    },
+    {
+        "nombre": "Base de datos2",
+        "ref": "basedeDatos"
+    },    
+    {
+        "nombre": "Producción2",
+        "ref": "produccion"
+    }
+  ]
+]

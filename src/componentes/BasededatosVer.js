@@ -28,9 +28,17 @@ import referenciasJson from '../data/referencias.json';
 
 import mostrarAlerta from './Alerta.js';
 
-
+import contenidosJson from '../data/contenidos.json';
 
 const referencias = referenciasJson[0];
+const contenidos = contenidosJson[0];
+console.log("contenidos", contenidos[0].nombre);
+
+// const contentTabla = [
+//         "titulo1"= "Ingreso",
+//         "campo1" =
+// ]
+
 
 var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
@@ -378,12 +386,12 @@ return (
                     <span className="spinner-grow spinner-grow-lg text-danger"></span>
                     <span className=""> En proceso... Por favor espere.</span>
                   </div>
-                  <Tabla array={datosFiltrados} clase="table table-striped sombreado" modo="visor" />
+                  <Tabla array={datosFiltrados} contenidos={contenidos} clase="table table-striped sombreado" modo="visor" />
                 </>
               )
               :
               (
-                <Tabla array={datosFiltrados} handleEliminarConsulta={handleEliminarIngreso} handleEditarConsulta={handleEditarIngreso} clase="table table-striped" modo="visor" />
+                <Tabla array={datosFiltrados} contenidos={contenidos} handleEliminarConsulta={handleEliminarIngreso} handleEditarConsulta={handleEditarIngreso} clase="table table-striped" modo="visor" />
               )
             }
           </>

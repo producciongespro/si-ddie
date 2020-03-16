@@ -9,13 +9,13 @@ function Tabla(props) {
             <thead>
                 <tr>
                     <th  scope="col">#</th>
-                    <th  scope="col">{props.contenidos[0].nombre}</th>
+                    <th  scope="col">Intervención</th>
                     {/* {
                         props.modo === "papelera" &&                    
                         <th className="text-center" scope="col">Tipo solicitante </th>                        
                     } */}
-                    <th  scope="col">{props.contenidos[1].nombre}</th>                                                 
-                    <th  scope="col">{props.contenidos[2].nombre}</th>  
+                    <th  scope="col">Tema</th>                                                 
+                    <th  scope="col">Respuesta</th>  
                     {
                         props.modo === "visor" &&                    
                         <th   scope="col"> Editar </th>
@@ -38,7 +38,7 @@ function Tabla(props) {
                         props.array.map((item, i) => (
                             <tr key={"item" + i}>
                                 <th scope="row">{i + 1}</th>
-                                <td >{item[props.contenidos[0].campo]}</td>
+                                <td >{item.tipo_intervencion}</td>
                                 {/* {
                                     props.modo === "papelera" &&   
                                     <td className="text-center">
@@ -46,9 +46,9 @@ function Tabla(props) {
                                             {/* revisar */}
                                     {/* </td>                                     */}
                                 {/* // }  */}
-                                <td  >{item[props.contenidos[1].campo]}</td>                               
-                                {item[props.contenidos[2].campo] ?
-                                    <td  >{item[props.contenidos[2].campo]}</td>
+                                <td  >{item.tema}</td>                               
+                                {item.id_respuesta ?
+                                    <td  >{item.tipo_respuesta}</td>
                                 :
                                     <td className="text-danger" >Pendiente</td>
                                 
