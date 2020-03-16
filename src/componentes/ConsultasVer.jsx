@@ -16,7 +16,6 @@ import 'alertifyjs/build/css/themes/default.min.css';
 
 import mostrarAlerta from './Alerta.js';
 
-import Papelera from './Papelera1js';
 import Imagen from './Imagen';
 import papeleraVacia from '../images/papelera-vacia.png';
 import papelera from '../images/papelera-full.png';
