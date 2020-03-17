@@ -42,7 +42,7 @@ console.log("contenidos", contenidos[0].nombre);
 
 var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
-    urlIngreso= referencias.consultageneral+"?tabla=tipo_ingreso",
+    urlTipoIngresos= referencias.consultageneral+"?tabla=tipo_ingreso",
     ingresos = null,
     ingresosId = null,
     tmpEditar = null,
@@ -111,7 +111,7 @@ export default function BasededatosVer() {
 
        
     // 2 Intervención
-    let response2 = await fetch(urlIngreso);
+    let response2 = await fetch(urlTipoIngresos);
     tipoIngresos = await response2.json();
 
     // 6 Eliminados
@@ -330,7 +330,7 @@ return (
                       <span className="spinner-grow spinner-grow-lg text-danger"></span>
                       <span className=""> En proceso... Por favor espere.</span>
                     </div>
-                    <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" />
+                    <Tabla array={datosEliminados} contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" />
                   </>
                 )
                 :
@@ -342,7 +342,7 @@ return (
                         <button className="btn btn-regresar float-right" onClick={handleModoVisor}> Regresar</button>
                       </div>
                     </div>
-                    <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+                    <Tabla array={datosEliminados} contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
                     {/* <button onClick={handleModoVisor}>Regresar</button> */}
                   </>
                 )

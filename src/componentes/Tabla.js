@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import 'moment/locale/es';
 // import {faPlus,faEye,faCaretDown} from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -48,7 +50,11 @@ function Tabla(props) {
                                 {/* // }  */}
                                 <td  >{item[props.contenidos[1].campo]}</td>                               
                                 {item[props.contenidos[2].campo] ?
-                                    <td  >{item[props.contenidos[2].campo]}</td>
+
+                                    props.contenidos[2].campo === "fecha" ?
+                                        <td  >{ moment.utc(item[props.contenidos[2].campo]).format('L')}</td>
+                                        :
+                                        <td  >{ item[props.contenidos[2].campo]}</td>
                                 :
                                     <td className="text-danger" >Pendiente</td>
                                 

@@ -2,7 +2,7 @@
   [
     {
         "nombre": "Ingreso",
-        "campo": "id_ingreso"
+        "campo": "tipo_ingresos"
     },
     {
         "nombre": "Descriptor",
@@ -16,15 +16,15 @@
   [
     {
         "nombre": "Intervención",
-        "ref": "tipo_intervencion"
+        "campo": "tipo_intervencion"
     },
     {
         "nombre": "Tema",
-        "ref": "tema"
+        "campo": "tema"
     },    
     {
         "nombre": "Respuesta",
-        "ref": "tipo_respuesta"
+        "campo": "tipo_respuesta"
     }
   ],
   [
