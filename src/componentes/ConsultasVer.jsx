@@ -104,11 +104,11 @@ export default function ConsultasVer() {
       handleClose();
       mostrarAlerta("Alerta", resp.msj);
       actualizaDatos(function () {
-        if(intervencionId){
-          tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
+        if(sinFiltro){
+          tmpEditar=tmpConsultas;
         }
         else {
-          tmpEditar=tmpConsultas;
+          tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
         }        
         setDatosFiltrados(tmpEditar);
         setEsperando(false);
@@ -246,11 +246,11 @@ useEffect(()=>{
         enviar(url, data, function (resp) {
                 mostrarAlerta("Alerta", resp.msj);
                 actualizaDatos(function () {
-                  if(intervencionId){
-                    tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
+                  if(sinFiltro){
+                    tmpEditar=tmpConsultas;
                   }
                   else {
-                    tmpEditar=tmpConsultas;
+                    tmpEditar = filtrar(tmpConsultas, "id_intervencion", intervencionId);
                   }
                   //actualizando el registro de eliminados
                   actualizaDatosEliminados(function(){
@@ -343,7 +343,7 @@ useEffect(()=>{
                   <span className="spinner-grow spinner-grow-lg text-danger"></span>
                   <span className=""> En proceso... Por favor espere.</span>
                 </div> 
-                <Tabla array={datosEliminados} clase="table table-striped sombreado" modo="papelera" /> 
+                <Tabla array={datosEliminados} contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" /> 
               </>
               )
               :
@@ -355,7 +355,7 @@ useEffect(()=>{
                       <button className="btn btn-regresar float-right"onClick={handleModoVisor}> Regresar</button>
                     </div>
                   </div>
-                  <Tabla array={datosEliminados}  clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
+                  <Tabla array={datosEliminados}  contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
                 {/* <button onClick={handleModoVisor}>Regresar</button> */}
                 </>              
               )

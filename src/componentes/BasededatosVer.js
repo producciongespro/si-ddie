@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -60,6 +60,8 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
 
 export default function BasededatosVer() {
 
+  const { usuario, setUsuario } = useContext(MyContext);
+
   const [datosFiltrados, setDatosFiltrados] = useState(null);
 
   const [datosEliminados, setDatosEliminados] = useState(null);
@@ -89,6 +91,8 @@ export default function BasededatosVer() {
   const [mesSel, setMesSel] = useState(null);
   //se requiere?
 
+  //Estado para controlar la carga del json de ingresos:
+  // const [ingreso, setIngreso] = useState(null);
 
   async function actualizaDatos(cb) {     
     let response1 = await fetch(urlIngresos);
@@ -135,11 +139,15 @@ export default function BasededatosVer() {
       handleClose();
       mostrarAlerta("Alerta", resp.msj);
       actualizaDatos(function () {
-        if (ingresosId) {
-          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
+        console.log("Sinfiltro", sinFiltro);
+        if (sinFiltro) {
+          
+          
+          tmpEditar = tmpIngresos;
+          
         }
         else {
-          tmpEditar = tmpIngresos;
+          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
         }
         setDatosFiltrados(tmpEditar);
         setEsperando(false);
@@ -166,10 +174,9 @@ export default function BasededatosVer() {
 useEffect(() => {
   moment.locale('es');
   //Carga el primer json:
-  obtenerDatos(function (data) {
-    console.log("datos", data);
+  obtenerDatos(function () {
     setDatosListos(true);
-    //Activa cargado para que meuistre el formulario:
+    console.log("tmpIngresos", tmpIngresos);    
     setDatosFiltrados(tmpIngresos);
   });
   actualizaDatosEliminados(function(){
@@ -185,7 +192,7 @@ const handleSeleccionarIngreso = (e) => {
   console.log(parseInt(e.target.value));
   ingresosId = parseInt(e.target.value);
   // console.log("e.target.value", e.target.value);
-  ingresos = filtrar(tmpIngresos, "id_intervencion", ingresosId);
+  ingresos = filtrar(tmpIngresos, "id_ingreso", ingresosId);
   setDatosFiltrados(ingresos);
   setSinFiltro(false);
 
@@ -217,6 +224,7 @@ const handleSinFiltro = (e) => {
     setTimeout(() => { let element = document.getElementById("selectIngreso");
     element.value="";
     setSinFiltro(true);
+    console.log("tmpIngresos", tmpIngresos);
     setDatosFiltrados(tmpIngresos);
   }, 500);
   }
@@ -243,12 +251,14 @@ const handleEliminarIngreso = (e) => {
       setEsperando(true);
       enviar(url, data, function (resp) {
               mostrarAlerta("Alerta", resp.msj);
+              console.log("Sinfiltro", sinFiltro);
               actualizaDatos(function () {
-                if(ingresosId){
-                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
+                if(sinFiltro){
+                  tmpEditar=tmpIngresos;
                 }
                 else {
-                  tmpEditar=tmpIngresos;
+                  
+                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
                 }
                 //actualizando el registro de eliminados
                 actualizaDatosEliminados(function(){
@@ -397,15 +407,143 @@ return (
           </>
             )
         }
+       {<Modal
+            show={show}
+            onHide={handleClose}
+            size="xl"
+            backdrop = "static"
+          // aria-labelledby="contained-modal-title-vcenter"
+          // centered
 
-      </div>
-    )
-    :
-    ( 
-      <div>
-        <span className="spinner-grow spinner-grow-lg text-danger"></span>
-        <span className=""> Cargando datos. Por favor espere...</span>
-      </div>
-    )
-  );     
+          >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Modal.Header closeButton className="modal-header-edicion">
+              <Modal.Title ><h1>Edición - Ingresos</h1></Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {
+                <>
+                    {(tmpEditar && tmpEditar[0]) &&
+                      <React.Fragment>
+                        <div className="row">
+                        <div className="form-group col-sm-6 ">
+                        <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
+                      <select className="custom-select"  defaultValue= {tmpEditar[0].id_ingreso} onChange={handleSeleccionarIngreso} name="id_ingreso" ref={register({required: true})}>
+                      {errors.id_ingreso && <p className="errors">Este campo es requerido</p>}
+                      <option value="" disabled>Seleccione...</option>
+                        {
+                            tipoIngresos.map((item,i)=>(
+                            <option key={"ingreso"+i} value={item.id}>{item.tipo}</option>
+                            ))
+                        }
+                      </select>
+                    </div>
+                    <div className="form-group col-sm-6 my-2">
+                      <InputItem  elementClass= "col-sm-6 my-2 form-group" defaultValor= {tmpEditar[0].descriptor} placeholderText="Número de descriptor" tipo="text" nombre= "descriptor" textlabel="Descriptor"  referencia={register({required: true})}/>
+                      {errors.descriptor && <p className="errors">Este campo es requerido</p>}
+                    </div>
+                  </div>
+                  { ingresosId === 3 &&
+                    <div className="row">
+                      <div className="col-sm-6">
+                      <label className="font-len" htmlFor="mes">Mes:</label>
+                        <select className="custom-select"   defaultValue= {tmpEditar[0].mes} onChange={handleMonthSelect} name="mes" id="mes" ref={register({required: true})}>
+                        {errors.mes && <p className="errors">Este campo es requerido</p>}
+                          <option value="" disabled>Seleccione...</option>
+                            {
+                              moment.months().map((label, i) => (
+                              <option key={"mes"+label} value={i+1}>{label}</option>
+                             ))}
+                        </select>
+                      </div>
+                    <div className="col-sm-6">
+                        <InputItem tipo="number" nombre= "anno"  defaultValor= {tmpEditar[0].anno} placeholderText="Escriba el año" textlabel="Año:"  referencia={register({required: true})} />
+                        {errors.anno && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                    </div>
+                  }
+                  { ingresosId === 8 &&
+                  <React.Fragment>
+                    <div className="row">
+                      <div className="form-group col-sm-6 my-2">
+                        <InputItem  placeholderText="Número...." defaultValor= {tmpEditar[0].modificado_reg_antiguo} tipo="text" nombre= "modificado_reg_antiguo" textlabel="Número registro antiguo"  referencia={register({required: true})}/>
+                        {errors.modificado_reg_antiguo && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                      <div className="form-group col-sm-6 my-2">
+                        <InputItem placeholderText="Número..." defaultValor= {tmpEditar[0].registro}  tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
+                        {errors.registro && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="form-group col-sm-6 my-2">
+                        <p><label className="font-len" htmlFor="modificado_datos_corregidos">Ingrese los datos corregidos:</label> </p>
+                        <textarea  className="form-control" defaultValue={tmpEditar[0].modificado_datos_corregidos} name="modificado_datos_corregidos"  id="modificado_datos_corregidos" ref={register({required: true})} />
+                        {errors.modificado_datos_corregidos && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                      <div className="form-group col-sm-6 my-2">
+                      <p><label className="font-len" htmlFor="nota">Ingrese las notas:</label></p>
+                        <textarea className="form-control" defaultValue={tmpEditar[0].nota} name="nota" ref={register({required: true})} />
+                        {errors.nota && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                    </div>
+                  </React.Fragment>
+                  }
+                  {ingresosId === 9 &&
+                    <div className="row">
+                      <div className="form-group col-sm-6">
+                        <InputItem placeholderText="número...." defaultValor= {tmpEditar[0].registro} tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
+                        {errors.registro && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                      <div className="form-group col-sm-6">
+                        <label className="font-len" htmlFor="nota">Ingrese las notas:</label> 
+                        <textarea className="form-control"  defaultValue={tmpEditar[0].nota}  placeholderText="Ingrese las notas" name="nota" ref={register({required: true})} />
+                        {errors.nota && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                    </div>
+                  }   
+                <div className="row">
+                  <div className="form-group col-sm-6 my-2">
+                    <InputItem tipo="number" defaultValor= {tmpEditar[0].portada} nombre= "portada" textlabel="Portada:"  placeholderText="No. portada" referencia={register({required: true})} />
+                    {errors.portada && <p className="errors">Este campo es requerido</p>}
+                  </div>
+                  <div className="form-group col-sm-6 my-2">
+                    <InputItem tipo="number" defaultValor= {tmpEditar[0].texto_completo} nombre= "texto_completo" textlabel="Texto completo:"  placeholderText="No. del texto" referencia={register({required: true})} />
+                    {errors.texto_completo && <p className="errors">Este campo es requerido</p>}
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="form-group col-sm-6 my-2">
+                    <InputItem tipo="number" defaultValor= {tmpEditar[0].enlace} nombre= "enlace" textlabel="Enlace:"  placeholderText="No. enlace" referencia={register({required: true})} />
+                    {errors.enlace && <p className="errors">Este campo es requerido</p>}
+                  </div>
+                  <div className="form-group col-sm-6 my-2">
+                    <InputItem tipo="date" defaultValor= {tmpEditar[0].fecha} nombre= "fecha" textlabel="Fecha:"  referencia={register({required: true})} />
+                    {errors.fecha && <p className="errors">Este campo es requerido</p>}
+                  </div>
+                </div>
+                <div className="form-group d-none">
+                  <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue={usuario.idUsuario} ref={register} />
+                </div>
+              </React.Fragment>
+              }
+                </>
+              }
+            </Modal.Body>
+            <Modal.Footer className="modal-footer-edicion">
+              <input className="btn btn-main text-center" type="submit" value="Guardar" onClick={handleClose}></input>
+            </Modal.Footer>
+
+           </form>
+          </Modal>}
+        </div>
+        )
+        :
+        ( 
+          <div>
+            <span className="spinner-grow spinner-grow-lg text-danger"></span>
+            <span className=""> Cargando datos. Por favor espere...</span>
+          </div>
+        )
+      );     
 }  

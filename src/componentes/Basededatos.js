@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import obtener from '../modulos/obtener';
 import InputItem from './InputItem';
 import moment from 'moment';
 import 'moment/locale/es';
 
+import MyContext from '../modulos/MyContext';
 
 import "../css/form.css";
 
@@ -21,14 +22,11 @@ import enviar from '../modulos/enviar';
 // moment.lang('es');
 const referencias = referenciasJson[0];
 
-var  me,
-    fechaActual = new Date(),
-    idUser = sessionStorage.getItem("id_usuario");
-    // , {months: 'Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre'});
-    // moment.locale('es');
-    
 
     export default function Basededatos() {
+      
+      const { usuario, setUsuario } = useContext(MyContext);
+
       const { register, handleSubmit, errors, clearError } = useForm();
   
       //Estado para controlar la carga del json de ingresos:
@@ -193,7 +191,7 @@ var  me,
                   </div>
                 </div>
                 <div className={"form-group d-none"}>
-                  <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue ={idUser} ref={register}/>    
+                  <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue={usuario.idUsuario} ref={register} /> 
                 </div>
 
               <div className="row">
