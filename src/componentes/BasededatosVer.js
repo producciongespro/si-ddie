@@ -34,10 +34,6 @@ const referencias = referenciasJson[0];
 const contenidos = contenidosJson[0];
 console.log("contenidos", contenidos[0].nombre);
 
-// const contentTabla = [
-//         "titulo1"= "Ingreso",
-//         "campo1" =
-// ]
 
 
 var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
@@ -52,11 +48,6 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     tmpEliminados = null,
     mensaje = "";
 
-// intervenciones = null
-
-// var idUser = sessionStorage.getItem("id_usuario");
-// , {months: 'Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre'});
-// moment.locale('es');
 
 
 export default function BasededatosVer() {
@@ -132,7 +123,7 @@ export default function BasededatosVer() {
     console.log("id ingreso", idIngreso);
 
     // let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "";
-    let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "&tipo=" + originalIdTipoIngreso + "";
+    let url = referencias.actualizar + "?tabla_destino=ingresos&id=" + idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
     console.log("url desde submit", url);
 
     setEsperando(true);

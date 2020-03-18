@@ -8,6 +8,7 @@
        "consultaespecifica": "http://localhost/webservices/si-ddie/consultas_especificas.php",
        "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",
+       "actualizar" : "http://localhost/webservices/si-ddie/actualiza_generico.php",
        "registroUsuario" : "http://localhost/webservices/si-ddie/registro.php",
        "recuperarContrasena" : "http://localhost/webservices/si-ddie/recupera.php",
        "login" : "http://localhost/webservices/si-ddie/login.php"
