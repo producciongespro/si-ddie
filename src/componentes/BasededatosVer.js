@@ -45,6 +45,7 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlTipoIngresos= referencias.consultageneral+"?tabla=tipo_ingreso",
     ingresos = null,
     ingresosId = null,
+    originalIdTipoIngreso = null,
     tmpEditar = null,
     tmpIngresos = null,
     tipoIngresos = null,
@@ -128,10 +129,10 @@ export default function BasededatosVer() {
 
   const onSubmit = (data, e) => {
     let idIngreso = tmpEditar[0].id;
-
     console.log("id ingreso", idIngreso);
 
-    let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "";
+    // let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "";
+    let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "&tipo=" + originalIdTipoIngreso + "";
     console.log("url desde submit", url);
 
     setEsperando(true);
@@ -234,6 +235,8 @@ const handleSinFiltro = (e) => {
 const handleEditarIngreso = (e) => {
   let id = parseInt(e.target.id);
   tmpEditar = filtrar(tmpIngresos, "id", id);
+  console.log("tmpEditar.id_ingreso", tmpEditar[0].id_i);
+  originalIdTipoIngreso = tmpEditar[0].id_ingreso;
   setEsperando(true);
   setShow(true);
 }

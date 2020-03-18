@@ -34,7 +34,7 @@ var tmpConsultas = null,
   tipoSolicitante = null,
   idSolicitud = null,
   tipoRespuesta = null,
-  datosEliminados = null,
+  // datosEliminados = null,
   tmpEditar = null,
   tmpEliminados = null,
   intervenciones = null,
@@ -216,6 +216,7 @@ useEffect(()=>{
 
   const handleModoVisor = () => {
     setModoVisor(true); 
+    setSinFiltro(true);
     obtenerDatos(
       function () {
       setDatosListos(true);
@@ -227,7 +228,7 @@ useEffect(()=>{
 
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
-    tmpEditar = filtrar(tmpConsultas, "id", id);
+    tmpEditar = filtrar(tmpConsultas, "id", id);    
     setEsperando(true);
     setShow(true);
   }
