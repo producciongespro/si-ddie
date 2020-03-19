@@ -49,11 +49,11 @@ function Tabla(props) {
                                     {/* </td>                                     */}
                                 {/* // }  */}
                                 <td  >{item[props.contenidos[1].campo]}</td>                               
-                                {item[props.contenidos[2].campo] ?
+                                {/* {/* {item[props.contenidos[2].campo] ? */}
 
-                                    props.contenidos[2].campo === "fecha" ?
-                                        <td  >{ moment.utc(item[props.contenidos[2].campo]).format('L')}</td>
-                                        :
+                                     {props.contenidos[2].campo === "fecha" ?
+                                        // <td  >{ moment.utc(item[props.contenidos[2].campo]).format('L')}</td>
+                                        // : */}
                                         <td  >{ item[props.contenidos[2].campo]}</td>
                                 :
                                     <td className="text-danger" >Pendiente</td>

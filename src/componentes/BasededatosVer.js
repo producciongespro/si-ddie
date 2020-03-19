@@ -32,7 +32,7 @@ import contenidosJson from '../data/contenidos.json';
 
 const referencias = referenciasJson[0];
 const contenidos = contenidosJson[0];
-console.log("contenidos", contenidos[0].nombre);
+// console.log("contenidos", contenidos[0].nombre);
 
 
 
@@ -40,7 +40,7 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
     urlTipoIngresos= referencias.consultageneral+"?tabla=tipo_ingreso",
     ingresos = null,
-    ingresosId = null,
+    // ingresosId = null,
     originalIdTipoIngreso = null,
     tmpEditar = null,
     tmpIngresos = null,
@@ -53,6 +53,7 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
 export default function BasededatosVer() {
 
   const { usuario, setUsuario } = useContext(MyContext);
+
 
   const [datosFiltrados, setDatosFiltrados] = useState(null);
 
@@ -67,11 +68,14 @@ export default function BasededatosVer() {
   // Estado que indica el desplegar la tabla en modo papelera
   const [modoVisor, setModoVisor] = useState(true);
 
+  //Estado que maneja el ingreso seleccionado por el usuario
+  const [ingresoSel, setIngresoSel] = useState(null);
+
   //Estado para ocultar o mostrar un modal
   const [show, setShow] = useState(false);
 
   //cerrar modal
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); originalIdTipoIngreso = null};
 
   const handlePapelera = () => setModoVisor(false);
 
@@ -113,16 +117,55 @@ export default function BasededatosVer() {
     // 6 Eliminados
     let response6 = await fetch(urlEliminadosIngresos);
     tmpEliminados = await response6.json();
-    console.log("eliminados", tmpEliminados);
+    // console.log("eliminados", tmpEliminados);
     cb();   
   };
 
 
   const onSubmit = (data, e) => {
-    let idIngreso = tmpEditar[0].id;
-    console.log("id ingreso", idIngreso);
+    console.log("data ORIGINAL", data);
+    console.log("data ingreso", data['id_ingreso']);
+    console.log("originalIdTipoIngreso", originalIdTipoIngreso);
+    
+    
+      // if (parseInt(originalIdTipoIngreso) !== parseInt(data['id_ingreso']) ) {
+      //   console.log("cambio el tipo de ingreso de ",originalIdTipoIngreso," a ", data['id_ingreso']);
+        
+      //     switch (originalIdTipoIngreso) {
+      //         case '3':
+      //           delete data["mes"];
+      //           delete data["anno"];
+      //             break;
+      //         case '8':
+      //           delete data["modificado_reg_antiguo"];
+      //           delete data["modificado_datos_corregidos"];
+      //           if( data['id_ingreso'] !== '9')
+      //           {
+      //             delete data["nota"];
+      //             delete data["registro"];
+      //           }
 
-    // let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id=" + idIngreso + "";
+      //             // $lista_campos .=   "`modificado_reg_antiguo`=NULL,`registro`=NULL,`modificado_datos_corregidos`=NULL,`nota`=NULL";
+      //             break;
+      //         case '9':
+      //           if( data['id_ingreso'] !== '8')
+      //           {
+      //             delete data["nota"];
+      //             delete data["registro"];
+      //           }
+      //             break;                    
+      //         default:
+      //             break;
+      //     }        
+      // }
+      // else {
+        originalIdTipoIngreso =  data['id_ingreso'];
+      // }
+      // console.log("data modificado por cambio de ingreso",data );
+      
+  // }
+
+    let idIngreso = tmpEditar[0].id;
     let url = referencias.actualizar + "?tabla_destino=ingresos&id=" + idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
     console.log("url desde submit", url);
 
@@ -131,7 +174,7 @@ export default function BasededatosVer() {
       handleClose();
       mostrarAlerta("Alerta", resp.msj);
       actualizaDatos(function () {
-        console.log("Sinfiltro", sinFiltro);
+        // console.log("Sinfiltro", sinFiltro);
         if (sinFiltro) {
           
           
@@ -139,8 +182,9 @@ export default function BasededatosVer() {
           
         }
         else {
-          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
+          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
         }
+        originalIdTipoIngreso=null;
         setDatosFiltrados(tmpEditar);
         setEsperando(false);
       });
@@ -168,7 +212,7 @@ useEffect(() => {
   //Carga el primer json:
   obtenerDatos(function () {
     setDatosListos(true);
-    console.log("tmpIngresos", tmpIngresos);    
+    // console.log("tmpIngresos", tmpIngresos);    
     setDatosFiltrados(tmpIngresos);
   });
   actualizaDatosEliminados(function(){
@@ -178,27 +222,20 @@ useEffect(() => {
 
 
 const handleSeleccionarIngreso = (e) => {
-
   //obtenr el valor de seleccion
-  clearError();
-  console.log(parseInt(e.target.value));
-  ingresosId = parseInt(e.target.value);
   // console.log("e.target.value", e.target.value);
-  ingresos = filtrar(tmpIngresos, "id_ingreso", ingresosId);
+  clearError();
+  setIngresoSel(parseInt(e.target.value));
+  ingresos = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
   setDatosFiltrados(ingresos);
   setSinFiltro(false);
-
-  // setIngresoSel(parseInt(e.target.value));
 }
 
 const handleMonthSelect = (e) => {
   //obtenr el valor de seleccion
   clearError();
   let mesActual = parseInt(e.target.value);
-  setMesSel(mesActual);
-  // console.log("mesSel", mesSel);
-  // console.log("mes", mesSel);
-
+  setMesSel(mesActual)
 }
 
 const handleModoVisor = () => {
@@ -216,7 +253,7 @@ const handleSinFiltro = (e) => {
     setTimeout(() => { let element = document.getElementById("selectIngreso");
     element.value="";
     setSinFiltro(true);
-    console.log("tmpIngresos", tmpIngresos);
+    // console.log("tmpIngresos", tmpIngresos);
     setDatosFiltrados(tmpIngresos);
   }, 500);
   }
@@ -225,8 +262,9 @@ const handleSinFiltro = (e) => {
 
 const handleEditarIngreso = (e) => {
   let id = parseInt(e.target.id);
+  
   tmpEditar = filtrar(tmpIngresos, "id", id);
-  console.log("tmpEditar.id_ingreso", tmpEditar[0].id_i);
+  setIngresoSel(parseInt(tmpEditar[0].id_ingreso));
   originalIdTipoIngreso = tmpEditar[0].id_ingreso;
   setEsperando(true);
   setShow(true);
@@ -245,19 +283,19 @@ const handleEliminarIngreso = (e) => {
       setEsperando(true);
       enviar(url, data, function (resp) {
               mostrarAlerta("Alerta", resp.msj);
-              console.log("Sinfiltro", sinFiltro);
+              // console.log("Sinfiltro", sinFiltro);
               actualizaDatos(function () {
                 if(sinFiltro){
                   tmpEditar=tmpIngresos;
                 }
                 else {
                   
-                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
+                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
                 }
                 //actualizando el registro de eliminados
                 actualizaDatosEliminados(function(){
                   setDatosEliminados(tmpEliminados);})
-                console.log("LARGO", tmpEditar.lenght);        
+                // console.log("LARGO", tmpEditar.lenght);        
                 setDatosFiltrados(tmpEditar);
                 setEsperando(false);
           })
@@ -266,9 +304,9 @@ const handleEliminarIngreso = (e) => {
 }
 
 const handleRecuperarRegistro = (e) => {
-  console.log("e.target de registro a recuperar", e.target.id);
+  // console.log("e.target de registro a recuperar", e.target.id);
   
-  console.log("Ha recuperar");
+  // console.log("Ha recuperar");
 
   let idRecuperar = e.target.id;
   const data = {    
@@ -437,7 +475,7 @@ return (
                       {errors.descriptor && <p className="errors">Este campo es requerido</p>}
                     </div>
                   </div>
-                  { ingresosId === 3 &&
+                  { ingresoSel === 3 &&
                     <div className="row">
                       <div className="col-sm-6">
                       <label className="font-len" htmlFor="mes">Mes:</label>
@@ -456,7 +494,7 @@ return (
                       </div>
                     </div>
                   }
-                  { ingresosId === 8 &&
+                  { ingresoSel === 8 &&
                   <React.Fragment>
                     <div className="row">
                       <div className="form-group col-sm-6 my-2">
@@ -482,7 +520,7 @@ return (
                     </div>
                   </React.Fragment>
                   }
-                  {ingresosId === 9 &&
+                  {ingresoSel === 9 &&
                     <div className="row">
                       <div className="form-group col-sm-6">
                         <InputItem placeholderText="número...." defaultValor= {tmpEditar[0].registro} tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
@@ -513,6 +551,7 @@ return (
                   </div>
                   <div className="form-group col-sm-6 my-2">
                     <InputItem tipo="date" defaultValor= {tmpEditar[0].fecha} nombre= "fecha" textlabel="Fecha:"  referencia={register({required: true})} />
+                    {/* <InputItem tipo="date" defaultValor= {moment.utc(tmpEditar[0].fecha).format('L')} nombre= "fecha" textlabel="Fecha:"  referencia={register({required: true})} /> */}
                     {errors.fecha && <p className="errors">Este campo es requerido</p>}
                   </div>
                 </div>

@@ -76,8 +76,8 @@ const referencias = referenciasJson[0];
           clearError();
           console.log(parseInt(e.target.value));
           setIngresoSel(parseInt(e.target.value));
-          
       }
+      
       const handleMonthSelect =(e)=>{
         //obtenr el valor de seleccion
         clearError();
