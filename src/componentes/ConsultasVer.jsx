@@ -225,6 +225,16 @@ useEffect(()=>{
     );
   };
   
+  const handleSinFiltro = (e) => {
+    if(e.target.checked){
+      setTimeout(() => { let element = document.getElementById("selectIntervencion");
+      element.value="";
+      setSinFiltro(true);
+      setDatosFiltrados(tmpConsultas);
+    }, 500);
+    }
+  }
+
 
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
@@ -265,9 +275,6 @@ useEffect(()=>{
   }
 
   const handleRecuperarRegistro = (e) => {
-    console.log("e.target de registro a recuperar", e.target.id);
-    
-    console.log("Ha recuperar");
 
     let idRecuperar = e.target.id;
     const data = {    
@@ -286,8 +293,11 @@ useEffect(()=>{
           mostrarAlerta("Alerta",  mensaje);
           mensaje = "";
           // setDatosEliminados(tmpEliminados);
-          setEsperando(false);  
+          setEsperando(false);
+          setSinFiltro(true);
+          setDatosFiltrados(tmpConsultas);  
           setModoVisor(true); 
+          // setDatosFiltrados(tmpConsultas);  
         }
         else {
           mensaje += ". Se ha recuperado el registro"
@@ -299,15 +309,6 @@ useEffect(()=>{
       
     // }
   };  
-  const handleSinFiltro = (e) => {
-    if(e.target.checked){
-      setTimeout(() => { let element = document.getElementById("selectIntervencion");
-      element.value="";
-      setSinFiltro(true);
-      setDatosFiltrados(tmpConsultas);
-    }, 500);
-    }
-  }
 
 
   return (

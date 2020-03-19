@@ -40,7 +40,7 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
     urlTipoIngresos= referencias.consultageneral+"?tabla=tipo_ingreso",
     ingresos = null,
-    // ingresosId = null,
+    ingresosId = null,
     originalIdTipoIngreso = null,
     tmpEditar = null,
     tmpIngresos = null,
@@ -75,7 +75,7 @@ export default function BasededatosVer() {
   const [show, setShow] = useState(false);
 
   //cerrar modal
-  const handleClose = () => {setShow(false); originalIdTipoIngreso = null};
+  const handleClose = () => setShow(false);
 
   const handlePapelera = () => setModoVisor(false);
 
@@ -90,6 +90,41 @@ export default function BasededatosVer() {
   //Estado para controlar la carga del json de ingresos:
   // const [ingreso, setIngreso] = useState(null);
 
+  const onSubmit = (data, e) => {
+    // console.log("data ORIGINAL", data);
+    // console.log("data ingreso", data['id_ingreso']);
+    
+    if( originalIdTipoIngreso ===  null){
+      originalIdTipoIngreso = data['id_ingreso'];
+    }
+    
+    // console.log("originalIdTipoIngreso", originalIdTipoIngreso, " actual :",data['id_ingreso']);
+
+    let idIngreso = tmpEditar[0].id;
+    let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
+    // let url = referencias.actualizar + "?tabla_destino=ingresos&id=" + idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
+    console.log("url desde submit", url);
+
+    setEsperando(true);
+    enviar(url, data, function (resp) {
+      handleClose();
+      mostrarAlerta("Alerta", resp.data.mensaje );
+      actualizaDatos(function () {
+        console.log("Sinfiltro", sinFiltro);
+        if (sinFiltro) {                   
+          tmpEditar = tmpIngresos;          
+        }
+        else {
+          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
+        }
+        originalIdTipoIngreso=null;
+        setDatosFiltrados(tmpEditar);
+        setEsperando(false);
+      });
+    });
+  };
+
+  
   async function actualizaDatos(cb) {     
     let response1 = await fetch(urlIngresos);
     tmpIngresos = await response1.json();    
@@ -122,91 +157,6 @@ export default function BasededatosVer() {
   };
 
 
-  const onSubmit = (data, e) => {
-    console.log("data ORIGINAL", data);
-    console.log("data ingreso", data['id_ingreso']);
-    console.log("originalIdTipoIngreso", originalIdTipoIngreso);
-    
-    
-      // if (parseInt(originalIdTipoIngreso) !== parseInt(data['id_ingreso']) ) {
-      //   console.log("cambio el tipo de ingreso de ",originalIdTipoIngreso," a ", data['id_ingreso']);
-        
-      //     switch (originalIdTipoIngreso) {
-      //         case '3':
-      //           delete data["mes"];
-      //           delete data["anno"];
-      //             break;
-      //         case '8':
-      //           delete data["modificado_reg_antiguo"];
-      //           delete data["modificado_datos_corregidos"];
-      //           if( data['id_ingreso'] !== '9')
-      //           {
-      //             delete data["nota"];
-      //             delete data["registro"];
-      //           }
-
-      //             // $lista_campos .=   "`modificado_reg_antiguo`=NULL,`registro`=NULL,`modificado_datos_corregidos`=NULL,`nota`=NULL";
-      //             break;
-      //         case '9':
-      //           if( data['id_ingreso'] !== '8')
-      //           {
-      //             delete data["nota"];
-      //             delete data["registro"];
-      //           }
-      //             break;                    
-      //         default:
-      //             break;
-      //     }        
-      // }
-      // else {
-        originalIdTipoIngreso =  data['id_ingreso'];
-      // }
-      // console.log("data modificado por cambio de ingreso",data );
-      
-  // }
-
-    let idIngreso = tmpEditar[0].id;
-    let url = referencias.actualizar + "?tabla_destino=ingresos&id=" + idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
-    console.log("url desde submit", url);
-
-    setEsperando(true);
-    enviar(url, data, function (resp) {
-      handleClose();
-      mostrarAlerta("Alerta", resp.msj);
-      actualizaDatos(function () {
-        // console.log("Sinfiltro", sinFiltro);
-        if (sinFiltro) {
-          
-          
-          tmpEditar = tmpIngresos;
-          
-        }
-        else {
-          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
-        }
-        originalIdTipoIngreso=null;
-        setDatosFiltrados(tmpEditar);
-        setEsperando(false);
-      });
-    });
-  };
-
-  
-  
-
-
-  // console.log("url desde submit", url);
-
-//   enviar(url, data, function (msj) {
-//     console.log(msj);
-//   });
-//   setIngresoSel(0);
-//   e.target.reset(); // reset after form submit
-
-// };
-// console.log("errors", errors);
-
-
 useEffect(() => {
   moment.locale('es');
   //Carga el primer json:
@@ -225,8 +175,9 @@ const handleSeleccionarIngreso = (e) => {
   //obtenr el valor de seleccion
   // console.log("e.target.value", e.target.value);
   clearError();
+  ingresosId = parseInt(e.target.value);
   setIngresoSel(parseInt(e.target.value));
-  ingresos = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
+  ingresos = filtrar(tmpIngresos, "id_ingreso", ingresosId);
   setDatosFiltrados(ingresos);
   setSinFiltro(false);
 }
@@ -253,7 +204,6 @@ const handleSinFiltro = (e) => {
     setTimeout(() => { let element = document.getElementById("selectIngreso");
     element.value="";
     setSinFiltro(true);
-    // console.log("tmpIngresos", tmpIngresos);
     setDatosFiltrados(tmpIngresos);
   }, 500);
   }
@@ -282,7 +232,9 @@ const handleEliminarIngreso = (e) => {
       // console.log("DATA",data);
       setEsperando(true);
       enviar(url, data, function (resp) {
-              mostrarAlerta("Alerta", resp.msj);
+        // console.log("RESP", resp);
+        
+              mostrarAlerta("Alerta", resp.data.mensaje );
               // console.log("Sinfiltro", sinFiltro);
               actualizaDatos(function () {
                 if(sinFiltro){
@@ -316,15 +268,15 @@ const handleRecuperarRegistro = (e) => {
   let url = referencias.actualizaconsulta + "?tabla_destino=ingresos&id="+idRecuperar + "";
   setEsperando(true);
   enviar(url, data, function (resp) {
-    mensaje =  resp.data.mensaje 
- 
+    mensaje =  resp.data.mensaje;  
     actualizaDatosEliminados(function(){
       setDatosEliminados(tmpEliminados);
       if(tmpEliminados.length === 0){
         mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
         mostrarAlerta("Alerta",  mensaje);
         mensaje = "";
-        // setDatosEliminados(tmpEliminados);
+        setSinFiltro(false);
+        setDatosFiltrados(tmpIngresos);
         setEsperando(false);  
         setModoVisor(true); 
       }
