@@ -7,7 +7,7 @@ function enviar(url, data, cb) {
   console.log("data a enviar", data);
   axios.post(url, data)    
   .then(function (response) {
-     mostrarAlerta( "Alerta", response.data['mensaje']);
+    //  mostrarAlerta( "Alerta", response.data['mensaje']);
      cb(response);
   })
   .catch(function (error) {

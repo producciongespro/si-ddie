@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Modal } from 'react-bootstrap';
+import {Modal } from 'react-bootstrap';
 
-import obtener from '../modulos/obtener';
 import InputItem from './InputItem';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -32,9 +31,6 @@ import contenidosJson from '../data/contenidos.json';
 
 const referencias = referenciasJson[0];
 const contenidos = contenidosJson[0];
-// console.log("contenidos", contenidos[0].nombre);
-
-
 
 var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     urlEliminadosIngresos = referencias.consultaeliminados + "?tabla=ingresos",
@@ -75,7 +71,7 @@ export default function BasededatosVer() {
   const [show, setShow] = useState(false);
 
   //cerrar modal
-  const handleClose = () => setShow(false);
+  const handleClose = () => setShow(true);
 
   const handlePapelera = () => setModoVisor(false);
 
@@ -91,31 +87,27 @@ export default function BasededatosVer() {
   // const [ingreso, setIngreso] = useState(null);
 
   const onSubmit = (data, e) => {
-    // console.log("data ORIGINAL", data);
-    // console.log("data ingreso", data['id_ingreso']);
-    
     if( originalIdTipoIngreso ===  null){
       originalIdTipoIngreso = data['id_ingreso'];
     }
-    
-    // console.log("originalIdTipoIngreso", originalIdTipoIngreso, " actual :",data['id_ingreso']);
 
     let idIngreso = tmpEditar[0].id;
     let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
-    // let url = referencias.actualizar + "?tabla_destino=ingresos&id=" + idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
     console.log("url desde submit", url);
 
     setEsperando(true);
     enviar(url, data, function (resp) {
-      handleClose();
+      
       mostrarAlerta("Alerta", resp.data.mensaje );
+      if(!resp.data.error) {
+        setShow(false);
+      }
       actualizaDatos(function () {
-        console.log("Sinfiltro", sinFiltro);
         if (sinFiltro) {                   
           tmpEditar = tmpIngresos;          
         }
         else {
-          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
+          tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
         }
         originalIdTipoIngreso=null;
         setDatosFiltrados(tmpEditar);
@@ -152,7 +144,7 @@ export default function BasededatosVer() {
     // 6 Eliminados
     let response6 = await fetch(urlEliminadosIngresos);
     tmpEliminados = await response6.json();
-    // console.log("eliminados", tmpEliminados);
+
     cb();   
   };
 
@@ -170,16 +162,19 @@ useEffect(() => {
   })
 }, []);
 
-
 const handleSeleccionarIngreso = (e) => {
-  //obtenr el valor de seleccion
-  // console.log("e.target.value", e.target.value);
+  //obtenr el valor de seleccion desde el filtro
   clearError();
   ingresosId = parseInt(e.target.value);
-  setIngresoSel(parseInt(e.target.value));
   ingresos = filtrar(tmpIngresos, "id_ingreso", ingresosId);
   setDatosFiltrados(ingresos);
   setSinFiltro(false);
+}
+
+const handleCambiarIngreso = (e) => {
+  clearError();
+  console.log("INGRESO",e.target.value);  
+  setIngresoSel(parseInt(e.target.value));
 }
 
 const handleMonthSelect = (e) => {
@@ -188,6 +183,20 @@ const handleMonthSelect = (e) => {
   let mesActual = parseInt(e.target.value);
   setMesSel(mesActual)
 }
+
+function handleDefaultMes ( ) {
+  // console.log("tmpEditar[0].mes ", tmpEditar[0].mes );
+  
+  let mesActual;
+  if(tmpEditar[0].mes){
+    mesActual = tmpEditar[0].mes
+  }
+  else {
+    mesActual = ""
+  }
+  return mesActual;
+}
+
 
 const handleModoVisor = () => {
   setModoVisor(true); 
@@ -229,25 +238,19 @@ const handleEliminarIngreso = (e) => {
       // console.log("url desde submit", url);
       
       data.borrado = 1;   
-      // console.log("DATA",data);
+      
       setEsperando(true);
-      enviar(url, data, function (resp) {
-        // console.log("RESP", resp);
-        
-              mostrarAlerta("Alerta", resp.data.mensaje );
-              // console.log("Sinfiltro", sinFiltro);
+      enviar(url, data, function (resp) {                
+              alertify.success(resp.data.mensaje,2);
               actualizaDatos(function () {
                 if(sinFiltro){
                   tmpEditar=tmpIngresos;
                 }
                 else {
                   
-                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresoSel);
+                  tmpEditar = filtrar(tmpIngresos, "id_ingreso", ingresosId);
                 }
-                //actualizando el registro de eliminados
-                actualizaDatosEliminados(function(){
-                  setDatosEliminados(tmpEliminados);})
-                // console.log("LARGO", tmpEditar.lenght);        
+                actualizaDatosEliminados(function(){setDatosEliminados(tmpEliminados);})
                 setDatosFiltrados(tmpEditar);
                 setEsperando(false);
           })
@@ -256,10 +259,6 @@ const handleEliminarIngreso = (e) => {
 }
 
 const handleRecuperarRegistro = (e) => {
-  // console.log("e.target de registro a recuperar", e.target.id);
-  
-  // console.log("Ha recuperar");
-
   let idRecuperar = e.target.id;
   const data = {    
           "borrado" : 0
@@ -274,11 +273,14 @@ const handleRecuperarRegistro = (e) => {
       if(tmpEliminados.length === 0){
         mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
         mostrarAlerta("Alerta",  mensaje);
-        mensaje = "";
-        setSinFiltro(false);
-        setDatosFiltrados(tmpIngresos);
-        setEsperando(false);  
-        setModoVisor(true); 
+        actualizaDatos(function () {
+          tmpEditar=tmpIngresos;
+          setDatosFiltrados(tmpEditar);
+          mensaje = "";
+          setSinFiltro(true);              
+          setEsperando(false);  
+          setModoVisor(true);
+        });         
       }
       else {
         mensaje += ". Se ha recuperado el registro"
@@ -287,8 +289,6 @@ const handleRecuperarRegistro = (e) => {
       }
     });
   });
-    
-  // }
 };  
 
 return (
@@ -337,20 +337,16 @@ return (
                       </div>
                     </div>
                     <Tabla array={datosEliminados} contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
-                    {/* <button onClick={handleModoVisor}>Regresar</button> */}
                   </>
                 )
             )
             :
             (
             <>
-            {/* <form onSubmit={handleSubmit(onSubmit)}>
-                    <h1 className="header-1">Base de datos</h1> */}
             <div className="row">
               <div className="form-group col-sm-6 ">
                 <label className="font-len" htmlFor="id_ingreso">Ver por tipo de ingreso:&nbsp;&nbsp;</label>
                 <select id="selectIngreso" className="custom-select" defaultValue="" onChange={handleSeleccionarIngreso} name="id_ingreso">
-                  {/* {errors.id_ingreso && <p className="errors">Este campo es requerido</p>} */}
                   <option value="" disabled>Seleccione...</option>
                   {
                     tipoIngresos.map((item, i) => (
@@ -396,10 +392,7 @@ return (
             onHide={handleClose}
             size="xl"
             backdrop = "static"
-          // aria-labelledby="contained-modal-title-vcenter"
-          // centered
-
-          >
+       >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Modal.Header closeButton className="modal-header-edicion">
               <Modal.Title ><h1>Edición - Ingresos</h1></Modal.Title>
@@ -412,7 +405,7 @@ return (
                         <div className="row">
                         <div className="form-group col-sm-6 ">
                         <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
-                      <select className="custom-select"  defaultValue= {tmpEditar[0].id_ingreso} onChange={handleSeleccionarIngreso} name="id_ingreso" ref={register({required: true})}>
+                      <select className="custom-select"  defaultValue= {tmpEditar[0].id_ingreso} onChange={handleCambiarIngreso} name="id_ingreso" ref={register({required: true})}>
                       {errors.id_ingreso && <p className="errors">Este campo es requerido</p>}
                       <option value="" disabled>Seleccione...</option>
                         {
@@ -431,7 +424,8 @@ return (
                     <div className="row">
                       <div className="col-sm-6">
                       <label className="font-len" htmlFor="mes">Mes:</label>
-                        <select className="custom-select"   defaultValue= {tmpEditar[0].mes} onChange={handleMonthSelect} name="mes" id="mes" ref={register({required: true})}>
+                        {/* <select className="custom-select"   defaultValue= {tmpEditar[0].mes} onChange={handleMonthSelect} name="mes" id="mes" ref={register({required: true})}> */}
+                        <select className="custom-select"   defaultValue= {handleDefaultMes()} onChange={handleMonthSelect} name="mes" id="mes" ref={register({required: true})}>
                         {errors.mes && <p className="errors">Este campo es requerido</p>}
                           <option value="" disabled>Seleccione...</option>
                             {
@@ -446,23 +440,12 @@ return (
                       </div>
                     </div>
                   }
-                  { ingresoSel === 8 &&
+                  { (ingresoSel === 8 || ingresoSel === 9) &&
                   <React.Fragment>
                     <div className="row">
                       <div className="form-group col-sm-6 my-2">
-                        <InputItem  placeholderText="Número...." defaultValor= {tmpEditar[0].modificado_reg_antiguo} tipo="text" nombre= "modificado_reg_antiguo" textlabel="Número registro antiguo"  referencia={register({required: true})}/>
-                        {errors.modificado_reg_antiguo && <p className="errors">Este campo es requerido</p>}
-                      </div>
-                      <div className="form-group col-sm-6 my-2">
                         <InputItem placeholderText="Número..." defaultValor= {tmpEditar[0].registro}  tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
                         {errors.registro && <p className="errors">Este campo es requerido</p>}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="form-group col-sm-6 my-2">
-                        <p><label className="font-len" htmlFor="modificado_datos_corregidos">Ingrese los datos corregidos:</label> </p>
-                        <textarea  className="form-control" defaultValue={tmpEditar[0].modificado_datos_corregidos} name="modificado_datos_corregidos"  id="modificado_datos_corregidos" ref={register({required: true})} />
-                        {errors.modificado_datos_corregidos && <p className="errors">Este campo es requerido</p>}
                       </div>
                       <div className="form-group col-sm-6 my-2">
                       <p><label className="font-len" htmlFor="nota">Ingrese las notas:</label></p>
@@ -472,7 +455,23 @@ return (
                     </div>
                   </React.Fragment>
                   }
-                  {ingresoSel === 9 &&
+                  { ingresoSel === 8 &&
+                  <React.Fragment>
+                    <div className="row">
+                      <div className="form-group col-sm-6 my-2">
+                        <InputItem  placeholderText="Número...." defaultValor= {tmpEditar[0].modificado_reg_antiguo} tipo="text" nombre= "modificado_reg_antiguo" textlabel="Número registro antiguo"  referencia={register({required: true})}/>
+                        {errors.modificado_reg_antiguo && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                      <div className="form-group col-sm-6 my-2">
+                        <p><label className="font-len" htmlFor="modificado_datos_corregidos">Ingrese los datos corregidos:</label> </p>
+                        <textarea  className="form-control" defaultValue={tmpEditar[0].modificado_datos_corregidos} name="modificado_datos_corregidos"  id="modificado_datos_corregidos" ref={register({required: true})} />
+                        {errors.modificado_datos_corregidos && <p className="errors">Este campo es requerido</p>}
+                      </div>
+                      
+                    </div>
+                  </React.Fragment>
+                  }
+                  {/* {ingresoSel === 9 &&
                     <div className="row">
                       <div className="form-group col-sm-6">
                         <InputItem placeholderText="número...." defaultValor= {tmpEditar[0].registro} tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
@@ -484,7 +483,7 @@ return (
                         {errors.nota && <p className="errors">Este campo es requerido</p>}
                       </div>
                     </div>
-                  }   
+                  }    */}
                 <div className="row">
                   <div className="form-group col-sm-6 my-2">
                     <InputItem tipo="number" defaultValor= {tmpEditar[0].portada} nombre= "portada" textlabel="Portada:"  placeholderText="No. portada" referencia={register({required: true})} />
@@ -516,7 +515,7 @@ return (
               }
             </Modal.Body>
             <Modal.Footer className="modal-footer-edicion">
-              <input className="btn btn-main text-center" type="submit" value="Guardar" onClick={handleClose}></input>
+              <input className="btn btn-main text-center" type="submit" value="Guardar"></input>
             </Modal.Footer>
 
            </form>

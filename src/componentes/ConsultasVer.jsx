@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import Tabla from './Tabla';
 
@@ -16,25 +16,22 @@ import 'alertifyjs/build/css/themes/default.min.css';
 
 import mostrarAlerta from './Alerta.js';
 
+// imágenes de la papelera
 import Imagen from './Imagen';
 import papeleraVacia from '../images/papelera-vacia.png';
 import papelera from '../images/papelera-full.png';
 
 import referenciasJson from '../data/referencias.json';
-import { Alert } from 'react-bootstrap';
-
 import contenidosJson from '../data/contenidos.json';
 
 const contenidos = contenidosJson[1];
 const referencias = referenciasJson[0];
 
-console.log("contenidos de VERCONSULTA", contenidos);
 var tmpConsultas = null,
   tipoIntervencion = null,
   tipoSolicitante = null,
   idSolicitud = null,
   tipoRespuesta = null,
-  // datosEliminados = null,
   tmpEditar = null,
   tmpEliminados = null,
   intervenciones = null,
@@ -43,23 +40,26 @@ var tmpConsultas = null,
 
 // carga de los JSON de los selects
 var urlConsultas = referencias.consultageneral + "?tabla=consultas",
-  urlEliminadosConsultas = referencias.consultaeliminados + "?tabla=consultas",
-  urlIntervencion = referencias.consultageneral + "?tabla=tipo_intervencion",
-  urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
-  urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
-  urlRespuesta = referencias.consultageneral + "?tabla=tipo_respuesta";
+    urlEliminadosConsultas = referencias.consultaeliminados + "?tabla=consultas",
+    urlIntervencion = referencias.consultageneral + "?tabla=tipo_intervencion",
+    urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
+    urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
+    urlRespuesta = referencias.consultageneral + "?tabla=tipo_respuesta";
 
 export default function ConsultasVer() {
 
+  // grupo de datos filtrados 
   const [datosFiltrados, setDatosFiltrados] = useState(null);
 
+  // grupo de datos eliminados que se mantienen actualizados
   const [datosEliminados, setDatosEliminados] = useState(null);
 
-   //Bandera que indica que la solicitud y retorno de datos están resueltos
-   const [datosListos, setDatosListos] = useState(false);
+  //Bandera que indica que la solicitud y retorno de datos están resueltos
+  const [datosListos, setDatosListos] = useState(false);
 
   const { register, handleSubmit, errors, clearError } = useForm();
 
+  // datos del usuario 
   const { usuario, setUsuario } = useContext(MyContext);
 
  //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
@@ -70,10 +70,11 @@ export default function ConsultasVer() {
 
   //Estado para ocultar o mostrar un modal
   const [show, setShow] = useState(false);
+
   //cerrar modal
   const handleClose = () => setShow(false);
 
-//controla si las consultas están filtradas o no  
+  //controla si las consultas están filtradas o no  
   const[sinFiltro, setSinFiltro] = useState(true); 
 
   //Estado que maneja  la seleccion del usuario
@@ -88,8 +89,8 @@ export default function ConsultasVer() {
   //Estado que maneja  la seleccion del usuario
   const [respuesta, setRespuesta] = useState(null);
 
+  // Controla el estado de modo de la tabla
   const handlePapelera = () => setModoVisor(false);
-  // const handlePapelera = () => {setDatosEliminados(datosEliminados);setModoVisor(false)};
 
   const onSubmit = (data, e) => {
     let idConsulta = tmpEditar[0].id;
@@ -103,6 +104,9 @@ export default function ConsultasVer() {
     enviar(url, data, function (resp) {
       handleClose();
       mostrarAlerta("Alerta", resp.msj);
+      if(!resp.data.error) {
+        setShow(false);
+      }
       actualizaDatos(function () {
         if(sinFiltro){
           tmpEditar=tmpConsultas;
@@ -156,7 +160,6 @@ export default function ConsultasVer() {
     // 6 Eliminados
     let response6 = await fetch(urlEliminadosConsultas);
     tmpEliminados = await response6.json();
-    console.log("eliminados", tmpEliminados);
     
     cb();   
 
@@ -173,11 +176,9 @@ useEffect(() => {
   });
 }, []);
 
-useEffect(()=>{
-  console.log("Esperando", esperando);
-  
-})
+
   const handlerSeleccionarIntervencion = (e) => {
+    // evento que lee la selección del usuario del tipo de intervenció e invoca ella llamado para filtrar
     intervencionId = parseInt(e.target.value);
     // console.log("e.target.value", e.target.value);
     intervenciones = filtrar(tmpConsultas, "id_intervencion", intervencionId);
@@ -187,15 +188,14 @@ useEffect(()=>{
 
 
   const valor = () => {
-    console.log("id_respuesta",tmpEditar[0].id_respuesta); 
-    let valor="", val=""; 
+    // colocar por el valor por defecto al campo respuesta 
+    let valor="";
     tmpEditar[0].id_respuesta!==null ?(valor = tmpEditar[0].id_respuesta): valor=""; 
     return valor 
   }
 
   const handlerSeleccion = (e) => {
     clearError();
-    parseInt(e.target.value);
     switch (e.target.name) {
       case "id_intervencion":
         setIntervencion(parseInt(e.target.value));
@@ -226,6 +226,7 @@ useEffect(()=>{
   };
   
   const handleSinFiltro = (e) => {
+    // desactiva el check del filtro y el estado
     if(e.target.checked){
       setTimeout(() => { let element = document.getElementById("selectIntervencion");
       element.value="";
@@ -252,10 +253,10 @@ useEffect(()=>{
         // console.log("url desde submit", url);
         
         data.borrado = 1;   
-        // console.log("DATA",data);
         setEsperando(true);
         enviar(url, data, function (resp) {
-                mostrarAlerta("Alerta", resp.msj);
+                // mostrarAlerta("Alerta", resp.msj);
+                alertify.success(resp.data.mensaje,2);
                 actualizaDatos(function () {
                   if(sinFiltro){
                     tmpEditar=tmpConsultas;
@@ -285,19 +286,19 @@ useEffect(()=>{
     setEsperando(true);
     enviar(url, data, function (resp) {
       mensaje =  resp.data.mensaje 
-   
       actualizaDatosEliminados(function(){
         setDatosEliminados(tmpEliminados);
         if(tmpEliminados.length === 0){
           mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
           mostrarAlerta("Alerta",  mensaje);
-          mensaje = "";
-          // setDatosEliminados(tmpEliminados);
-          setEsperando(false);
-          setSinFiltro(true);
-          setDatosFiltrados(tmpConsultas);  
-          setModoVisor(true); 
-          // setDatosFiltrados(tmpConsultas);  
+          actualizaDatos(function () {
+              tmpEditar=tmpConsultas;
+              setDatosFiltrados(tmpEditar);
+              mensaje = "";
+              setSinFiltro(true);              
+              setEsperando(false);  
+              setModoVisor(true);
+          });
         }
         else {
           mensaje += ". Se ha recuperado el registro"
@@ -306,8 +307,6 @@ useEffect(()=>{
         }
       });
     });
-      
-    // }
   };  
 
 
@@ -358,7 +357,6 @@ useEffect(()=>{
                     </div>
                   </div>
                   <Tabla array={datosEliminados}  contenidos={contenidos} clase="table table-striped sombreado" modo="papelera" handleRecuperar={handleRecuperarRegistro} />
-                {/* <button onClick={handleModoVisor}>Regresar</button> */}
                 </>              
               )
             )
@@ -371,7 +369,6 @@ useEffect(()=>{
                       <span className="font-len">Tipo de Intervención:</span>&nbsp;&nbsp; 
                     </div>
                     <select id="selectIntervencion" className="custom-select" key="iditervencion" defaultValue="" onChange={handlerSeleccionarIntervencion} name="id_intervencion">
-                      {/* {errors.id_intervencion && <p className="errors">Este campo es requerido</p>} */}
                       <option value="" disabled>Seleccione...</option>
                       {
 
@@ -418,10 +415,8 @@ useEffect(()=>{
             onHide={handleClose}
             size="xl"
             backdrop = "static"
-          // aria-labelledby="contained-modal-title-vcenter"
-          // centered
-
           >
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <Modal.Header closeButton className="modal-header-edicion">
               <Modal.Title ><h1>Edición</h1></Modal.Title>
@@ -524,7 +519,7 @@ useEffect(()=>{
               }
             </Modal.Body>
             <Modal.Footer className="modal-footer-edicion">
-              <input className="btn btn-main text-center" type="submit" value="Guardar" onClick={handleClose}></input>
+              <input className="btn btn-main text-center" type="submit" value="Guardar"></input>
             </Modal.Footer>
 
            </form>
@@ -539,6 +534,5 @@ useEffect(()=>{
         </div>
 
       )
-
   );
 }
