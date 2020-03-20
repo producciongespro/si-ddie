@@ -30,15 +30,15 @@
   [
     {
         "nombre": "Producto",
-        "ref": "tipo_producto"
+        "campo": "tipo_producto"
     },
     {
-        "nombre": "Consecutivo",
-        "ref": "numero_consecutivo"
+        "nombre": "# beneficiarios",
+        "campo": "cantidad_beneficiarios"
     },    
     {
         "nombre": "Fecha",
-        "ref": "fecha"
+        "campo": "fecha"
     }
   ]
 ]

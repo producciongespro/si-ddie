@@ -254,8 +254,8 @@ useEffect(() => {
         data.borrado = 1;   
         setEsperando(true);
         enviar(url, data, function (resp) {
-                // mostrarAlerta("Alerta", resp.msj);
-                alertify.success(resp.data.mensaje,2);
+                // alertify.success(resp.data.mensaje,2);
+                alertify.success("El registro se ha eliminado exitosamente",2);
                 actualizaDatos(function () {
                   if(sinFiltro){
                     tmpEditar=tmpConsultas;

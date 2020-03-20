@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'react-bootstrap';
-
+import GrupoCheck from './GrupoCheck';
 import Tabla from './Tabla';
 
 import MyContext from '../modulos/MyContext';
@@ -38,6 +38,8 @@ import contenidosJson from '../data/contenidos.json';
 
 const contenidos = contenidosJson[2];
 const referencias = referenciasJson[0];
+console.log("CONTENDOS", contenidos);
+
 
 var tmpProductos = null,
     tipoProducto = null,
@@ -188,6 +190,7 @@ export default function ProduccionVer() {
 
 
     useEffect(() => {
+      moment.locale('es');
       // console.log("Componente montado");
       obtenerDatos(function () {
         //se usan donde?
@@ -210,6 +213,7 @@ export default function ProduccionVer() {
         clearError();
         // setProducto(parseInt(e.target.value));
 
+
         productoId = parseInt(e.target.value);
         productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);
         setDatosFiltrados(productosFiltrados);
@@ -221,6 +225,7 @@ export default function ProduccionVer() {
       clearError();
       console.log("PRODUCTO",e.target.value);  
       setProductoSel(parseInt(e.target.value));
+      console.log("ProductoSel cambiar producto", productoSel);
     }
 
     const handleMonthSelect =(e)=>{
@@ -271,6 +276,8 @@ export default function ProduccionVer() {
       
       tmpEditar = filtrar(tmpProductos, "id", id);
       setProductoSel(parseInt(tmpEditar[0].id_producto));
+      console.log("ProductoSel editar producto", productoSel);
+      
       originalIdTipoProducto = tmpEditar[0].id_producto;
       setEsperando(true);
       setShow(true);
@@ -288,7 +295,8 @@ export default function ProduccionVer() {
           
           setEsperando(true);
           enviar(url, data, function (resp) {                
-                  alertify.success(resp.data.mensaje,2);
+                  // alertify.success(resp.data.mensaje,2);
+                  alertify.success("El registro se ha eliminado exitosamente",2);
                   actualizaDatos(function () {
                     if(sinFiltro){
                       tmpEditar=tmpProductos;
@@ -466,13 +474,13 @@ export default function ProduccionVer() {
                             </select>
                           </div>
 
-                          {(producto > 1 && producto < 7 )&&
+                          {(productoSel > 1 && producto < 7 )&&
                               <div className="form-group col-sm-6 my-2">
                                 <InputItem placeholderText="Digite el número consecutivo" defaultValor= {tmpEditar[0].numero_consecutivo} tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}
                               </div>
                               }
-                            {producto === 7 &&
+                            {productoSel === 7 &&
                               <div className="form-group col-sm-6 my-2">
                                   <InputItem tipo="text" defaultValor= {tmpEditar[0].tema_video_divulgacion} placeholderText="Escriba el tema del video" nombre= "tema_video_divulgacion" textlabel="Tema del video"  referencia={register({required: true})} />
                                   {errors.tema_video_divulgacion && <p className="errors">Este campo es requerido</p>}
@@ -480,7 +488,7 @@ export default function ProduccionVer() {
                             }   
                         </div>   
 
-                        {producto === 8 && 
+                        {productoSel === 8 && 
                           <div className="row">
                             <div className="form-group col-sm-12 my-2">
                               <InputItem  tipo="text" defaultValor= {tmpEditar[0].desc_otro} placeholderText="Describa el tipo de producto" nombre= "desc_otro" textlabel="Descripción"  referencia={register({required: true})} />
@@ -488,11 +496,16 @@ export default function ProduccionVer() {
                             </div>
                           </div> 
                         }
-                        {producto > 1 && 
+                        {productoSel > 1 && 
                           <div className="row">
                             <div className="form-group col-sm-12 my-2">
                               <p className="font-len" >Población beneficiaria</p>
-                              <CheckBox array={poblaciones} nombre="beneficiario" register={register} handleChange={handleChangeCheck} />
+                              {/* <CheckBox array={poblaciones} nombre="beneficiario" register={register} handleChange={handleChangeCheck} /> */}
+                              <div className="input-group-prepend">
+                      <span className="input-group-text" >Año:  </span>
+                      &nbsp; &nbsp;
+                          <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion} />
+                  </div>
                             </div>
                           </div> }
             
@@ -503,7 +516,7 @@ export default function ProduccionVer() {
                             </React.Fragment>
                           }
 
-                          {producto === 1 && (
+                          {productoSel === 1 && (
                             <React.Fragment>
                               <div className="row">
                                 <div className="form-group col-sm-6 my-2">

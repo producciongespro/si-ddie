@@ -240,7 +240,8 @@ const handleEliminarIngreso = (e) => {
       
       setEsperando(true);
       enviar(url, data, function (resp) {                
-              alertify.success(resp.data.mensaje,2);
+              // alertify.success(resp.data.mensaje,2);
+              alertify.success("El registro se ha eliminado exitosamente",2);
               actualizaDatos(function () {
                 if(sinFiltro){
                   tmpEditar=tmpIngresos;
