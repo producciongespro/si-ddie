@@ -29,16 +29,16 @@
   ],
   [
     {
-        "nombre": "Consultas2",
-        "ref": "consultas"
+        "nombre": "Producto",
+        "ref": "tipo_producto"
     },
     {
-        "nombre": "Base de datos2",
-        "ref": "basedeDatos"
+        "nombre": "Consecutivo",
+        "ref": "numero_consecutivo"
     },    
     {
-        "nombre": "Producción2",
-        "ref": "produccion"
+        "nombre": "Fecha",
+        "ref": "fecha"
     }
   ]
 ]

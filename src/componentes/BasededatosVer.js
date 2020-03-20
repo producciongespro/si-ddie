@@ -173,7 +173,6 @@ const handleSeleccionarIngreso = (e) => {
 
 const handleCambiarIngreso = (e) => {
   clearError();
-  console.log("INGRESO",e.target.value);  
   setIngresoSel(parseInt(e.target.value));
 }
 
@@ -471,19 +470,6 @@ return (
                     </div>
                   </React.Fragment>
                   }
-                  {/* {ingresoSel === 9 &&
-                    <div className="row">
-                      <div className="form-group col-sm-6">
-                        <InputItem placeholderText="número...." defaultValor= {tmpEditar[0].registro} tipo="text" nombre= "registro" textlabel="Número de registro"  referencia={register({required: true})}/>
-                        {errors.registro && <p className="errors">Este campo es requerido</p>}
-                      </div>
-                      <div className="form-group col-sm-6">
-                        <label className="font-len" htmlFor="nota">Ingrese las notas:</label> 
-                        <textarea className="form-control"  defaultValue={tmpEditar[0].nota}  placeholderText="Ingrese las notas" name="nota" ref={register({required: true})} />
-                        {errors.nota && <p className="errors">Este campo es requerido</p>}
-                      </div>
-                    </div>
-                  }    */}
                 <div className="row">
                   <div className="form-group col-sm-6 my-2">
                     <InputItem tipo="number" defaultValor= {tmpEditar[0].portada} nombre= "portada" textlabel="Portada:"  placeholderText="No. portada" referencia={register({required: true})} />

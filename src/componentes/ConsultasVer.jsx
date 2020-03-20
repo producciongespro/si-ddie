@@ -6,7 +6,6 @@ import Tabla from './Tabla';
 
 import MyContext from '../modulos/MyContext';
 
-
 import enviar from '../modulos/enviar';
 import filtrar from '../modulos/filtrar';
 
