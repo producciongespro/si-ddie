@@ -121,20 +121,22 @@ export default function ProduccionVer() {
 
     const onSubmit = (data, e) => {
       let idProducto = tmpEditar[0].id;
-
+      if( originalIdTipoProducto ===  null){
+        originalIdTipoProducto = data['id_producto'];
+      }
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
-
       delete data["beneficiario"]; //borrar el check
-      data.poblacion = arrayPoblacion
+      data.poblacion = arrayPoblacion;
       
-            
-      let url = referencias.guardaconsulta+"?tabla_destino=productos";
-      // console.log("url desde submit", url);
+      // let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";
+      let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idProducto + "&idAnterior=" + originalIdTipoProducto + "";
+      console.log("url desde submit", url);
       
       setEsperando(true);
       enviar(url, data, function (resp) {
         handleClose();
         // mostrarAlerta("Alerta", resp.msj);
+        mostrarAlerta("Alerta", resp.data.mensaje);
         if(!resp.data.error) {
           setShow(false);
         }
@@ -145,6 +147,7 @@ export default function ProduccionVer() {
           else {
             tmpEditar = filtrar(tmpProductos, "id_producto", productoId);
           }        
+          originalIdTipoProducto=null;
           setDatosFiltrados(tmpEditar);
           setEsperando(false);
       });
@@ -210,12 +213,11 @@ export default function ProduccionVer() {
     const handleSeleccionarProducto =(e)=>{
         //obtiene el valor de selección
         
-        clearError();
-        // setProducto(parseInt(e.target.value));
-
-
+        // clearError();
         productoId = parseInt(e.target.value);
         productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);
+        console.log("productos filtrados", productosFiltrados);
+        
         setDatosFiltrados(productosFiltrados);
         setSinFiltro(false);
 
@@ -223,9 +225,12 @@ export default function ProduccionVer() {
  
     const handleCambiarProducto = (e) => {
       clearError();
-      console.log("PRODUCTO",e.target.value);  
+      if (parseInt(e.target.value) === 1) {   //no tiene población
+        let arrayPoblacion = obtenerValoresCheck("beneficiario");
+        console.log("arrayPoblacion", arrayPoblacion);
+      }
       setProductoSel(parseInt(e.target.value));
-      console.log("ProductoSel cambiar producto", productoSel);
+      // console.log("ProductoSel cambiar producto", productoSel);
     }
 
     const handleMonthSelect =(e)=>{
@@ -248,7 +253,14 @@ export default function ProduccionVer() {
     }
     
     const handleChangeCheck =(e)=>{
-      (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
+      console.log("e.target en handlechangecheck", e.target);
+      if (e.target.id==='12'){
+        tmpEditar[0].poblacion = [];
+      }      
+      if (e.target.id==='12'){
+        (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
+      }
+
     }
 
     const handleModoVisor = () => {
@@ -275,8 +287,11 @@ export default function ProduccionVer() {
       let id = parseInt(e.target.id);
       
       tmpEditar = filtrar(tmpProductos, "id", id);
+      // console.log("tmpEditar",tmpEditar);
+      
       setProductoSel(parseInt(tmpEditar[0].id_producto));
-      console.log("ProductoSel editar producto", productoSel);
+      originalIdTipoProducto = tmpEditar[0].id_producto;
+      // console.log("ProductoSel editar producto", productoSel);
       
       originalIdTipoProducto = tmpEditar[0].id_producto;
       setEsperando(true);
@@ -303,7 +318,7 @@ export default function ProduccionVer() {
                     }
                     else {
                       
-                      tmpEditar = filtrar(tmpProductos, "id_ingreso", productoId);
+                      tmpEditar = filtrar(tmpProductos, "producto", productoId);
                     }
                     actualizaDatosEliminados(function(){setDatosEliminados(tmpEliminados);})
                     setDatosFiltrados(tmpEditar);
@@ -402,7 +417,7 @@ export default function ProduccionVer() {
               <>
               <div className="row">
                 <div className="form-group col-sm-6 ">
-                  <label className="font-len" htmlFor="id_ingreso">Ver por tipo de producto:&nbsp;&nbsp;</label>
+                  <label className="font-len" htmlFor="id_producto">Ver por tipo de producto:&nbsp;&nbsp;</label>
                   <select id="selectProducto" className="custom-select" defaultValue="" onChange={handleSeleccionarProducto} name="id_producto">
                     <option value="" disabled>Seleccione...</option>
                     {
@@ -462,7 +477,7 @@ export default function ProduccionVer() {
                         <div className="row">
                           <div className="form-group col-sm-6 ">
                             <label className="font-len" htmlFor="id_producto">Seleccione el tipo de producto:&nbsp;&nbsp;</label>
-                            <select className="custom-select"  defaultValue={tmpEditar[0].id_ingreso} onChange={handleCambiarProducto} ref={register({required: true})}>
+                            <select className="custom-select" name="id_producto" id="id_producto" defaultValue={tmpEditar[0].id_producto} onChange={handleCambiarProducto} ref={register({required: true})}>
                             {errors.id_producto && <p className="errors">Este campo es requerido</p>}
                             <option value="" disabled>Seleccione...</option>
                               {
@@ -500,12 +515,7 @@ export default function ProduccionVer() {
                           <div className="row">
                             <div className="form-group col-sm-12 my-2">
                               <p className="font-len" >Población beneficiaria</p>
-                              {/* <CheckBox array={poblaciones} nombre="beneficiario" register={register} handleChange={handleChangeCheck} /> */}
-                              <div className="input-group-prepend">
-                      <span className="input-group-text" >Año:  </span>
-                      &nbsp; &nbsp;
-                          <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion} />
-                  </div>
+                                <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion}  handleChange={handleChangeCheck} />
                             </div>
                           </div> }
             

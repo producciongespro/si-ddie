@@ -5,7 +5,7 @@ function GrupoCheck(props) {
     // console.log("*********** Props de GrupoCheck data poblaciones", props.poblacion);
     var poblacion = JSON.parse(props.poblacion);
 
-    console.log("poblacion", poblacion);
+    // console.log("poblacion", poblacion);
     
     var listaPoblacion =  props.listaPoblacion;
     for (let index = 0; index < listaPoblacion.length; index++) {
@@ -20,10 +20,8 @@ function GrupoCheck(props) {
           listaPoblacion[index].valor = false;
         }
       }
-      
-      
     }
-    console.log("listaPoblacion",listaPoblacion);
+    // console.log("listaPoblacion",listaPoblacion);
     
     
     var Chk = (props)=>{
@@ -33,27 +31,14 @@ function GrupoCheck(props) {
       var tmpChk;
       let encontrado = false;      
       for (let index = 0; index < listaPoblacion.length; index++) {
-        // <h1>Hola</h1>
-        //console.log("listaAnnos[index]",listaAnnos[index]);
-        //console.log("props.value",props.value);               
-        // if (listaPoblacion[index].id === props.value) {
-        //   encontrado = true
-        //   tmpChk = <input  
-        //               type="checkbox" 
-        //               value={props.value}  
-        //               name={props.name} 
-        //               defaultChecked={true}                
-        //             />
-        // } else {         
-        //     if (encontrado !== true) {
               tmpChk = <input  
                       type="checkbox" 
+                      id={props.idCheck+"_checkbox"}
                       value={props.value}  
                       name={props.name} 
-                      defaultChecked={props.chequeado}                
-                    />
-        //     }
-        // }        
+                      defaultChecked={props.chequeado}          
+                      onChange={props.handleChangeCheck}
+                    />    
       }          
       return tmpChk;
     }
@@ -63,19 +48,16 @@ function GrupoCheck(props) {
   return (
     
     <div className="row my-2">
-      <div className="col-12">    
+      <div className="col-12">
       {
-        // (props.nivel === 2) &&
-        // (
-          listaPoblacion.map((item, i) => (
-            <div key={"poblacion"+i} className="pretty p-default">
-              <Chk  value={item.nombre} name={props.nombre } chequeado={item.valor} />              
-              <div className="state p-primary">
-                <label>{item.nombre}</label>
-              </div>
+        listaPoblacion.map((item, i) => (
+          <div key={"poblacion"+i} className="pretty p-default">
+            <Chk  value={item.nombre} name={props.nombre } idCheck={i+1} chequeado={item.valor}  handleChangeCheck={props.handleChange} />              
+            <div className="state p-primary">
+              <label>{item.nombre}</label>
             </div>
-          ))
-        // )
+          </div>
+        ))
       }
 
       </div>
