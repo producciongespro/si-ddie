@@ -1,17 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import obtener from '../modulos/obtener';
 import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 import CheckBox from '../componentes/CheckBox';
 import InputItem from '../componentes/InputItem';
 
+import MyContext from '../modulos/MyContext';
+
 import moment from 'moment';
 import 'moment/locale/es';
 
-
-// import axios from 'axios';
-
-// import mostrarAlerta from './Alerta.js';
+import mostrarAlerta from './Alerta.js';
 
 import "../css/form.css";
 
@@ -25,6 +24,9 @@ var idUser = sessionStorage.getItem("id_usuario");
 // console.log("usuario datos posteriores", usuario)   
 export default function Produccion() {
     const { register, handleSubmit, errors, clearError } = useForm();
+
+    
+    const { usuario, setUsuario } = useContext(MyContext);
 
     //Estado para controlar la carga del json de productos:
     const [productos, setProductos] = useState(null);
@@ -46,6 +48,8 @@ export default function Produccion() {
 
     const onSubmit = (data, e) => {
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
+      console.log("arrayPoblacion", arrayPoblacion);
+      
 
       delete data["beneficiario"]; //borrar el check
       data.poblacion = arrayPoblacion
@@ -54,13 +58,15 @@ export default function Produccion() {
       let url = referencias.guardaconsulta+"?tabla_destino=productos";
       // console.log("url desde submit", url);
       
-      enviar(url, data, function (msj) { console.log(msj);
+      enviar(url, data, function (resp) { 
+        mostrarAlerta("Alerta", resp.data.mensaje);
+        // console.log("resp",resp.data);
         });
       setProducto(0);
       e.target.reset(); // reset after form submit
 
     };
-    console.log("errors",errors);
+    // console.log("errors",errors);
 
 
     useEffect(() => {
@@ -213,9 +219,9 @@ export default function Produccion() {
           <hr/>
         </div>
 
-        <div className={"form-group d-none"}>
-            <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue ={idUser} ref={register}/>    
-        </div>
+       <div className={"form-group d-none"}>
+          <input type="text" className="form-control"  defaultValue={usuario.idUsuario}  name="id_usuario" id="id_usuario" ref={register}/>    
+      </div>
 
         <div className="row">
           <div className="col-md-6 center">

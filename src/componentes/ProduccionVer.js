@@ -134,7 +134,7 @@ export default function ProduccionVer() {
       setEsperando(true);
       enviar(url, data, function (resp) {
         handleClose();
-        mostrarAlerta("Alerta", resp.msj);
+        // mostrarAlerta("Alerta", resp.msj);
         if(!resp.data.error) {
           setShow(false);
         }
