@@ -520,7 +520,7 @@ useEffect(() => {
               }
             </Modal.Body>
             <Modal.Footer className="modal-footer-edicion">
-              <input className="btn btn-main text-center" type="submit" value="Guardar"></input>
+              <input className="btn btn-main text-center float-right" type="submit" value="Guardar"></input>
             </Modal.Footer>
 
            </form>
