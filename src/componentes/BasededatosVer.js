@@ -97,9 +97,7 @@ export default function BasededatosVer() {
 
     setEsperando(true);
     enviar(url, data, function (resp) {
-      console.log("resp luego de guardar", resp);
-      
-      
+      // console.log("resp luego de guardar", resp);
       mostrarAlerta("Alerta", resp.data.mensaje );
       if(!resp.data.error) {
         setShow(false);

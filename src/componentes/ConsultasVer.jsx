@@ -102,7 +102,7 @@ export default function ConsultasVer() {
     setEsperando(true);
     enviar(url, data, function (resp) {
       handleClose();
-      console.log("resp", resp);        
+      // console.log("resp", resp);        
       mostrarAlerta("Alerta", resp.data.mensaje);
       if(!resp.data.error) {
         setShow(false);

@@ -127,7 +127,7 @@ export default function Produccion() {
                }
             </select>
             </div>
-          {(producto > 1 && producto < 7 )&&
+            {((producto > 1 && producto < 7)  || producto === 8 )&&
               <div className="form-group col-sm-6 my-2">
                 <InputItem placeholderText="Digite el número consecutivo" tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}

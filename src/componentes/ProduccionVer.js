@@ -137,7 +137,7 @@ export default function ProduccionVer() {
       setEsperando(true);
       enviar(url, data, function (resp) {
         handleClose();
-        console.log("resp", resp);
+        // console.log("resp", resp);
         
         mostrarAlerta("Alerta", resp.data.mensaje);
         if(!resp.data.error) {
@@ -492,7 +492,7 @@ function handleDefaultMes ( ) {
                             </select>
                           </div>
 
-                          {(productoSel > 1 && productoSel < 7 )&&
+                          {((productoSel > 1 && productoSel < 7)  || productoSel === 8 )&&
                               <div className="form-group col-sm-6 my-2">
                                 <InputItem placeholderText="Digite el número consecutivo" defaultValor= {tmpEditar[0].numero_consecutivo} tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}
@@ -504,6 +504,7 @@ function handleDefaultMes ( ) {
                                   {errors.tema_video_divulgacion && <p className="errors">Este campo es requerido</p>}
                               </div>
                             }   
+
                         </div>   
 
                         {productoSel === 8 && 

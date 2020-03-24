@@ -1,26 +1,54 @@
 import React from 'react';
 
 function GrupoCheck(props) {
-    // console.log("************Props de Grupocheck Lista de poblaciones", props.listaPoblacion);
-    // console.log("*********** Props de GrupoCheck data poblaciones", props.poblacion);
-    var poblacion = JSON.parse(props.poblacion);
+    console.log("************Props de Grupocheck Lista de poblaciones", props.listaPoblacion);
+    console.log("*********** Props de GrupoCheck data poblaciones", props.poblacion);
+ 
+    
+    var poblacion = JSON.parse(props.poblacion),
+        listaPoblacion =  props.listaPoblacion;
+    console.log("props.poblacion.length",poblacion.length);
+    console.log("props.poblacion",poblacion);
+    if(poblacion.length>0){
+      console.log("trae información");
+      for (let index = 0; index < listaPoblacion.length; index++) {
+        for (let i = 0; i < poblacion.length; i++) {
+          const elementP = poblacion[i].id;               
+          if(listaPoblacion[index].id === elementP){
+            listaPoblacion[index].valor = true;
+            break;
+          }
+          else
+          {
+            listaPoblacion[index].valor = false;
+          }
+        }
+      }      
+    }
+    else {
+      for (let index = 0; index < listaPoblacion.length; index++) {
+            listaPoblacion[index].valor = false;
+          }
+      console.log("población viene VACÍA");
+      
+    }
 
     // console.log("poblacion", poblacion);
     
-    var listaPoblacion =  props.listaPoblacion;
-    for (let index = 0; index < listaPoblacion.length; index++) {
-      for (let i = 0; i < poblacion.length; i++) {
-        const elementP = poblacion[i].id;               
-        if(listaPoblacion[index].id === elementP){
-          listaPoblacion[index].valor = true;
-          break;
-        }
-        else
-        {
-          listaPoblacion[index].valor = false;
-        }
-      }
-    }
+    // var listaPoblacion =  props.listaPoblacion;
+    // for (let index = 0; index < listaPoblacion.length; index++) {
+    //   for (let i = 0; i < poblacion.length; i++) {
+    //     const elementP = poblacion[i].id;               
+    //     if(listaPoblacion[index].id === elementP){
+    //       listaPoblacion[index].valor = true;
+    //       break;
+    //     }
+    //     else
+    //     {
+    //       listaPoblacion[index].valor = false;
+    //     }
+    //   }
+    // }
     // console.log("listaPoblacion",listaPoblacion);
     
     
