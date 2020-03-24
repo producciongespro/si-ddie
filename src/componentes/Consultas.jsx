@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
+
+import mostrarAlerta from './Alerta.js';
+
 import MyContext from '../modulos/MyContext';
 
 import enviar from '../modulos/enviar';
@@ -46,8 +49,9 @@ export default function Consultas() {
     let url = referencias.guardaconsulta + "?tabla_destino=consultas";
     // console.log("url desde submit", url);
 
-    enviar(url, data, function (msj) {
-      console.log(msj);
+    enviar(url, data, function (resp) {
+      mostrarAlerta("Alerta", resp.data.mensaje );
+      // console.log(resp.data.mensaje);
     });
     setIntervencion(0);
     e.target.reset(); // reset after form submit
