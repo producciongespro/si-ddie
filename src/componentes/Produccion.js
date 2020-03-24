@@ -18,10 +18,6 @@ import referenciasJson from '../data/referencias.json';
 import enviar from '../modulos/enviar';
 
 const referencias = referenciasJson[0];
-
-var idUser = sessionStorage.getItem("id_usuario");
-
-// console.log("usuario datos posteriores", usuario)   
 export default function Produccion() {
     const { register, handleSubmit, errors, clearError } = useForm();
 
@@ -48,19 +44,14 @@ export default function Produccion() {
 
     const onSubmit = (data, e) => {
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
-      console.log("arrayPoblacion", arrayPoblacion);
-      
-
       delete data["beneficiario"]; //borrar el check
       data.poblacion = arrayPoblacion
       
             
       let url = referencias.guardaconsulta+"?tabla_destino=productos";
-      // console.log("url desde submit", url);
       
       enviar(url, data, function (resp) { 
         mostrarAlerta("Alerta", resp.data.mensaje);
-        // console.log("resp",resp.data);
         });
       setProducto(0);
       e.target.reset(); // reset after form submit
@@ -71,12 +62,10 @@ export default function Produccion() {
 
     useEffect(() => {
         //Acción que se ejecuta una vez que se monta el componente
-        // console.log("Componente montado");
         let urlProductos= referencias.consultageneral+"?tabla=tipo_productos",
             urlPoblacion = referencias.consultageneral+"?tabla=productos_poblacion_meta";
         //Carga el primer json:
         obtener(urlProductos, function (data) {
-            // console.log("datos", data);
             setProductos(data);
             //Carga el segundo select en el callback del primer "obtner":
             obtener(urlPoblacion, function (data) {  

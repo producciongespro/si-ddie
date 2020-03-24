@@ -1,13 +1,9 @@
-import React, { Component, useState, useContext } from 'react';
+import React, {useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 
 // context con los datos del usuario
 import MyContext from '../modulos/MyContext';
-
-import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
-import LoadingSpinner from './spinner/LoadingSpinner';
-
 
 //Librerias
 import alertify from 'alertifyjs';

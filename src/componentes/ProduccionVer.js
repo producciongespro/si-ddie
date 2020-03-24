@@ -21,11 +21,7 @@ import Imagen from './Imagen';
 import papeleraVacia from '../images/papelera-vacia.png';
 import papelera from '../images/papelera-full.png';
 
-
-import obtener from '../modulos/obtener';
-
 import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
-import CheckBox from './CheckBox';
 import InputItem from './InputItem';
 
 import moment from 'moment';
@@ -38,8 +34,6 @@ import contenidosJson from '../data/contenidos.json';
 
 const contenidos = contenidosJson[2];
 const referencias = referenciasJson[0];
-console.log("CONTENDOS", contenidos);
-
 
 var tmpProductos = null,
     tipoProducto = null,
@@ -58,9 +52,6 @@ var urlProductos = referencias.consultageneral + "?tabla=productos",
     urlTipoProductos = referencias.consultageneral + "?tabla=tipo_productos",
     urlPoblacion = referencias.consultageneral+"?tabla=productos_poblacion_meta";
     
-
-
-// console.log("usuario datos posteriores", usuario)   
 export default function ProduccionVer() {
     // grupo de datos filtrados 
     const [datosFiltrados, setDatosFiltrados] = useState(null);
@@ -124,21 +115,15 @@ export default function ProduccionVer() {
       if( originalIdTipoProducto ===  null){
         originalIdTipoProducto = data['id_producto'];
       }
-      // console.log("originaltipoPRODUCTO", originalIdTipoProducto);
-      
+
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
       delete data["beneficiario"]; //borrar el check
       data.poblacion = arrayPoblacion;
-      
-      // let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";
       let url = referencias.actualizar + "?tabla_destino=productos&id="+idProducto + "&idAnterior=" + originalIdTipoProducto + "";
-      console.log("url desde submit", url);
       
       setEsperando(true);
       enviar(url, data, function (resp) {
-        handleClose();
-        // console.log("resp", resp);
-        
+        handleClose();  
         mostrarAlerta("Alerta", resp.data.mensaje);
         if(!resp.data.error) {
           setShow(false);
@@ -155,8 +140,6 @@ export default function ProduccionVer() {
           setEsperando(false);
       });
       });
-      // setProducto(0);
-      // e.target.reset(); // reset after form submit
     };
 
     async function actualizaDatos(cb) {     
@@ -197,13 +180,9 @@ export default function ProduccionVer() {
 
     useEffect(() => {
       moment.locale('es');
-      // console.log("Componente montado");
       obtenerDatos(function () {
-        //se usan donde?
         setProductos(tipoProducto);
         setPoblaciones(tipoPoblacion);
-        // -----------
-
         setDatosListos(true);
         setDatosFiltrados(tmpProductos);     
     });
@@ -216,11 +195,8 @@ export default function ProduccionVer() {
     const handleSeleccionarProducto =(e)=>{
         //obtiene el valor de selección
         
-        // clearError();
         productoId = parseInt(e.target.value);
-        productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);
-        console.log("productos filtrados", productosFiltrados);
-        
+        productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);        
         setDatosFiltrados(productosFiltrados);
         setSinFiltro(false);
 
@@ -230,10 +206,8 @@ export default function ProduccionVer() {
       clearError();
       if (parseInt(e.target.value) === 1) {   //no tiene población
         let arrayPoblacion = obtenerValoresCheck("beneficiario");
-        console.log("arrayPoblacion", arrayPoblacion);
       }
       setProductoSel(parseInt(e.target.value));
-      // console.log("ProductoSel cambiar producto", productoSel);
     }
 
     const handleMonthSelect =(e)=>{
@@ -244,7 +218,6 @@ export default function ProduccionVer() {
 
   
 function handleDefaultMes ( ) {
-  console.log("tmpEditar[0].mes_revista", tmpEditar[0].mes_revista);
   let mesActual;
   if(tmpEditar[0].mes_revista){
     mesActual = tmpEditar[0].mes_revista
@@ -256,14 +229,7 @@ function handleDefaultMes ( ) {
 }
     
     const handleChangeCheck =(e)=>{
-      console.log("e.target en handlechangecheck", e.target);
-      if (e.target.id==='12'){
-        tmpEditar[0].poblacion = [];
-      }      
-      if (e.target.id==='12'){
         (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
-      }
-
     }
 
     const handleModoVisor = () => {
@@ -290,13 +256,15 @@ function handleDefaultMes ( ) {
       let id = parseInt(e.target.id);
       
       tmpEditar = filtrar(tmpProductos, "id", id);
-      // console.log("tmpEditar",tmpEditar);
+      let array = JSON.parse(tmpEditar[0].poblacion);
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        if (element.id === '12') {
+          setOtraPoblacion(true);
+        }        
+      }
       
       setProductoSel(parseInt(tmpEditar[0].id_producto));
-      originalIdTipoProducto = tmpEditar[0].id_producto;
-      // console.log("ProductoSel editar producto", productoSel);
-      
-      originalIdTipoProducto = tmpEditar[0].id_producto;
       setEsperando(true);
       setShow(true);
     }
@@ -306,11 +274,8 @@ function handleDefaultMes ( ) {
       alertify.confirm('Eliminar', '¿Desea realmente eliminar este registro?',
         function () {    
           var data = {};
-          let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";
-          console.log("url desde submit", url);
-          
-          data.borrado = 1;   
-          
+          let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";          
+          data.borrado = 1;             
           setEsperando(true);
           enviar(url, data, function (resp) {                
                   // alertify.success(resp.data.mensaje,2);
@@ -373,7 +338,7 @@ function handleDefaultMes ( ) {
           <h1 className="header-1">Ver productos</h1><hr />
 
           <div className="col-sm-12">
-            {datosEliminados.length == 0 ?
+            {datosEliminados.length === 0 ?
               (
                 <Imagen classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
@@ -519,7 +484,7 @@ function handleDefaultMes ( ) {
                           <div className="row">
                             <div className="form-group col-sm-12 my-2">
                               <p className="font-len" >Población beneficiaria</p>
-                                <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion}  handleChange={handleChangeCheck} />
+                                <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion}  handleChange={handleChangeCheck} register={register} />
                             </div>
                           </div> }
             

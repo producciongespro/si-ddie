@@ -318,7 +318,7 @@ useEffect(() => {
           <h1 className="header-1">Ver consultas</h1><hr />
          
             <div className="col-sm-12">
-              {datosEliminados.length== 0 ?
+              {datosEliminados.length=== 0 ?
               (   
                 <Imagen  classElement="img-papelera-vacia float-right" origen={papeleraVacia} />
               )
