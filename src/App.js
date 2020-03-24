@@ -1,7 +1,6 @@
-import React, {useRef, useState, useEffect}  from 'react';
+import React, {useState, useEffect}  from 'react';
 
 //componentes
-
 import Ingreso from './componentes/Ingreso';
 import Consultas from './componentes/Consultas';
 import ConsultasVer from './componentes/ConsultasVer';
@@ -16,11 +15,9 @@ import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
 import Menu from './componentes/Menu';
 import Bienvenida from './componentes/Bienvenida';
-// import Papelera from './componentes/Papelera';
 
 import MyContext from './modulos/MyContext';
 import useCurrentWitdh from './modulos/cambiancho';
-// import Inicio from './componentes/Inicio';
 
 // hojas de estilos
 import "./css/master.css";
@@ -37,20 +34,14 @@ function App() {
   const [colUno, setColUno] = useState("col-sm-3");
   const [colDos, setColDos] = useState("col-sm-9");
 
-  const [hideNav, setHideNav] = useState(null);
-    // save current window width in the state object
-  // const [width, setWidth] = useState(getWidth());
 
   const [usuario, setUsuario] = useState({correo:"", idUsuario:"",tipoUsuario:"", isAccesado: false});
   const value = { usuario, setUsuario };
   
-  // console.log("usuario datos iniciales", usuario)
-    
   const [componente, setComponente] = useState(null);
 
   useEffect(() => {
-    
-    console.log("ANCHO", width);
+
     if(width <= 760)
          {           
           setColUno("col-sm-4");

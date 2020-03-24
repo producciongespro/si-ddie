@@ -1,10 +1,9 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../modulos/MyContext';
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import {faUserAlt,faAddressCard, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -12,10 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Menu(props) {  
   const { usuario, setUsuario } = useContext(MyContext);
 
-  // const llamaCreditos  = (e) => { 
-  //   props.handleCargarComponentes()
-  //  }
-  // console.log("usuario desde MENU",usuario.correo);
   const handlerCerrarSesion = (e) => {    
     var datosUsuario = {
       correo: "",
@@ -28,15 +23,11 @@ export default function Menu(props) {
         return (
           <React.Fragment>
                 <div className="div-encabezado">
-            {/* <Menu usuario={this.correoUsuario}   handlerCerrarSesion ={this.handlerCerrarSesion}  handlerAcercaDe ={this.handlerAcercaDe}/> */}
-            
             <div className="container-fluid">            
               <Navbar className="float-right" bg="transparent" expand="lg">
               <Navbar.Brand href="#home">
-              {/* <FontAwesomeIcon icon={faCog} size="2x" /> */}
               </Navbar.Brand>
               <div>
-                {/* <FontAwesomeIcon icon={faHome} /> */}
               </div>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">

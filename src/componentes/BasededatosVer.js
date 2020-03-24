@@ -44,8 +44,6 @@ var urlIngresos = referencias.consultageneral + "?tabla=ingresos",
     tmpEliminados = null,
     mensaje = "";
 
-
-
 export default function BasededatosVer() {
 
   const { usuario, setUsuario } = useContext(MyContext);
@@ -83,17 +81,14 @@ export default function BasededatosVer() {
   const [mesSel, setMesSel] = useState(null);
   //se requiere?
 
-  //Estado para controlar la carga del json de ingresos:
-  // const [ingreso, setIngreso] = useState(null);
-
-  const onSubmit = (data, e) => {
+    const onSubmit = (data, e) => {
     if( originalIdTipoIngreso ===  null){
       originalIdTipoIngreso = data['id_ingreso'];
     }
 
     let idIngreso = tmpEditar[0].id;
     let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idIngreso + "&idAnterior=" + originalIdTipoIngreso + "";
-    console.log("url desde submit", url);
+    // console.log("url desde submit", url);
 
     setEsperando(true);
     enviar(url, data, function (resp) {
@@ -153,8 +148,7 @@ useEffect(() => {
   moment.locale('es');
   //Carga el primer json:
   obtenerDatos(function () {
-    setDatosListos(true);
-    // console.log("tmpIngresos", tmpIngresos);    
+    setDatosListos(true); 
     setDatosFiltrados(tmpIngresos);
   });
   actualizaDatosEliminados(function(){
@@ -183,9 +177,7 @@ const handleMonthSelect = (e) => {
   setMesSel(mesActual)
 }
 
-function handleDefaultMes ( ) {
-  // console.log("tmpEditar[0].mes ", tmpEditar[0].mes );
-  
+function handleDefaultMes ( ) {  
   let mesActual;
   if(tmpEditar[0].mes){
     mesActual = tmpEditar[0].mes;
