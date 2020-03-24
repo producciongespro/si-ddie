@@ -492,7 +492,7 @@ function handleDefaultMes ( ) {
                             </select>
                           </div>
 
-                          {(productoSel > 1 && producto < 7 )&&
+                          {(productoSel > 1 && productoSel < 7 )&&
                               <div className="form-group col-sm-6 my-2">
                                 <InputItem placeholderText="Digite el número consecutivo" defaultValor= {tmpEditar[0].numero_consecutivo} tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}

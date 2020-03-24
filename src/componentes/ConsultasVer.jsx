@@ -102,7 +102,8 @@ export default function ConsultasVer() {
     setEsperando(true);
     enviar(url, data, function (resp) {
       handleClose();
-      mostrarAlerta("Alerta", resp.msj);
+      console.log("resp", resp);        
+      mostrarAlerta("Alerta", resp.data.mensaje);
       if(!resp.data.error) {
         setShow(false);
       }
@@ -239,6 +240,7 @@ useEffect(() => {
   const handleEditarConsulta = (e) => {
     let id = parseInt(e.target.id);
     tmpEditar = filtrar(tmpConsultas, "id", id);    
+    setSolicitante(parseInt(tmpEditar[0].id_solicitante));
     setEsperando(true);
     setShow(true);
   }
