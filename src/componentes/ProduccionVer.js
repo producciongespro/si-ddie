@@ -124,18 +124,21 @@ export default function ProduccionVer() {
       if( originalIdTipoProducto ===  null){
         originalIdTipoProducto = data['id_producto'];
       }
+      // console.log("originaltipoPRODUCTO", originalIdTipoProducto);
+      
       let arrayPoblacion = obtenerValoresCheck("beneficiario");
       delete data["beneficiario"]; //borrar el check
       data.poblacion = arrayPoblacion;
       
       // let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";
-      let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idProducto + "&idAnterior=" + originalIdTipoProducto + "";
+      let url = referencias.actualizar + "?tabla_destino=productos&id="+idProducto + "&idAnterior=" + originalIdTipoProducto + "";
       console.log("url desde submit", url);
       
       setEsperando(true);
       enviar(url, data, function (resp) {
         handleClose();
-        // mostrarAlerta("Alerta", resp.msj);
+        console.log("resp", resp);
+        
         mostrarAlerta("Alerta", resp.data.mensaje);
         if(!resp.data.error) {
           setShow(false);
@@ -239,18 +242,18 @@ export default function ProduccionVer() {
       setMesSel(parseInt(e.target.value));
     }
 
-    function handleDefaultMes ( ) {
-      // console.log("tmpEditar[0].mes ", tmpEditar[0].mes );
-      
-      let mesActual;
-      if(tmpEditar[0].mes){
-        mesActual = tmpEditar[0].mes
-      }
-      else {
-        mesActual = ""
-      }
-      return mesActual;
-    }
+  
+function handleDefaultMes ( ) {
+  console.log("tmpEditar[0].mes_revista", tmpEditar[0].mes_revista);
+  let mesActual;
+  if(tmpEditar[0].mes_revista){
+    mesActual = tmpEditar[0].mes_revista
+  }
+  else {
+    mesActual = ""
+  }
+  return mesActual;
+}
     
     const handleChangeCheck =(e)=>{
       console.log("e.target en handlechangecheck", e.target);

@@ -13,16 +13,9 @@ function filtrar (array, llave, valor ) {
                     if ( parseInt( array[index][ llave ]) === valor  ) {
                         tmpData.push(array[index]);
                     }              
-                }
-                //  else {
-                //     if ( array[index][ llave ] === valor  ) {
-                //         tmpData.push(array[index]);
-                //     }              
-                // }
-
-                
+                }                
         }                 
-    console.log("Arreglo retornado", tmpData);    
+    // console.log("Arreglo retornado", tmpData);    
     return tmpData;
 }
 

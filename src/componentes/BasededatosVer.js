@@ -92,11 +92,13 @@ export default function BasededatosVer() {
     }
 
     let idIngreso = tmpEditar[0].id;
-    let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idIngreso + "&idingreso=" + originalIdTipoIngreso + "";
+    let url = referencias.actualizar + "?tabla_destino=ingresos&id="+idIngreso + "&idAnterior=" + originalIdTipoIngreso + "";
     console.log("url desde submit", url);
 
     setEsperando(true);
     enviar(url, data, function (resp) {
+      console.log("resp luego de guardar", resp);
+      
       
       mostrarAlerta("Alerta", resp.data.mensaje );
       if(!resp.data.error) {
@@ -188,7 +190,7 @@ function handleDefaultMes ( ) {
   
   let mesActual;
   if(tmpEditar[0].mes){
-    mesActual = tmpEditar[0].mes
+    mesActual = tmpEditar[0].mes;
   }
   else {
     mesActual = ""
