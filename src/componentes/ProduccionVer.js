@@ -560,8 +560,11 @@ function handleDefaultMes ( ) {
                         }
                       </Modal.Body>
                       <Modal.Footer className="modal-footer-edicion">
-                        <input className="btn btn-main text-center float-right" type="submit" value="Guardar"></input>
+                        <div className="float-right">
+                          <input className="btn btn-main" type="submit" value="Guardar"></input>
+                        </div>
                       </Modal.Footer>
+                
 
                     </form>
                     </Modal>}
