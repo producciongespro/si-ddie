@@ -1,15 +1,16 @@
 [
     {
-        "version" : "1.0",
-        "img"  : "http://localhost/server_assets/si-ddie/img/",
-        "servicios" : "http://localhost/webservices/si-ddie/",   
+       "version" : "1.0",
+       "img"  : "http://localhost/projects/si-ddie/server_assets/si-ddie/img/",
+       "servicios" : "http://localhost/webservices/si-ddie/",   
        "consultageneral": "http://localhost/webservices/si-ddie/consultas_generales.php",
+       "consultaeliminados": "http://localhost/webservices/si-ddie/consultas_eliminados.php",
        "consultaespecifica": "http://localhost/webservices/si-ddie/consultas_especificas.php",
        "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",
+       "actualizar" : "http://localhost/webservices/si-ddie/actualiza_generico.php",
        "registroUsuario" : "http://localhost/webservices/si-ddie/registro.php",
        "recuperarContrasena" : "http://localhost/webservices/si-ddie/recupera.php",
        "login" : "http://localhost/webservices/si-ddie/login.php"
-
     }
 ]
