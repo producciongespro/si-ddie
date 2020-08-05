@@ -5,8 +5,9 @@ const Bienvenida = () => {
     // {console.log(props.origen)}
     return ( 
       <React.Fragment>
-        <p className="texto-title text-center">Sistema de Información </p>
-        <p className="texto-title-2 text-center"> Departamento de Documentación e Información Electrónica</p>
+           
+          <h1 className=" text-center pt-4">Sistema de Información </h1>
+          <h3  className=" text-center pt-4"> Departamento de Documentación e Información Electrónica</h3>
       </React.Fragment>     
     )
 }

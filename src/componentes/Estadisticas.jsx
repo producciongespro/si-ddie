@@ -1,151 +1,79 @@
-import React, { Component } from 'react';
-import {ValidationForm} from 'react-bootstrap4-form-validation';
- //https://andyhu92.github.io/react-bootstrap4-form-validation/#/example/basic-usage
-//  https://andyhu92.github.io/react-bootstrap4-form-validation/#/api/validation-form
+import React, {useEffect, useState } from 'react';
+import Grafico1 from './Grafico1';
+import Grafico2 from './Grafico2';
 
-//  import axios from 'axios';
+import coloresGraficos1 from '../data/coloresGraficos1.json';
+import coloresGraficos2 from '../data/coloresGraficos2.json';
 
-// import mostrarAlerta from './Alerta.js';
 
-// import referenciasJson from '../data/referencias.json';
+export default function Estadisticas() {
 
-// import LoadingSpinner from './spinner/LoadingSpinner';
+const [tipoRespuesta, setTipoRespuesta ] = useState(null);
+const [tipoSolicitante, setTipoSolicitante ] = useState(null);
+const [tipoSolicitud, setTipoSolicitud ] = useState(null);
 
-// const referencias = referenciasJson[0];
 
-// var producto = {
-//   // "id_producto": "",
-//   // "id_usuario" : 1,
-//   // "cantidad"   : 0,
-//   // "fecha"      : "0001-01-01",
-// }
-
-// var  me;
-
-class Estadisticas extends Component {
-  constructor(props) {
-    super(props);
-         // If you want to use the reset state function, you need to have a reference to the ValidationForm component
-        //If your React < 16.3, check https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
-    this.formRef = React.createRef();
-
-    this.state = { 
-      // tipo_productos : [],
-      alertaActiva : false,
-      loading: false, 
+async function obtener () {
+  let resp=null;      
+  
+    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_respuesta.php");
+    // setTipoRespuesta( await resp.json());    
     
-      immediate:true,   //estado de validación del form
-      setFocusOnError:true,
-      clearInputOnReset:false
-    };
-  }
-  componentDidMount( ) {
-    // this.obtenerJson("tipo_productos");
-  }
-
-
-  // obtenerJson = (tabla) => {
-  //  let url= referencias.consultageneral+"?tabla=" + tabla;
-  //  axios.get(url)
-  //     .then(res => {     
-  //       this.setState({ [tabla] : res.data  }); 
-  //     })
-  //     .catch(function (error) {
-  //       console.log("error",error)
-  //     })
-  //     .finally(function () {
-  //     });
-  // }
-
-  //eventos del formulario
-  handleSubmit = (e, formData, inputs) => {
-    e.preventDefault();
-    console.log("formData",e, formData, inputs);
-    // alert(JSON.stringify(formData, null, 2));
-    this.enviarDatosForm();
+    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_solicitante.php");
+    // setTipoSolicitante (await resp.json());    
+  
+    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_solicitud.php");
+    // setTipoSolicitud( await resp.json());
+    
+    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_respuesta.php");
+    setTipoRespuesta( await resp.json());    
+    
+    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitante.php");
+    setTipoSolicitante (await resp.json());    
+  
+    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitud.php");
+    setTipoSolicitud( await resp.json());
+    // "http://localhost/webservices/si-ddie/
   }
 
-  handleErrorSubmit = (e,formData, errorInputs) => {
-      // console.log("handleErrorSubmit",e,formData, errorInputs);
-      console.log("handleErrorSubmit", errorInputs)
-  }
+  useEffect(()=>{
+    obtener();
+  },[]);
 
-  resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
-  }
+  useEffect(()=>{
+    console.log("tipoRespuesta",tipoRespuesta);    
+  })
 
-  // enviarDatosForm = () => {
-  //     me = this;
-  //     console.log("producto", producto);
-      
-  //      this.setState({ loading: true }, () => {
-  //       axios.post(referencias.guardaconsulta+"?tabla_destino=productos", producto)    
-  //         .then(function (response) {
-  //           console.log("response.data",response.data);
-  //            me.setState({loading: false});   
-  //                mostrarAlerta( "Alerta", response.data['mensaje']  );
-  //         })
-  //         .catch(function (error) {
-  //           console.log("Este es el error en envío",error);       
-  //         })
-  //         .finally(function () {
-  //           console.log("Transacción finalizada");        
-  //         });
-  //       });
+  return (
+    <div className="container">      
+      <div className="row">
+        <div className="col-sm-12">
+        {
+        tipoRespuesta &&
+        <Grafico1 array={tipoRespuesta} coloresGraficos={coloresGraficos1}  titulo='Consultas por tipo de respuestas' />
+        }
+        </div>
+      </div>
+      <hr/>
 
-  // }
+        <div className="row">
+          <div className="col-sm-12">
+          {
+          tipoSolicitante &&
+            <Grafico1 array={tipoSolicitante} coloresGraficos={coloresGraficos2} titulo='Consultas por tipo de solicitante' />
+          }
+          </div>
+        </div>
+      <hr/>
 
-  // obtenerDatosForm = (e) => {
-  //   const opcion = e.target.name;
-  //   // console.log("e.target.name",e.target.name);    
-  //   // console.log("e.target.value",e.target.value);
-
-  //   switch (opcion) {
-  //     case "id_producto":
-  //       producto.id_producto = e.target.value;
-  //       break;
-  //     case "cantidad":
-  //       producto.cantidad = e.target.value;  //ojo revisar, que guardo en id_tipo solicitante
-  //     break;
-  //     case "fecha":
-  //       producto.fecha = e.target.value;
-  //       break;
-  //     default:
-  //      // console.log("Opción fuera de rango");
-  //       break;
-  //   }
-  // }
-
-
-  render() { 
-    // const  loading  = this.state.loading;
-    // const  classSuccess  = this.state.classSuccess;
-    return (
-      <React.Fragment>
-        <ValidationForm onSubmit={this.handleSubmit} onErrorSubmit={this.handleErrorSubmit}
-                        ref={this.formRef}
-                        immediate={this.state.immediate}
-                        setFocusOnError={this.state.setFocusOnError}
-                        defaultErrorMessage = {
-                          { required : "Este campo es requerido",
-                          min : "El número debe ser mayor a 0",
-                          max : "El número debe ser menor igual a 20"}
-                        }
-                        >
-          <h1 className="header-1">Estadísticas</h1>
-          <hr/>
-          {/* <div className="row">
-            <div className="col-md-6 center">
-              <button className="btn btn-block btn-main"> 
-                Guardar registro {loading ? <LoadingSpinner elementClass={"spinner-grow text-light spinner-grow-lg"} /> : <LoadingSpinner elementClass={"d-none"} /> } 
-              </button>
-            </div>
-          </div>        */}
-        </ValidationForm>   
-      </React.Fragment>
-      );
-  }
+      <div className="row">
+          <div className="col-sm-12">
+          {
+          tipoSolicitud &&
+            <Grafico1 array={tipoSolicitud} coloresGraficos={coloresGraficos1} titulo='Consultas por tipo de solicitud' />
+          }
+          </div>
+        </div>
+    </div>
+  );
 }
-
-export default Estadisticas;
