@@ -16,24 +16,23 @@ const [tipoSolicitud, setTipoSolicitud ] = useState(null);
 async function obtener () {
   let resp=null;      
   
-    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_respuesta.php");
+    // resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_respuesta.php");
     // setTipoRespuesta( await resp.json());    
     
-    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_solicitante.php");
+    // resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitante.php");
     // setTipoSolicitante (await resp.json());    
   
-    // resp= await fetch("http://pruebas-php.local/obtener_consultas_por_solicitud.php");
+    // resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitud.php");
     // setTipoSolicitud( await resp.json());
     
-    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_respuesta.php");
+    resp= await fetch("http://pruebarecursos.mep.go.cr/webservices/si-ddie/obtener_consultas_por_respuesta.php");
     setTipoRespuesta( await resp.json());    
     
-    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitante.php");
+    resp= await fetch("http://pruebarecursos.mep.go.cr/webservices/si-ddie/obtener_consultas_por_solicitante.php");
     setTipoSolicitante (await resp.json());    
   
-    resp= await fetch("http://localhost/webservices/si-ddie/obtener_consultas_por_solicitud.php");
+    resp= await fetch("http://pruebarecursos.mep.go.cr/webservices/si-ddie/obtener_consultas_por_solicitud.php");
     setTipoSolicitud( await resp.json());
-    // "http://localhost/webservices/si-ddie/
   }
 
   useEffect(()=>{
