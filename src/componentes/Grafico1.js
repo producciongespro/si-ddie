@@ -21,7 +21,8 @@ var myChart = new Chart(ctx, {
         labels: props.array.map(d => d.tipo),
         datasets: [{
             label: props.titulo,
-            data: props.array.map(d => d["COUNT(*)"] ),
+            // data: props.array.map(d => d["COUNT(*)"] ),
+            data: props.array.map(d => d["total"] ),
             backgroundColor: props.coloresGraficos.map(item=>item.fondo),
             borderColor: props.coloresGraficos.map(item=>item.borde),
             borderWidth: 1
