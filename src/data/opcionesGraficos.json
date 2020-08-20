@@ -1,0 +1,19 @@
+[
+    
+    {
+        "id": "0",
+        "etiqueta": "Todos"
+    },
+    {
+        "id": "1",
+        "etiqueta": "Tipo de respuesta"
+    },
+    {
+        "id": "2",
+        "etiqueta": "Tipo de solicitante"
+    },
+    {
+        "id": "3",
+        "etiqueta": "Tipo de solicitud"
+    }
+]
