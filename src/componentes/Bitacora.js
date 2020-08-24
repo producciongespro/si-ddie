@@ -1,26 +1,31 @@
 import React, {useState, useEffect} from 'react';
-import config from '../config';
 import Tabla from '../componentes/Tabla';
+
+import referenciasJson from '../data/referencias.json';
+
+const referencias = referenciasJson[0];
 
 
 function Bitacora (props) {
-    const [datosJson, setDataJson ] = useState(null);
+    const [datosJson, setDatosJson ] = useState(null);
+
+    
+  async function obtener() {
+    var url = referencias.consultabitacora;
+    let resp = null;
+    
+    resp = await fetch(url);
+    setDatosJson(await resp.json());
+  }
 
     useEffect(()=>{
-        //console.log("props.idTipoUsuario",props.idTipoUsuario);
-        
-    let urlAPI=config.servidor+"obtener_bitacora2.php?tabla="+props.idTipoUsuario;        
-        obtener(urlAPI);
+        obtener();
     },[]);
 
     useEffect(()=>{
         console.log("datosJson",datosJson);        
     })
 
-    async function obtener (urlAPI) {
-        let response = await fetch(urlAPI);                
-        setDataJson(await response.json());               
-    }
 
     return (
         <React.Fragment>
@@ -28,13 +33,14 @@ function Bitacora (props) {
                     Admin/Bitácora
                 </div>
                 {
-                    datosJson !==null ?
-                    (                    
-                        <Tabla array={datosJson} clase="table table-striped" modo="bitacora" />
-                    ) :
-                    (
+                    // datosJson !==null ?
+                    // (                    
+                    //      <Tabla array={datosJson} clase="table table-striped" modo="visor" />
+                        
+                    // ) :
+                    // (
                         <span>Por favor espere...</span>
-                    )
+                    // )
                 }
 
                 

@@ -7,6 +7,7 @@
        "consultageneral": "http://localhost/webservices/si-ddie/consultas_generales.php",
        "consultaestadistica": "http://localhost/webservices/si-ddie/consultas_estadisticas.php",
        "consultaespecifica": "http://localhost/webservices/si-ddie/consultas_especificas.php",
+       "consultabitacora": "http://localhost/webservices/si-ddie/consultas_bitacora.php",
        "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",
        "actualizar" :   "http://localhost/webservices/si-ddie/actualiza_generico.php",
