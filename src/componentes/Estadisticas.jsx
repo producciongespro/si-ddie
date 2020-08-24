@@ -18,7 +18,6 @@ export default function Estadisticas() {
   const [tipoRespuesta, setTipoRespuesta] = useState(null);
   const [tipoSolicitante, setTipoSolicitante] = useState(null);
   const [tipoSolicitud, setTipoSolicitud] = useState(null);
-  const [sinFiltro, setSinFiltro] = useState(null);
   const [opcionGrafico, setOpcionGrafico] = useState(null);
   const { register, handleSubmit, errors, clearError } = useForm();
 
@@ -38,7 +37,6 @@ export default function Estadisticas() {
     resp = await fetch(urlConsulta);
     setTipoSolicitud(await resp.json());
 
-    setSinFiltro(true);
     setOpcionGrafico(0);
   }
 
@@ -46,19 +44,16 @@ export default function Estadisticas() {
     clearError();
     let opcion = parseInt(e.target.value);
     setOpcionGrafico(opcion);
-    console.log("value select", opcion);
 
     // setNombreTabla(parseInt(e.target.value));
   }
 
   useEffect(() => {
     obtener();
-    console.log("opciones", opcionesGraficos);
   }, []);
 
   useEffect(() => {
-    console.log("tipoRespuesta", tipoRespuesta);
-    console.log("tipoRespuesta", tipoSolicitud);
+    
   })
 
   return (
@@ -77,7 +72,9 @@ export default function Estadisticas() {
         </div>
       </div>
       {
-      opcionGrafico <= 1 &&
+      (opcionGrafico <= 1) 
+      &&
+      <>
         <div className="row">
           <div className="col-sm-12">
             {
@@ -86,27 +83,35 @@ export default function Estadisticas() {
             }
           </div>
         </div>
+      <hr />
+      </>
       }
-      <hr />
-
-      <div className="row">
-        <div className="col-sm-12">
-          {
-            tipoSolicitante &&
-            <Grafico1 array={tipoSolicitante} coloresGraficos={coloresGraficos2} titulo='Consultas por tipo de solicitante' />
-          }
+      {
+      (opcionGrafico == 0 || opcionGrafico == 2) &&
+      <>
+        <div className="row">
+          <div className="col-sm-12">
+            {
+              tipoSolicitante &&
+              <Grafico1 array={tipoSolicitante} coloresGraficos={coloresGraficos2} titulo='Consultas por tipo de solicitante' />
+            }
+          </div>
         </div>
-      </div>
-      <hr />
-
-      <div className="row">
-        <div className="col-sm-12">
-          {
-            tipoSolicitud &&
-            <Grafico1 array={tipoSolicitud} coloresGraficos={coloresGraficos1} titulo='Consultas por tipo de solicitud' />
-          }
+        <hr />
+      </>
+      }
+      {
+        (opcionGrafico == 0 || opcionGrafico == 3) &&
+        <div className="row">
+          <div className="col-sm-12">
+            {
+              tipoSolicitud &&
+              <Grafico1 array={tipoSolicitud} coloresGraficos={coloresGraficos1} titulo='Consultas por tipo de solicitud' />
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
+  
   );
 }
