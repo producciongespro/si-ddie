@@ -273,9 +273,12 @@ function handleDefaultMes ( ) {
       const idProducto = e.target.id;
       alertify.confirm('Eliminar', '¿Desea realmente eliminar este registro?',
         function () {    
-          var data = {};
+          // var data = {};
           let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";          
-          data.borrado = 1;             
+          const data = {    
+            "borrado" : 1,
+            "id_usuario" : usuario.idUsuario
+          };
           setEsperando(true);
           enviar(url, data, function (resp) {                
                   // alertify.success(resp.data.mensaje,2);
@@ -298,9 +301,11 @@ function handleDefaultMes ( ) {
     
     const handleRecuperarRegistro = (e) => {
       let idRecuperar = e.target.id;
+      console.log("usuario.idUsuario", usuario.idUsuario)
       const data = {    
-              "borrado" : 0
-            }
+              "borrado" : 0,
+              "id_usuario" : usuario.idUsuario
+            };
     
       let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idRecuperar + "";
       setEsperando(true);
@@ -552,6 +557,7 @@ function handleDefaultMes ( ) {
                         </div>
 
                         <div className={"form-group d-none"}>
+                        {/* <div className="form-group col-sm-6 my-2"> */}
                             <input type="text" className="form-control"  defaultValue={usuario.idUsuario}  name="id_usuario" id="id_usuario" ref={register}/>    
                         </div>
                         </React.Fragment>

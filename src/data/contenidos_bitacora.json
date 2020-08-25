@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "Fecha",
+        "campo" : "fecha"
+    },
+    {
+        "nombre": "Tipo de cambio",
+        "campo": "cambio"
+    },    
+    {
+        "nombre": "Tabla modificada",
+        "campo": "nombre_tabla"
+    },    
+    {
+        "nombre": "Id del registro",
+        "campo": "id_registro"
+    },
+    {
+        "nombre": "Cambio realizado por:",
+        "campo": "nombre"
+    }
+]
