@@ -514,8 +514,8 @@ useEffect(() => {
                             {errors.fecha_respuesta && <p className="errors">Este campo es requerido</p>}
                           </div>
                         </div>
-                        {/* <div className="form-group d-none"> */}
-                        <div className="form-group col-sm-6 my-2">
+                        <div className="form-group d-none">
+                        {/* <div className="form-group col-sm-6 my-2"> */}
                           <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue={usuario.idUsuario} ref={register} />
                         </div>
                       </React.Fragment>

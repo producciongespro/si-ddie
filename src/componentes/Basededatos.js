@@ -35,7 +35,7 @@ export default function Basededatos() {
 
   
   const onSubmit = (data, e) => {
-
+console.log("data", data);
     let url = referencias.guardaconsulta + "?tabla_destino=ingresos";
     enviar(url, data, function (resp) {
       mostrarAlerta("Alerta", resp.data.mensaje );
