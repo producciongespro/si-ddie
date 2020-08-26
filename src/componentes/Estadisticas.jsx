@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 
 import Grafico1 from './Grafico1';
 
-// import obtener from '../modulos/obtener';
-
 import coloresGraficos1 from '../data/coloresGraficos1.json';
 import coloresGraficos2 from '../data/coloresGraficos2.json';
 import opcionesGraficos from '../data/opcionesGraficos.json';
