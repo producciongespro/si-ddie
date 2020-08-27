@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-
 import mostrarAlerta from './Alerta.js';
 
 import MyContext from '../modulos/MyContext';

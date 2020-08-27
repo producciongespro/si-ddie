@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+
 import obtener from '../modulos/obtener';
 import InputItem from './InputItem';
 import moment from 'moment';
@@ -9,17 +10,18 @@ import MyContext from '../modulos/MyContext';
 
 import mostrarAlerta from './Alerta.js';
 
-import "../css/form.css";
+// import "../css/form.css";
 
 import enviar from '../modulos/enviar';
+
 import referenciasJson from '../data/referencias.json';
 const referencias = referenciasJson[0];
 
 export default function Basededatos() {
 
-  const { usuario, setUsuario } = useContext(MyContext);
-
   const { register, handleSubmit, errors, clearError } = useForm();
+
+  const { usuario, setUsuario } = useContext(MyContext);
 
   //Estado para controlar la carga del json de ingresos:
   const [ingreso, setIngreso] = useState(null);
@@ -35,14 +37,15 @@ export default function Basededatos() {
 
   
   const onSubmit = (data, e) => {
-console.log("data", data);
+    console.log("data", data);
+
     let url = referencias.guardaconsulta + "?tabla_destino=ingresos";
+
     enviar(url, data, function (resp) {
       mostrarAlerta("Alerta", resp.data.mensaje );
     });
     setIngresoSel(0);
     e.target.reset(); // reset after form submit
-
   };
   // console.log("errors", errors);
 

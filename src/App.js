@@ -55,7 +55,7 @@ function App() {
 }); 
 
 const handleCargarComponentes = (e) => {     
-  console.log("componentes[e.target] ", componentes[e.target] );
+  // console.log("componentes[e.target] ", componentes[e.target] );
     e.preventDefault();
 
      if ( e.target.tagName.toUpperCase() ==='A') { // EXCEPCION para cargar página de créditos
@@ -64,7 +64,7 @@ const handleCargarComponentes = (e) => {
     // console.log( "componentes[e.target.dataset.componente]", componentes[e.target.dataset.referencia] );
   }
   else {
-    console.log("componentes[e.target.value] ", componentes[e.target.value] );
+    // console.log("componentes[e.target.value] ", componentes[e.target.value] );
     
     setComponente( componentes[e.target.value] );  
   }  
