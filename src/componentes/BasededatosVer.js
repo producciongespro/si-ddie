@@ -411,7 +411,7 @@ return (
                       </select>
                     </div>
                     <div className="form-group col-sm-6 my-2">
-                      <InputItem  elementClass= "col-sm-6 my-2 form-group" defaultValor= {tmpEditar[0].descriptor} placeholderText="Número de descriptor" tipo="text" nombre= "descriptor" textlabel="Descriptor"  referencia={register({required: true})}/>
+                      <InputItem  elementClass= "col-sm-6 my-2 form-group" defaultValor= {tmpEditar[0].descriptor} placeholderText="Descriptor" tipo="text" nombre= "descriptor" textlabel="Descriptor"  referencia={register({required: true})}/>
                       {errors.descriptor && <p className="errors">Este campo es requerido</p>}
                     </div>
                   </div>

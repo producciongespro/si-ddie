@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Tabla2 from '../componentes/Tabla2';
+import Tabla2 from './Tabla2';
 
 import referenciasJson from '../data/referencias.json';
 import contenidosJson from '../data/contenidos_bitacora.json';
@@ -7,7 +7,8 @@ import contenidosJson from '../data/contenidos_bitacora.json';
 const referencias = referenciasJson[0];
 const contenidos = contenidosJson;
 
-function Bitacora (props) {
+export default function Bitacora() {
+
     const [datosJson, setDatosJson ] = useState(null);
 
     
@@ -38,7 +39,7 @@ function Bitacora (props) {
                      datosJson !==null ?
                      (                    
                         //   <Tabla array={datosJson} clase="table table-striped" modo="bitacora" />
-                          <Tabla2 array={datosJson} contenidos={contenidos} clase="table table-striped sombreado" modo="bitacora" />
+                          <Tabla2 array={datosJson} contenidos={contenidos} clase="table table-striped sombreado"/>
                         
                      ) :
                      (
@@ -50,7 +51,4 @@ function Bitacora (props) {
         </React.Fragment>
     )
     
-}
-
-
-export default Bitacora;
+};

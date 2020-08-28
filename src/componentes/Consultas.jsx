@@ -46,15 +46,14 @@ export default function Consultas() {
     data.fecha_respuesta === "" && delete data["fecha_respuesta"];
     data.id_respuesta === "" && delete data["id_respuesta"];
     let url = referencias.guardaconsulta + "?tabla_destino=consultas";
-    // console.log("url desde submit", url);
+    console.log("url desde submit", url);
+    console.log("data", data);
 
     enviar(url, data, function (resp) {
-      mostrarAlerta("Alerta", resp.data.mensaje );
-      // console.log(resp.data.mensaje);
+       console.log(resp);
     });
     setIntervencion(0);
     e.target.reset(); // reset after form submit
-
   };
   // console.log("errors",errors);
 

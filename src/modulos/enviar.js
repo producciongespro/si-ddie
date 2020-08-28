@@ -3,6 +3,7 @@ import mostrarAlerta from '../componentes/Alerta.js';
 const axios = require('axios');
 
 function enviar(url, data, cb) {
+  console.log("url desde enviar", url);
 
   console.log("data a enviar", data);
   axios.post(url, data)    
