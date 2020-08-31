@@ -57,6 +57,8 @@ export default function Estadisticas() {
   return (
     <div className="container">
       <div className="row">
+      <h1 className="header-1">Estadísticas</h1>
+      <hr/>
         <div className="form-group col-sm-6 ">
           <label className="font-len" htmlFor="id_table">Seleccionar el gráfico:&nbsp;&nbsp;</label>
           <select className="custom-select" key="id_table" defaultValue="0" onChange={handlerSeleccion} name="id_table" ref={register({ required: true })}>

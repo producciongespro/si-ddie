@@ -275,7 +275,8 @@ useEffect(() => {
                   setEsperando(false);
             })
         });
-    }, function(){ });
+    }, function(){ })
+    .set('labels', {ok:'Aceptar', cancel:'Cancelar'});
   }
 
   const handleRecuperarRegistro = (e) => {

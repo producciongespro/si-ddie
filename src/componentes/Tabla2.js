@@ -6,6 +6,11 @@ import 'moment/locale/es';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function Tabla(props) {
+    if (props.loading){
+        return <h2>Cargando...</h2>;
+      }
+
+      console.log("indexOfFirstPost",  props.indexOfFirstPost);
     return (
         <table id="tblVer" className={props.clase}>
             <thead>
@@ -24,7 +29,7 @@ function Tabla(props) {
                     (
                         props.array.map((item, i) => (
                             <tr key={"item" + i}>
-                                <th scope="row">{i + 1}</th>
+                                <th scope="row">{((i + 1)) }</th>
                                 
                                 <td  >{ moment.utc(item[props.contenidos[0].campo]).format('L')}</td>
                                 <td  >{item[props.contenidos[1].campo]}</td>
@@ -34,9 +39,10 @@ function Tabla(props) {
                         ))
                     )
                 }
+
             </tbody>
         </table>
-    )
+        )
 }
 
 export default Tabla;
