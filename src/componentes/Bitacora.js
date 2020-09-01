@@ -15,11 +15,15 @@ export default function Bitacora() {
     const [posts, setPosts ] = useState([]);
     const [loading, setLoading ] = useState(false);
     const [currentPage, setCurrentPage ] = useState(1);
-    const [postsPerPage, setPostsPerPage ] = useState(15);
+    const [postsPerPage,  ] = useState(15);
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPost = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+    //Cambiando página
+    const paginate = pageNumber =>setCurrentPage(pageNumber);
+
     
   async function obtener() {
     var url = referencias.consultabitacora;
@@ -43,17 +47,19 @@ export default function Bitacora() {
           return (
         <React.Fragment>
                <h1 className="header-1">Bitácora</h1>
-               <hr/>
                 {
                       posts !==null ?
                     //  posts  !==null 
                     //  ?
                      <React.Fragment> 
-                       <Tabla2 array={currentPost} indexOfFirstPost = {indexOfFirstPost} contenidos={contenidos}  loading={loading} clase="table table-striped sombreado"/>
+                
+                        <Tabla2 array={currentPost} indexOfFirstPost = {indexOfFirstPost} contenidos={contenidos} currentPage = {currentPage} clase="table table-striped sombreado"/>
                        {/* <Posts posts={currentPost} loading={loading} /> */}
-                       <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} />
-                           {/* <Tabla array={datosJson} clase="table table-striped" modo="bitacora" />
-                         <Tabla2 array={datosJson} contenidos={contenidos} clase="table table-striped sombreado"/> */}
+                       <Pagination 
+                         postsPerPage={postsPerPage} 
+                         totalPosts={posts.length} 
+                         paginate = {paginate} 
+                       />
                      </React.Fragment>  
                      
                       :

@@ -3,19 +3,9 @@ import botones from '../data/lista_botones.json';
 import {faPlus,faEye,faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// css
-// import "../css/dropdown.css";
-
 function MenuBotones (props) {   
-    // botones.map((item, i)=>(
-    //     i<3 &&
-    //             // console.log("item ==>",i,":",item['textoboton'],
-    //         console.log("item opciones==>",i,":",item['opciones'][0]['ref'])
-    // ))
     return (
         <React.Fragment>
-             {/* {botones.map((item, i)=>(console.log("item ==>",i,":",item['textoboton'])
-             ))} */}
             <div id="col1" className={"col-botonera "+props.col}>
             {
                 botones.map((item, i)=>(               
@@ -25,7 +15,6 @@ function MenuBotones (props) {
                         {item['textoboton']}  <span className="float-right">  <FontAwesomeIcon icon={faCaretDown} size="1x" /></span>
                         </button>
                         <div className="dropdown-menu" aria-labelledby={item['botonprincipal']+"dropdownMenuButton"}>
-                            {/* <a className="dropdown-item menu-lateral" href="www.nada.com"  onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][0]['ref']}>Agregar <span className="float-right"><FontAwesomeIcon icon={faPlus} size="1x" /></span></a> */}
                             <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][0]['ref']}>Agregar <FontAwesomeIcon className="float-right" icon={faPlus} size="1x" /></a>
                             <div className="dropdown-divider dropdown-divider-menu"></div>
                             <a className="dropdown-item menu-lateral" href="www.nada.com" onClick={props.handleCargarComponentes} id={item['botonprincipal']} data-referencia={item['opciones'][1]['ref']}>Ver <span className="float-right"><FontAwesomeIcon icon={faEye} size="1x" /></span></a>

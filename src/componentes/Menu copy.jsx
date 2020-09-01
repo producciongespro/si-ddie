@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import logo from '../images/logo_mep_small.png';
 
-
 export default function Menu(props) {  
   const { usuario, setUsuario } = useContext(MyContext);
 
@@ -24,13 +23,11 @@ export default function Menu(props) {
 
         return (
           <React.Fragment>
-                <div className="div-encabezado">
+          <div className="div-encabezado">
             <div className="container-fluid">            
               <Navbar className="float-right" bg="transparent" expand="lg">
               <Navbar.Brand href="#home">
               </Navbar.Brand>
-              <div>
-              </div>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="dropdown dropleft float-right">
@@ -43,11 +40,20 @@ export default function Menu(props) {
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
-          </div>
           <div className="jumbotron jumbotron-fluid ">
-              <h1 className="h1text" > <span className="logo"><img src={logo} className= "img-fluid" alt="imagen logo MEP"/></span></h1>
+          </div>
+          <hr/>
+          <div className="row ">
+            <div className="col-sm-2"> 
+              <h1 className="h1text">SI-DDIE</h1>
+            </div>
+            <div className="col-sm-2 offset-8">
+                <span className="float-right"><img src={logo} className= "img-fluid" alt="imagen logo MEP"/></span>
             </div>
           </div>
-        </React.Fragment>
+          <hr/>
+        </div>
+      </div>
+      </React.Fragment>
     );
 };

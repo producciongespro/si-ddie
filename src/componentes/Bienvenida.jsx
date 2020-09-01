@@ -6,7 +6,7 @@ const Bienvenida = () => {
     return ( 
       <React.Fragment>
            
-          <h1 className=" text-center pt-4">Sistema de Información </h1>
+          <h2 className=" text-center pt-4">Sistema de Información </h2>
           <h3  className=" text-center pt-4"> Departamento de Documentación e Información Electrónica</h3>
       </React.Fragment>     
     )

@@ -43,7 +43,7 @@ body
 @import url('https://fonts.googleapis.com/css?family=Black+And+White+Picture|Convergence|Jua&display=swap');
 .acercade {
   font-family: 'Convergence', sans-serif;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
 }
 .modal.modal-ingreso{
   display: block!important;
@@ -222,6 +222,9 @@ body
   border-radius: 0px;
 }
 
+.logo {
+ margin-right: 10px;
+}
 .h1text {
   padding-left: 2%;
   color: white;
