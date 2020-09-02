@@ -6,7 +6,7 @@ import 'moment/locale/es';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function Tabla(props) {
-let indice = props.currentPage*10-10;
+let indice = props.currentPage*15-15;
     return (
         <table id="tblVer" className={props.clase}>
             <thead>

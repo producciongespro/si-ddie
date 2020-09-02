@@ -73,6 +73,11 @@ export default function ConsultasVer() {
   //cerrar modal
   const handleClose = () => setShow(false);
 
+  const onCloseModal = () => {
+    setShow(false);
+    setEsperando(false);  
+  };
+
   //controla si las consultas están filtradas o no  
   const[sinFiltro, setSinFiltro] = useState(true); 
 
@@ -423,8 +428,9 @@ useEffect(() => {
           >
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Modal.Header closeButton className="modal-header-edicion">
+            <Modal.Header className="modal-header-edicion">
               <Modal.Title ><h1>Edición</h1></Modal.Title>
+              <button type="button" class="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
             </Modal.Header>
             <Modal.Body>
               {

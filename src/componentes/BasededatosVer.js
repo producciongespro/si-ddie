@@ -71,6 +71,12 @@ export default function BasededatosVer() {
   //cerrar modal
   const handleClose = () => setShow(true);
 
+  const onCloseModal = () => {
+    setShow(false);
+    setEsperando(false);  
+  };
+
+
   const handlePapelera = () => setModoVisor(false);
 
   //controla si las consultas están filtradas o no  
@@ -390,8 +396,10 @@ return (
             backdrop = "static"
        >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Modal.Header closeButton className="modal-header-edicion">
+          {/* <Modal.Header closeButton> */}
+             <Modal.Header  className="modal-header-edicion">
               <Modal.Title ><h1>Edición - Ingresos</h1></Modal.Title>
+              <button type="button" class="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
             </Modal.Header>
             <Modal.Body>
               {
