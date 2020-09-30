@@ -15,5 +15,13 @@
     {
         "id": "3",
         "etiqueta": "Tipo de solicitud"
+    },
+    {
+        "id": "4",
+        "etiqueta": "Tipo de ingreso"
+    },
+    {
+        "id": "5",
+        "etiqueta": "Tipo de producto"
     }
 ]

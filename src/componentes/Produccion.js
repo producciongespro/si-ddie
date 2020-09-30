@@ -74,8 +74,6 @@ export default function Produccion() {
                 //Activa cargado para que meuistre el formulario:
                  setCargado(true)
             })
-
-           
         })
     }, []);
 
@@ -116,7 +114,7 @@ export default function Produccion() {
                }
             </select>
             </div>
-            {((producto > 1 && producto < 7)  || producto === 8 )&&
+            {((producto > 1 && producto < 7)  || producto === 9 )&&
               <div className="form-group col-sm-6 my-2">
                 <InputItem placeholderText="Digite el número consecutivo" tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
                 {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}
@@ -129,7 +127,7 @@ export default function Produccion() {
               </div>
             }   
           </div>   
-          {producto === 8 && 
+          {producto === 9 && 
             <div className="row">
               <div className="form-group col-sm-12 my-2">
                 <InputItem  tipo="text" placeholderText="Describa el tipo de producto" nombre= "desc_otro" textlabel="Descripción"  referencia={register({required: true})} />

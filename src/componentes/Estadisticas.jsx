@@ -16,6 +16,8 @@ export default function Estadisticas() {
   const [tipoRespuesta, setTipoRespuesta] = useState(null);
   const [tipoSolicitante, setTipoSolicitante] = useState(null);
   const [tipoSolicitud, setTipoSolicitud] = useState(null);
+  const [tipoIngreso, setTipoIngreso] = useState(null);
+  const [tipoProducto, setTipoProducto] = useState(null);
   const [opcionGrafico, setOpcionGrafico] = useState(null);
   const { register, handleSubmit, errors, clearError } = useForm();
 
@@ -35,6 +37,13 @@ export default function Estadisticas() {
     resp = await fetch(urlConsulta);
     setTipoSolicitud(await resp.json());
 
+    urlConsulta = url + "?tabla=4";
+    resp = await fetch(urlConsulta);
+    setTipoIngreso(await resp.json());
+
+    urlConsulta = url + "?tabla=5";
+    resp = await fetch(urlConsulta);
+    setTipoProducto(await resp.json());
     setOpcionGrafico(0);
   }
 
@@ -102,6 +111,7 @@ export default function Estadisticas() {
       }
       {
         (opcionGrafico == 0 || opcionGrafico == 3) &&
+        <>
         <div className="row">
           <div className="col-sm-12">
             {
@@ -110,6 +120,35 @@ export default function Estadisticas() {
             }
           </div>
         </div>
+        <hr/>
+      </>
+      }
+      {
+       (opcionGrafico == 0 || opcionGrafico == 4) &&
+       <>
+        <div className="row">
+          <div className="col-sm-12">
+            {
+              tipoIngreso &&
+              <Grafico1 array={tipoIngreso} coloresGraficos={coloresGraficos1} titulo='Consultas por tipo de ingreso' />
+            }
+          </div>
+        </div>
+        <hr/>
+      </>
+      }
+      {
+       (opcionGrafico == 0 || opcionGrafico == 5) &&
+       <>
+        <div className="row">
+          <div className="col-sm-12">
+            {
+              tipoProducto &&
+              <Grafico1 array={tipoProducto} coloresGraficos={coloresGraficos1} titulo='Consultas por tipo de producto' />
+            }
+          </div>
+        </div>
+      </>
       }
     </div>
   

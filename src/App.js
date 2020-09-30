@@ -110,7 +110,7 @@ const handleCargarComponentes = (e) => {
                 }
               </div>
               <div className="row">
-                <div class="col offset-sm-3">
+                <div className="col offset-sm-3">
                   <hr/>
                     <h6  className=" mt-6 text-center pt-4">Elaborado por Gestión y Producción de Recursos Tecnológicos del<br/>
                     Ministerio de Educación Publica de Costa Rica <br/>
