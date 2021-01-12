@@ -69,8 +69,8 @@ export default function Estadisticas() {
       <h1 className="header-1">Estadísticas</h1>
       <hr/>
         <div className="form-group col-sm-4 ">
-          <label className="font-len" htmlFor="id_table">Seleccionar el gráfico:&nbsp;&nbsp;</label>
-          <select className="custom-select" key="id_table" defaultValue="0" onChange={handlerSeleccion} name="id_table" ref={register({ required: true })}>
+          <label className="font-len" htmlFor="id_intervencion">Seleccionar el gráfico:&nbsp;&nbsp;</label>
+          <select className="custom-select" key="id_intervencion" defaultValue="0" onChange={handlerSeleccion} name="id_intervencion" ref={register({ required: true })}>
             {errors.id_intervencion && <p className="errors">Este campo es requerido</p>}
             {
               opcionesGraficos.map((item, i) => (
