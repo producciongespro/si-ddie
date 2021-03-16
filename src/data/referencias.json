@@ -8,10 +8,10 @@
        "consultabitacora": "https://recursos.mep.go.cr/ws_ddie/consultas_bitacora.php",
        "consultaestadistica": "https://recursos.mep.go.cr/ws_ddie/consultas_estadisticas.php",
        "consultaespecifica": "https://recursos.mep.go.cr/ws_ddie/consultas_especificas.php",
-       "guardaconsulta" : "https://recursos.mep.go.cr/ws_ddie//registro_consulta.php",
-       "actualizaconsulta" : "https://recursos.mep.go.cr/ws_ddie//consulta_generico.php",
-       "actualizar" :   "https://recursos.mep.go.cr/ws_ddie//actualiza_generico.php",
-       "registroUsuario" : "https://recursos.mep.go.cr/ws_ddie/si-ddie/registro.php",
+       "guardaconsulta" : "https://recursos.mep.go.cr/ws_ddie/registro_consulta.php",
+       "actualizaconsulta" : "https://recursos.mep.go.cr/ws_ddie/consulta_generico.php",
+       "actualizar" :   "https://recursos.mep.go.cr/ws_ddie/actualiza_generico.php",
+       "registroUsuario" : "https://recursos.mep.go.cr/ws_ddie/registro.php",
        "recuperarContrasena" : "https://recursos.mep.go.cr/ws_ddie/recupera.php",
        "login" : "https://recursos.mep.go.cr/ws_ddie/login.php"
     }
