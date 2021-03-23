@@ -46,7 +46,8 @@ class Registro extends Component {
 
 enviarDatosForm = (form, datos) => {    
      const me = this;
-    // console.log("URL servicio", referencias.registroUsuario );
+   console.log("URL servicio", referencias.registroUsuario );
+   console.log("DATOS", datos);
     
     axios.post(referencias.registroUsuario, datos)    
       .then(function (response) {
