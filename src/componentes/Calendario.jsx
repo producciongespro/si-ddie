@@ -1,66 +1,38 @@
-import React, { Component } from 'react';
-import Iframe from 'react-iframe';
-// import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation';
-// import LoadingSpinner from './spinner/LoadingSpinner';
+import React, { useState, useEffect } from 'react';
 
-// import showCall from './Muestracalendario.js'
+import SalaReuniones from './SalaReuniones';
+import {getData} from 'gespro-utils/akiri';
 
-// import referenciasJSON from '../data/referencias.json';
+import referenciasJson from '../data/referencias.json';
 
-// librerías
+const referencias = referenciasJson[0];
 
+function Calendario() {
 
-class Calendario extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false, 
-    }
+  const [data, setData] = useState(null);
+  const [dataFuncionarios, setDataFuncionarios] = useState(null);
+  var consulta = referencias.consultareserva;
+  var consultaFuncionarios = referencias.consultausuarios;
+  console.log("consulta", consulta);
+  useEffect(() => {
+ 
+    setup();
+  }, []);
+
+  const setup = async ()=> {
+    // setData ( await getData ('./reservas.json'))    
+    setData ( await getData (consulta));
+    // setDataFuncionarios ( await getData (consultaFuncionarios));
   }
 
-  showCall = ( ) => {
-    var iframe = document.getElementById('calendarEmbed');
-    var email = document.getElementById('email').value;
-    var blocker = document.getElementById('calendarEmbedBlocker');
-    if (email && /.+\@.+/.test(email)){
-      console.log("entré, correo validado");
-      
-        // iframe.src = 'https://calendar.google.com/calendar/embed?src=' + encodeURI(email);
-        iframe.url = 'https://calendar.google.com/calendar/embed?src=' + encodeURI(email);
-        blocker.style.display = 'none';
-    }
-    else {
-        alert("That doesn't look like a valid email...");
-        blocker.style.display = 'block';
-    }
-  }
-  //eventos del formulario
-  handleSubmit = (e, formData, inputs) => {
-    this.showCall();    
-  }
 
-  handleErrorSubmit = (e,formData, errorInputs) => {
-      // console.log("handleErrorSubmit",e,formData, errorInputs);
-      console.log("handleErrorSubmit", errorInputs)
-  }
-
-  resetForm = () => {
-      let formRef = this.formRef.current;
-      formRef.resetValidationState(this.state.clearInputOnReset);
-  }
-
-    render() { 
-    return ( 
-      <React.Fragment>
-       <h1 className="header-1">Calendario</h1>
-        <div id="calendarEmbedWrapper">
-            <Iframe id="calendarEmbed" 
-               url= 'https://calendar.google.com/calendar/embed?src=ddie.mep%40gmail.com&ctz=America%2FCosta_Rica" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"'
-            />
-        </div>
-      </React.Fragment>
-    )
-  }
+  return (
+   data ?
+  //  <SalaReuniones data={data} funcionarios={dataFuncionarios} />
+   <SalaReuniones data={data}/>
+   :
+   <span>Cargando datos, por favor espere....</span>
+  );
 }
  
 export default Calendario;
