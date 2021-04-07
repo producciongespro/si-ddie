@@ -6,6 +6,9 @@ const limiteMeses = meses.length;
 
 
 export default function EncabezadoCal(props) { 
+  
+  // const { usuario, setUsuario } = useContext(MyContext);
+
   const [mesActual, setMesActual] = useState(null );    
 
   useEffect(()=>{

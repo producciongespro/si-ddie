@@ -35,7 +35,7 @@ function App() {
   const [colDos, setColDos] = useState("col-sm-9");
 
 
-  const [usuario, setUsuario] = useState({correo:"", idUsuario:"",tipoUsuario:"", isAccesado: false});
+  const [usuario, setUsuario] = useState({correo:"", idUsuario:"",tipoUsuario:"",isAccesado: false});
   const value = { usuario, setUsuario };
   
   const [componente, setComponente] = useState(null);

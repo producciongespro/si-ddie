@@ -1,11 +1,11 @@
 [
     {
         "id": 1,
-        "nombre": "L"
+        "nombre": "D"
     },
     {
         "id": 2,
-        "nombre": "M"
+        "nombre": "L"
     },
     {
         "id": 3,
@@ -13,10 +13,18 @@
     },
     {
         "id": 4,
-        "nombre": "J"
+        "nombre": "M"
     },
     {
         "id": 5,
+        "nombre": "J"
+    },
+    {
+        "id": 6,
         "nombre": "V"
+    },
+    {
+        "id": 7,
+        "nombre": "S"
     }
 ]

@@ -5,7 +5,7 @@ function obtener (url, cb ) {
     return response.json();
   })
   .then((data) => {
-    console.log(data);
+    // console.log(data);
     cb(data);
   });
 }

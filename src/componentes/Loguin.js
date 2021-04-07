@@ -25,11 +25,11 @@ export default function Loguin() {
       correo: data.correo,
       idUsuario: data.idUsuario,
       tipoUsuario: data.tipoUsuario,
+      fecha: "",
       isAccesado : true};
       // console.log("usuario LOGUEO", usuario);
       // console.log("usuario nuevo", datosUsuario);
       setUsuario(datosUsuario);
-
   }
 
   const onSubmit = (data, e) => {
