@@ -37,8 +37,17 @@ export default function EncabezadoCal(props) {
       >
         ◀️
       </div>
-      <div className="col-sm-8 text-center">
-        <h2> {mesActual && mesActual.titulo} </h2>
+
+      <div className="col-sm-3 text-left">
+      <button
+        // onClick={handlePasar}
+        id="btnReservado"
+        role="button">
+         👁️ Reservado
+      </button>
+      </div>
+      <div className="col-sm-5 text-left">
+        <h2 className="text-center"> {mesActual && mesActual.titulo} </h2>
       </div>
       <div
         onClick={handlePasarMeses}

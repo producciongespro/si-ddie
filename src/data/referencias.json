@@ -6,6 +6,7 @@
        "consultaeliminados":   "https://recursos.mep.go.cr/webservices/si-ddie/consultas_eliminados.php",
        "consultageneral":      "https://recursos.mep.go.cr/webservices/si-ddie/consultas_generales.php",
        "consultareserva":      "https://recursos.mep.go.cr/webservices/si-ddie/consulta_reserva.php",
+       "consultafechareserva": "https://recursos.mep.go.cr/webservices/si-ddie/consulta_fecha_reserva.php",
        "agregareserva":        "https://recursos.mep.go.cr/webservices/si-ddie/agrega_reserva.php",
        "consultausuarios":     "https://recursos.mep.go.cr/webservices/si-ddie/consulta_usuarios.php",
        "consultaestadistica":  "https://recursos.mep.go.cr/webservices/si-ddie/consultas_estadisticas.php",

@@ -4,7 +4,6 @@ import 'alertifyjs/build/css/alertify.min.css';
 import 'alertifyjs/build/css/themes/default.min.css';
 
 import Calendario from "./Calendario/Calendario";
-import VerSemana from './VerSemana';
 import GModal from "./Modal/GModal";
 import Tabla from './Tabla/Tabla';
 import obtener from '../modulos/obtener';
@@ -28,7 +27,8 @@ var selectHoraInicio = null,
   ocupada = false,
   mensaje = "",
   datos = null,
-  horas = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"];
+  horas = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"],
+  horasVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
 
 const referencias = referenciasJson[0];
 
@@ -45,7 +45,7 @@ const confTabla = {
   ver: false,
   eliminar: false,
   encabezado: ["Inicia", "Finaliza", "Responsable"], //Títulos de tabla (Primera fila encabezado)
-  campos: ["inicio", "fin", "funcionario"]  // Nombre de los cmapos del json
+  campos: ["horainicio", "horafin", "funcionario"]  // Nombre de los cmapos del json
 
 };
 
@@ -86,11 +86,21 @@ export default function SalaReuniones(props) {
 
 
   const obtenerFecha = (fecha) => {
-    // console.log("data", props.data);
+    // console.log("data", data);
     fechaseleccionada = fecha;
     filtrofecha = filtrarKey(data, "fecha", fecha.id);
+    for (let index = 0; index < filtrofecha.length; index++) {
+      // eliminar milisegundos del campo alias de 12 horas, tipo time  
+      const element1 = filtrofecha[index].horainicio;
+      const element2 = filtrofecha[index].horafin;
+      let cadena1 = element1.slice(0, 5);
+      let cadena2 = element2.slice(0, 5);
+      filtrofecha[index].horainicio = cadena1;
+      filtrofecha[index].horafin = cadena2;        
+    }
+    // console.log("filtrado", filtrofecha);
+
     setFiltrados(filtrofecha);
-    // console.log("Filtrofecha", filtrofecha);
     setCargado(true);
     handleShow();
     reserva = {
@@ -159,7 +169,17 @@ export default function SalaReuniones(props) {
   const enviarDatos = (reserva) => {
     let url = referencias.agregareserva;
     // console.log("data reserva", reserva);
+    // reserva
     // console.log("url", url);
+    let hora= reserva.inicio;
+    let indice = horas.indexOf(hora);
+    reserva.inicio = horasVC[indice];
+    // console.log("De 24 inicio:",horasVC[indice]);
+    hora= reserva.fin;
+    indice = horas.indexOf(hora);
+    reserva.fin = horasVC[indice];
+    // console.log("De 24 final:",horasVC[indice]);
+    
     sendData(url, reserva)
       .then(respuesta => {
         // console.log(respuesta);
@@ -182,10 +202,19 @@ export default function SalaReuniones(props) {
   }
 
   const actualizaDatos = () => {
-    obtener(consulta, function (dat) {
-      setData(dat);
-      datos = dat;
-      filtrofecha = filtrarKey(datos, "fecha", fechaseleccionada.id);
+    obtener(consulta, function (datas) {
+      setData(datas);
+      filtrofecha = filtrarKey(datas, "fecha", fechaseleccionada.id);
+      for (let index = 0; index < filtrofecha.length; index++) {
+        // eliminar milisegundos del campo time
+        const element1 = filtrofecha[index].horainicio;
+        const element2 = filtrofecha[index].horafin;
+        let cadena1 = element1.slice(0, 5);
+        let cadena2 = element2.slice(0, 5);
+        filtrofecha[index].horainicio = cadena1;
+        filtrofecha[index].horafin = cadena2;        
+      }
+      // console.log("filtrofecha", filtrofecha);
       setFiltrados(filtrofecha);
       setCargado(true);
       if (refHoraInicio.current) {
@@ -201,7 +230,7 @@ export default function SalaReuniones(props) {
   }
 
   const handleObtenerInicio = (e) => {
-    reserva.inicio = e.target.value
+    reserva.inicio = e.target.value;
   };
 
   const handleObtenerfin = (e) => {
@@ -272,12 +301,7 @@ export default function SalaReuniones(props) {
 
   return (
     <>
-    <VerSemana
-    obtenerIdMes={obtenerIdMes}
-    obtenerFecha={obtenerFecha}
-    />
-    
-        <Calendario
+     <Calendario
           obtenerIdMes={obtenerIdMes}
           obtenerFecha={obtenerFecha}
           conf={confCalendario}

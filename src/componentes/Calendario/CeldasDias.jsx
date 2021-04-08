@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState,useEffect} from "react";
 import dias from "./dias.json";
 import meses from "./meses.json";
+import referenciasJson from '../../data/referencias.json';
+
+import obtener from '../../modulos/obtener';
+
 import { filtrarId } from "gespro-utils/filtrar_array";
 import "./celda_dias.css";
 
+const referencias = referenciasJson[0];
+
 export default function CeldasDias(props) {
+  const [reservado,setReservado] = useState(false);
+  const [data, setData] = useState(null);
+
   let mesMontado = filtrarId(meses, props.idMes);
+  console.log("mesMontado", mesMontado);
   var consecutivo = [];
+  var datada= "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur doloribus dolor iusto explicabo, velit dolorem fugit natus quod amet, sunt nam, et reiciendis ipsa vero deserunt debitis. Veniam, esse sequi.";
   const claseTamano = "cal-" + props.conf.t;
+
+  var consulta = referencias.consultafechareserva + "?fecha='2021-04-19'";
+console.log("consulta", consulta);
+  useEffect(() => {
+    obtener(consulta, function (datos) {
+      setData(datos);
+      console.log("Datos por fecha", datos);
+    })
+  }, []);
+
 
   const handleSelecFecha = (e) => {
     let celda = e.target;
@@ -38,7 +59,14 @@ export default function CeldasDias(props) {
     //        console.log(consecutivo);
   };
 
+  const dataDia = (fecha) => {
+    console.log("Fecha", fecha);
+
+    //  let tmpCelda = ( )
+     }
+
   const jsxCelda = (item, i) => {
+    console.log("item Celdas", item);
     let claseCelda = null;
     if (props.hoy.dia === item && props.hoy.mes === parseInt(mesMontado.id)) {
       claseCelda = "celda-hoy";
@@ -60,6 +88,7 @@ export default function CeldasDias(props) {
         ref={props.agregarRefs}
       >
         {item}
+        {reservado && dataDia(mesMontado.renderMes + item)}
       </div>
     );
 
@@ -77,6 +106,7 @@ export default function CeldasDias(props) {
         ref={props.agregarRefs}
       >
         {item}
+        {reservado && datada}
       </div>
     );
 

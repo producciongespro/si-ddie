@@ -1,7 +1,7 @@
 
 .celda {
     width:13%;
-    height: 2.1em;         
+    height: auto;         
     margin-right: 1%;    
     text-align: center;
     font-weight: bold;
@@ -42,7 +42,7 @@ Cambia la celda cuando es la fecha de hoy, colocarle un subrayado
 
 .celda-des {
     width:13%;
-    height: 3em;     
+    height: auto;     
     text-align: center;
     margin-right: 1%;
     font-size: 1.2em;
