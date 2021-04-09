@@ -40,7 +40,7 @@ export default function EncabezadoCal(props) {
 
       <div className="col-sm-3 text-left">
       <button
-        // onClick={handlePasar}
+        onClick={props.vistaCalendario}
         id="btnReservado"
         role="button">
          👁️ Reservado

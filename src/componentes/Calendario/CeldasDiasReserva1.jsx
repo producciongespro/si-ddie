@@ -1,20 +1,70 @@
 import React, { useState,useEffect} from "react";
 import dias from "./dias.json";
 import meses from "./meses.json";
+import referenciasJson from '../../data/referencias.json';
+
+import obtener from '../../modulos/obtener';
 
 import { filtrarId } from "gespro-utils/filtrar_array";
 import "./celda_dias.css";
 
+const referencias = referenciasJson[0];
+
 export default function CeldasDias(props) {
+  // const [reservado,setReservado] = useState(true);
+  const [data, setData] = useState(null);
 
   let mesMontado = filtrarId(meses, props.idMes);
-  // console.log("mesMontado", mesMontado);
-  var consecutivo = [];
-  // var datada= "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur doloribus dolor iusto explicabo, velit dolorem fugit natus quod amet, sunt nam, et reiciendis ipsa vero deserunt debitis. Veniam, esse sequi.";
+  console.log("mesMontado", mesMontado);
+  var consecutivo = [],
+  var arregloEventos = [];
   const claseTamano = "cal-" + props.conf.t;
  
+  useEffect(() => {
+    let mes = props.idMes;
+    (parseInt(mes) < 10) && (mes = "0" + mes)
+
+    // console.log("agregar cero", mes)
+    // :console.log("NO necesita cero", mes);
+    // let mes= mesMontado.renderMes
+    console.log("mes", mes);
+     var consulta = referencias.consultafechareserva + "?mes="+ mes;
+
+    //  let fecha = mesMontado.renderMes + item;
+      console.log("consulta", consulta);
+      obtener(consulta, function (datos) {
+        setData(datos);
+         console.log("Datos por fecha", datos);
+        // setCargado(true);
+        var arregloDiario =[];
+        var elementFechaAnt = null;
+        var j = 0;
+        for (let index = 0; index < datos.length; index++) {
+          const element = datos[index];
+          // const elementFecha = datos[index].fecha;
+          if(index === 0) {
+            arregloDiario[j]= element;
+            elementFechaAnt = datos[index].fecha
+            j++;
+          }
+          else           
+            if(elementFechaAnt === datos[index].fecha) {
+              arregloDiario[j]= element;
+              j++;
+            }
+            else {
+              arregloEventos[index] = arregloDiario
+              elementFechaAnt= datos[index].fecha;
+              arregloDiario= [];
+              j=0;
+            }
+        }
+         console.log("arregloEventos", arregloEventos);
+      })
+    }, [mesMontado]);
+
   const handleSelecFecha = (e) => {
-    let celda = e.target;
+    let celda = e.currentTarget;
     const seleccion= {
       "id": celda.id,
       "dia": celda.dataset.dia,
@@ -42,7 +92,27 @@ export default function CeldasDias(props) {
     //        console.log(consecutivo);
   };
 
+  const dataDia = (numDia,dia) => {
+    //  console.log("Fecha", dia);
+    // var consulta = referencias.consultafechareserva + "?fecha="+ dia;
+    // console.log("consulta", consulta);
+    //     obtener(consulta, function (datos) {
+    //       setData(datos);
+    //       console.log("Datos por fecha", datos);
+    //     });
+    
+      let  datito = (
+        <>
+          <p>{numDia}</p>
+        <p>Hola</p>
+        </>
+      )
+      return datito
+     }
+
+
   const jsxCelda = (item, i) => {
+    // cargaEventos(item)
     // console.log("item Celdas", item);
     let claseCelda = null;
     if (props.hoy.dia === item && props.hoy.mes === parseInt(mesMontado.id)) {
@@ -64,7 +134,7 @@ export default function CeldasDias(props) {
         role="button"
         ref={props.agregarRefs}
       >
-        {item}
+        {dataDia(item, mesMontado.renderMes + item)}
       </div>
     );
 
@@ -81,7 +151,7 @@ export default function CeldasDias(props) {
         role="button"
         ref={props.agregarRefs}
       >
-        {item}
+        {dataDia(item, mesMontado.renderMes + "0" + item)}
       </div>
     );
 
