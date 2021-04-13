@@ -46,7 +46,6 @@ const confTabla = {
   eliminar: false,
   encabezado: ["Inicia", "Finaliza", "Responsable"], //Títulos de tabla (Primera fila encabezado)
   campos: ["horainicio", "horafin", "funcionario"]  // Nombre de los cmapos del json
-
 };
 
 //Objeto reserva con fecha, hora de inicio, etc para ser almacenados en BD
