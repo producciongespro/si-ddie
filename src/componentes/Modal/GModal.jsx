@@ -7,6 +7,7 @@ const GModal = (props) => {
     <Modal 
     show={props.show} 
     onHide={props.handleClose}
+    size="lg"
     >
       <Modal.Header closeButton>
         <Modal.Title> {props.title} </Modal.Title>

@@ -1,11 +1,11 @@
 import React from "react";
 
-let claseBoostrap = "table ";
+let claseBoostrap = "table";
 
 export default function Tabla(props) {
   const conf = props.conf;
-  conf.oscura && (claseBoostrap = claseBoostrap + " table-dark ");
-  conf.alterna && (claseBoostrap = claseBoostrap + " table-striped ");
+  conf.oscura && (claseBoostrap = claseBoostrap + " table-responsive-sm table-dark tabla-reserva ");
+  conf.alterna && (claseBoostrap = claseBoostrap + " table-responsive-sm table-striped tabla-reserva");
   //console.log(claseBoostrap);
 
   const handleVerDetalles = (i) => {
@@ -15,10 +15,11 @@ export default function Tabla(props) {
 
   const handleObtenerId = (e) => {
     handleObtenerId &&
-    props.obtenerId(e.target.id);
+    props.eliminarId(e.target.id);
   };
 
   return (
+    <div>
     <table className={claseBoostrap}>
       <thead>
         <tr>
@@ -72,5 +73,6 @@ export default function Tabla(props) {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }

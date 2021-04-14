@@ -11,6 +11,9 @@
        "guardaconsulta" : "http://localhost/webservices/si-ddie/registro_consulta.php",
        "actualizaconsulta" : "http://localhost/webservices/si-ddie/consulta_generico.php",
        "actualizar" :   "http://localhost/webservices/si-ddie/actualiza_generico.php",
+       "consultareserva":      "http://localhost/webservices/si-ddie/consulta_reserva.php",
+       "consultafechareserva": "http://localhost/webservices/si-ddie/consulta_fecha_reserva.php",
+       "agregareserva":        "http://localhost/webservices/si-ddie/agrega_reserva.php",
        "registroUsuario" : "http://localhost/webservices/si-ddie/registro.php",
        "recuperarContrasena" : "http://localhost/webservices/si-ddie/recupera.php",
        "login" : "http://localhost/webservices/si-ddie/login.php"

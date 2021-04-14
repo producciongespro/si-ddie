@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-
-import MyContext from '../modulos/MyContext';
-
+import React, { useState, useEffect, useRef } from "react";
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.min.css';
 import 'alertifyjs/build/css/themes/default.min.css';
@@ -46,7 +43,7 @@ const confTabla = {
   oscura: false,
   indice: false,
   ver: false,
-  eliminar: true,
+  eliminar: false,
   encabezado: ["Inicia", "Finaliza", "Responsable"], //Títulos de tabla (Primera fila encabezado)
   campos: ["horainicio", "horafin", "funcionario"]  // Nombre de los cmapos del json
 };
@@ -58,12 +55,6 @@ var reserva = null;
 const obtenerIdMes = () => { };
 
 export default function SalaReuniones(props) {
-  
-  const { usuario, setUsuario } = useContext(MyContext);
-
-  console.log("usuario",usuario.idUsuario);
-  console.log("correo",usuario.correo);
-
   const [show, setShow] = useState(false);
   const [activaHoraFinal, setActivaHoraFinal] = useState(false);
   const [data, setData] = useState(null);
@@ -104,8 +95,10 @@ export default function SalaReuniones(props) {
       let cadena1 = element1.slice(0, 5);
       let cadena2 = element2.slice(0, 5);
       filtrofecha[index].horainicio = cadena1;
-      filtrofecha[index].horafin = cadena2;
+      filtrofecha[index].horafin = cadena2;        
     }
+    
+    console.log("filtrado", filtrofecha);
 
     setFiltrados(filtrofecha);
     setCargado(true);
@@ -119,37 +112,35 @@ export default function SalaReuniones(props) {
   };
 
   const handleValidarReserva = () => {
-      // toma la posición en horas del valor de reserva inicio y fin
-      // para trabajar con la posición y no con el valor
-    const indiceInicio = horas.indexOf(reserva.inicio),
-          indiceFin = horas.indexOf(reserva.fin);
-
+    const limite = filtrados.length;
     ocupada = false;
     mensaje = "";
-    // console.log("reserva", reserva);
-    // console.log("filtrado", filtrados);
+    console.log("reserva", reserva);
+    for (let index = 0; index < limite; index++) {
 
-    // revisa que el hora final no sea menor que el inicio
+      //1- Validación si hora de inicio o la hora de fin de reserva del día están ya ocupados
+      if (
+        reserva.inicio === filtrados[index].inicio ||
+        reserva.fin === filtrados[index].fin
+      ) {
+        ocupada = true;
+        mensaje = "La sala está ocupada en ese horario ☠️"
+      }
+
+    }
+
+    let indiceInicio = horas.indexOf(reserva.inicio);
+    let indiceFin = horas.indexOf(reserva.fin);
     if (indiceInicio >= indiceFin) {
       ocupada = true;
       mensaje = "Revisar los rangos, porque no son correctos";
     }
     else {
-      const limite = filtrados.length;
+      let array = filtrados;
+      const limite = array.length;
       for (let index = 0; index < limite; index++) {
-        const elementI = horas.indexOf(filtrados[index].horainicio),
-              elementF = horas.indexOf(filtrados[index].horafin);
-
-        if (reserva.inicio === filtrados[index].horainicio || reserva.fin === filtrados[index].horafin) {
-          ocupada = true;
-          mensaje = "La sala está ocupada en ese horario ☠️";
-          break;
-        }
-        // console.log("indice inicio reserva: ", indiceInicio);
-        // console.log("indice fin reserva: ", indiceFin);
-        // console.log("indice inicio fitrados: ", elementI);
-        // console.log("indice fin filtrados: ", elementF);
-
+        let elementI = horas.indexOf(array[index].inicio);
+        let elementF = horas.indexOf(array[index].fin);
         if (indiceInicio <= elementI && indiceFin <= elementI) {
           ocupada = false;
           // console.log("correcto antes", ocupada);
@@ -167,9 +158,8 @@ export default function SalaReuniones(props) {
           };
       };
     };
-
     if (ocupada) {
-      alertify.alert(mensaje);
+      alert(mensaje);
       //TODO: Utilizar alerrtify en lugar de alert
     } else {
       enviarDatos(reserva)
@@ -189,7 +179,7 @@ export default function SalaReuniones(props) {
     indice = horas.indexOf(hora);
     reserva.fin = horasVC[indice];
     // console.log("De 24 final:",horasVC[indice]);
-
+    
     sendData(url, reserva)
       .then(respuesta => {
         // console.log(respuesta);
@@ -222,7 +212,7 @@ export default function SalaReuniones(props) {
         let cadena1 = element1.slice(0, 5);
         let cadena2 = element2.slice(0, 5);
         filtrofecha[index].horainicio = cadena1;
-        filtrofecha[index].horafin = cadena2;
+        filtrofecha[index].horafin = cadena2;        
       }
       // console.log("filtrofecha", filtrofecha);
       setFiltrados(filtrofecha);
@@ -245,33 +235,6 @@ export default function SalaReuniones(props) {
 
   const handleObtenerfin = (e) => {
     reserva.fin = e.target.value;
-  };
-
-  const handleEliminarId = (idBorrar) => {
-    console.log(idBorrar);
-    // let url = referencias.agregareserva;
-    // regEliminar = {
-    //   id = id
-    // }
-    // sendData(url, reserva)
-    // .then(respuesta => {
-    //   // console.log(respuesta);
-    //   if (!respuesta.error) {
-    //     alertify.alert('Aviso', 'El registro ha sido agregado exitosamente');
-    //     setCargado(false);
-    //     actualizaDatos();
-    //   }
-    //   else {
-    //     let msjServer;
-    //     if (respuesta.error) {
-    //       msjServer = respuesta.msj;
-    //     }
-    //     else {
-    //       msjServer = "Problemas de conexión con la base de datos. Error 405"
-    //     }
-    //     alertify.alert("Error", msjServer);
-    //   }
-    // })
   };
 
   const handleObtenerFuncionario = (e) => {
@@ -336,17 +299,15 @@ export default function SalaReuniones(props) {
     </>
   );
 
-
   return (
     <>
-      <Calendario
-        obtenerIdMes={obtenerIdMes}
-        obtenerFecha={obtenerFecha}
-        conf={confCalendario}
-      />
+     <Calendario
+          obtenerIdMes={obtenerIdMes}
+          obtenerFecha={obtenerFecha}
+          conf={confCalendario}
+        />
       <GModal
         show={show}
-        // size="lg"
         handleClose={handleClose}
         title="Reserva de sala"
         footer=""
@@ -354,7 +315,7 @@ export default function SalaReuniones(props) {
         <div className="row">
           <div className="col-sm-12">
             {cargado
-              ? <Tabla conf={confTabla} array={filtrados} eliminarId = {handleEliminarId} />
+              ? <Tabla conf={confTabla} array={filtrados} />
               : <p>Actualizando datos </p>
             }
           </div>

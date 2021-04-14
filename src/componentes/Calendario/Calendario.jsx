@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CeldaDias from "./CeldasDias";
-import CeldaDiasReserva from "./CeldasDiasReserva";
+// import CeldaDiasReserva from "./CeldasDiasReserva";
 import EncabezadoCal from "./EncabezadoCal";
 import {fecha} from 'gespro-utils/fecha';
 
@@ -37,10 +37,7 @@ export default function Calendario(props) {
   return (
     <>
       <EncabezadoCal obtenerMes={obtenerMes} hoy={hoy} vistaCalendario={handlerVista}/>
-      { vistaReserva 
-        ?<CeldaDiasReserva obtenerFecha={props.obtenerFecha} conf={props.conf} hoy={hoy} idMes={idMes} />
-        :<CeldaDias obtenerFecha={props.obtenerFecha} conf={props.conf} hoy={hoy} idMes={idMes} />
-      }
+      <CeldaDias obtenerFecha={props.obtenerFecha} conf={props.conf} hoy={hoy} idMes={idMes} />
     </>
   );
 }

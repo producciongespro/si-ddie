@@ -553,3 +553,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
     font-size: 0.9rem!important;
   }
 }
+
+@media only screen and (max-width: 400px) 
+{
+  .tabla-reserva{
+    font-size: 0.7rem!important;
+  }
+}
+
+@media only screen and (max-width: 365px) 
+{
+  .tabla-reserva{
+    font-size: 0.7rem!important;
+  }
+  .table.tabla-reserva td, .table.tabla-reserva th {
+    padding: 0.1rem;
+  }
+}
