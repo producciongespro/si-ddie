@@ -10,6 +10,7 @@ import Calendario from "./Calendario/Calendario";
 import GModal from "./Modal/GModal";
 import Tabla from './Tabla/Tabla';
 import obtener from '../modulos/obtener';
+import enviar from '../modulos/enviar';
 
 import { filtrarKey } from "gespro-utils/filtrar_array";
 import { sendData } from 'gespro-utils/akiri';
@@ -115,6 +116,7 @@ export default function SalaReuniones(props) {
       inicio: "",
       fin: "",
       funcionario: "",
+      idUsuario : usuario.idUsuario
     };
   };
 
@@ -167,9 +169,12 @@ export default function SalaReuniones(props) {
           };
       };
     };
-
+    if (reserva.inicio === "" || reserva.fin === "" || reserva.funcionario === "")    {
+      ocupada = true;
+      mensaje = "No hay datos para enviar, o está incompleto"
+    }
     if (ocupada) {
-      alertify.alert(mensaje);
+      alertify.alert("⚠ Aviso", mensaje);
       //TODO: Utilizar alerrtify en lugar de alert
     } else {
       enviarDatos(reserva)
@@ -178,7 +183,7 @@ export default function SalaReuniones(props) {
 
   const enviarDatos = (reserva) => {
     let url = referencias.agregareserva;
-    // console.log("data reserva", reserva);
+     console.log("data reserva", reserva);
     // reserva
     // console.log("url", url);
     let hora = reserva.inicio;
@@ -188,6 +193,7 @@ export default function SalaReuniones(props) {
     hora = reserva.fin;
     indice = horas.indexOf(hora);
     reserva.fin = horasVC[indice];
+    
     // console.log("De 24 final:",horasVC[indice]);
 
     sendData(url, reserva)
@@ -213,6 +219,7 @@ export default function SalaReuniones(props) {
 
   const actualizaDatos = () => {
     obtener(consulta, function (datas) {
+      console.log("datas", datas, "fechaseleccionada", fechaseleccionada.id);
       setData(datas);
       filtrofecha = filtrarKey(datas, "fecha", fechaseleccionada.id);
       for (let index = 0; index < filtrofecha.length; index++) {
@@ -249,29 +256,35 @@ export default function SalaReuniones(props) {
 
   const handleEliminarId = (idBorrar) => {
     console.log(idBorrar);
-    // let url = referencias.agregareserva;
-    // regEliminar = {
-    //   id = id
-    // }
-    // sendData(url, reserva)
-    // .then(respuesta => {
-    //   // console.log(respuesta);
-    //   if (!respuesta.error) {
-    //     alertify.alert('Aviso', 'El registro ha sido agregado exitosamente');
-    //     setCargado(false);
-    //     actualizaDatos();
-    //   }
-    //   else {
-    //     let msjServer;
-    //     if (respuesta.error) {
-    //       msjServer = respuesta.msj;
-    //     }
-    //     else {
-    //       msjServer = "Problemas de conexión con la base de datos. Error 405"
-    //     }
-    //     alertify.alert("Error", msjServer);
-    //   }
-    // })
+     let url = referencias.cambiaBorradoReserva;
+     let regEliminar = {
+       id_usuario : usuario.idUsuario,
+       id_registro : idBorrar,
+       valor_borrado : 1
+    }
+    console.log("registro", regEliminar);
+    console.log("url", url);
+
+    sendData(url, regEliminar)
+    .then(respuesta => {
+       console.log("respuesta.error",respuesta.error);
+      if (!respuesta.error) {
+        console.log("entré if");
+        alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
+        setCargado(false);
+        actualizaDatos();
+      }
+      else {
+        let msjServer;
+        if (respuesta.error) {
+          msjServer = respuesta.msj;
+        }
+        else {
+          msjServer = "Problemas de conexión con la base de datos. Error 405"
+        }
+        alertify.alert("Error", msjServer);
+      }
+    })
   };
 
   const handleObtenerFuncionario = (e) => {
@@ -290,7 +303,7 @@ export default function SalaReuniones(props) {
             defaultValue=""
           >
             <option value="" disabled>
-              Selecciona la fecha inicial
+              Selecciona la hora inicial
         </option>
             {horasInicio.map((item, i) => (
               <option key={"inicio" + i}
@@ -319,7 +332,7 @@ export default function SalaReuniones(props) {
             defaultValue=""
           >
             <option value="" disabled>
-              {" "}Selecciona la fecha final{" "}
+              {" "}Selecciona la hora final{" "}
             </option>
             {horasFin.map((item, i) => (
               <option
@@ -370,7 +383,7 @@ export default function SalaReuniones(props) {
 
             <input
               className="form-control"
-              placeholder="Nombre del funcionario"
+              placeholder="Correo del funcionario"
               onChange={handleObtenerFuncionario}
               ref={refFuncionario}
               type="text"
