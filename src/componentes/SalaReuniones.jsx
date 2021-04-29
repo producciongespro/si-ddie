@@ -6,11 +6,13 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.min.css';
 import 'alertifyjs/build/css/themes/default.min.css';
 
-import Calendario from "./Calendario/Calendario";
+import ContCalendario from "./Calendario/ContCalendario";
+// import ContTabla from './Tabla/ContTabla';
+
 import GModal from "./Modal/GModal";
 import Tabla from './Tabla/Tabla';
 import obtener from '../modulos/obtener';
-import enviar from '../modulos/enviar';
+// import enviar from '../modulos/enviar';
 
 import { filtrarKey } from "gespro-utils/filtrar_array";
 import { sendData } from 'gespro-utils/akiri';
@@ -30,17 +32,17 @@ var selectHoraInicio = null,
   filtrofecha = null,
   ocupada = false,
   mensaje = "",
-  datos = null,
+  arrayDatos = null,
   horas = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"],
   horasVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
 
 const referencias = referenciasJson[0];
 
 
-//Configuraciones de calendario y de tabla
-const confCalendario = {
-  t: "m",
-};
+// //Configuraciones de calendario y de tabla
+// const confCalendario = {
+//   t: "m",
+// };
 
 const confTabla = {
   alterna: true,
@@ -56,16 +58,17 @@ const confTabla = {
 var reserva = null;
 
 
-const obtenerIdMes = () => { };
+// const obtenerIdMes = () => { };
 
 export default function SalaReuniones(props) {
-  
+
   const { usuario, setUsuario } = useContext(MyContext);
 
-  console.log("usuario",usuario.idUsuario);
-  console.log("correo",usuario.correo);
+  // console.log("usuario", usuario.idUsuario);
+  // console.log("correo", usuario.correo);
 
   const [show, setShow] = useState(false);
+  const [verMensual, setVerMensual] = useState(false);
   const [activaHoraFinal, setActivaHoraFinal] = useState(false);
   const [data, setData] = useState(null);
   const [cargado, setCargado] = useState(false);
@@ -89,7 +92,9 @@ export default function SalaReuniones(props) {
   useEffect(() => {
     obtener(consulta, function (datos) {
       setData(datos);
+      arrayDatos = datos;
       setCargado(true);
+      console.log("data", arrayDatos);
     })
   }, []);
 
@@ -116,15 +121,15 @@ export default function SalaReuniones(props) {
       inicio: "",
       fin: "",
       funcionario: "",
-      idUsuario : usuario.idUsuario
+      idUsuario: usuario.idUsuario
     };
   };
 
   const handleValidarReserva = () => {
-      // toma la posición en horas del valor de reserva inicio y fin
-      // para trabajar con la posición y no con el valor
+    // toma la posición en horas del valor de reserva inicio y fin
+    // para trabajar con la posición y no con el valor
     const indiceInicio = horas.indexOf(reserva.inicio),
-          indiceFin = horas.indexOf(reserva.fin);
+      indiceFin = horas.indexOf(reserva.fin);
 
     ocupada = false;
     mensaje = "";
@@ -140,7 +145,7 @@ export default function SalaReuniones(props) {
       const limite = filtrados.length;
       for (let index = 0; index < limite; index++) {
         const elementI = horas.indexOf(filtrados[index].horainicio),
-              elementF = horas.indexOf(filtrados[index].horafin);
+          elementF = horas.indexOf(filtrados[index].horafin);
 
         if (reserva.inicio === filtrados[index].horainicio || reserva.fin === filtrados[index].horafin) {
           ocupada = true;
@@ -169,7 +174,7 @@ export default function SalaReuniones(props) {
           };
       };
     };
-    if (reserva.inicio === "" || reserva.fin === "" || reserva.funcionario === "")    {
+    if (reserva.inicio === "" || reserva.fin === "" || reserva.funcionario === "") {
       ocupada = true;
       mensaje = "No hay datos para enviar, o está incompleto"
     }
@@ -183,7 +188,7 @@ export default function SalaReuniones(props) {
 
   const enviarDatos = (reserva) => {
     let url = referencias.agregareserva;
-     console.log("data reserva", reserva);
+    console.log("data reserva", reserva);
     // reserva
     // console.log("url", url);
     let hora = reserva.inicio;
@@ -193,7 +198,7 @@ export default function SalaReuniones(props) {
     hora = reserva.fin;
     indice = horas.indexOf(hora);
     reserva.fin = horasVC[indice];
-    
+
     // console.log("De 24 final:",horasVC[indice]);
 
     sendData(url, reserva)
@@ -254,37 +259,41 @@ export default function SalaReuniones(props) {
     reserva.fin = e.target.value;
   };
 
+  const handlerVistaMensual = (e) => {
+    setVerMensual(!verMensual);
+  }
+
   const handleEliminarId = (idBorrar) => {
     console.log(idBorrar);
-     let url = referencias.cambiaBorradoReserva;
-     let regEliminar = {
-       id_usuario : usuario.idUsuario,
-       id_registro : idBorrar,
-       valor_borrado : 1
+    let url = referencias.cambiaBorradoReserva;
+    let regEliminar = {
+      id_usuario: usuario.idUsuario,
+      id_registro: idBorrar,
+      valor_borrado: 1
     }
     console.log("registro", regEliminar);
     console.log("url", url);
 
     sendData(url, regEliminar)
-    .then(respuesta => {
-       console.log("respuesta.error",respuesta.error);
-      if (!respuesta.error) {
-        console.log("entré if");
-        alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
-        setCargado(false);
-        actualizaDatos();
-      }
-      else {
-        let msjServer;
-        if (respuesta.error) {
-          msjServer = respuesta.msj;
+      .then(respuesta => {
+        console.log("respuesta.error", respuesta.error);
+        if (!respuesta.error) {
+          console.log("entré if");
+          alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
+          setCargado(false);
+          actualizaDatos();
         }
         else {
-          msjServer = "Problemas de conexión con la base de datos. Error 405"
+          let msjServer;
+          if (respuesta.error) {
+            msjServer = respuesta.msj;
+          }
+          else {
+            msjServer = "Problemas de conexión con la base de datos. Error 405"
+          }
+          alertify.alert("Error", msjServer);
         }
-        alertify.alert("Error", msjServer);
-      }
-    })
+      })
   };
 
   const handleObtenerFuncionario = (e) => {
@@ -349,25 +358,13 @@ export default function SalaReuniones(props) {
     </>
   );
 
-
-  return (
-    <>
-      <Calendario
-        obtenerIdMes={obtenerIdMes}
-        obtenerFecha={obtenerFecha}
-        conf={confCalendario}
-      />
-      <GModal
-        show={show}
-        // size="lg"
-        handleClose={handleClose}
-        title="Reserva de sala"
-        footer=""
-      >
+  const JsxFormModal = () => {
+    return (
+      <>
         <div className="row">
           <div className="col-sm-12">
             {cargado
-              ? <Tabla conf={confTabla} array={filtrados} eliminarId = {handleEliminarId} />
+              ? <Tabla conf={confTabla} array={filtrados} eliminarId={handleEliminarId} />
               : <p>Actualizando datos </p>
             }
           </div>
@@ -400,6 +397,26 @@ export default function SalaReuniones(props) {
             </button>
           </div>
         </div>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <ContCalendario
+             obtenerIdMes={props.obtenerIdMes}
+             volverCalendario={props.volverCalendario}
+             obtenerFecha = {obtenerFecha}
+        />
+
+      <GModal
+        show={show}
+        // size="lg"
+        handleClose={handleClose}
+        title="Reserva de sala"
+        footer=""
+      >
+        {JsxFormModal()}
       </GModal>
     </>
   );

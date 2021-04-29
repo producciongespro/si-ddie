@@ -10,7 +10,7 @@ import Bitacora from './componentes/Bitacora';
 import Estadisticas from './componentes/Estadisticas';
 import Produccion from './componentes/Produccion.js';
 import ProduccionVer from './componentes/ProduccionVer.js';
-import Calendario  from './componentes/Calendario';
+import Reservaciones  from './componentes/Reservaciones';
 import Acerca from './componentes/Acerca';
 import MenuBotones from './componentes/MenuBotones';
 import Menu from './componentes/Menu';
@@ -21,10 +21,11 @@ import useCurrentWitdh from './modulos/cambiancho';
 
 // hojas de estilos
 import "./css/master.css";
-import  'pretty-checkbox/src/pretty-checkbox.scss';
+// import  'pretty-checkbox/src/pretty-checkbox.scss';
+// import  'pretty-checkbox/src/text.css';
 
 
-const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion/>,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Calendario />, <Acerca/>];
+const componentes = [<Consultas/>,<ConsultasVer/>,<Basededatos />,<BasededatosVer/>,<Produccion/>,<ProduccionVer />,<Estadisticas />,<Bitacora />,<Reservaciones />, <Acerca/>];
 
 
 function App() {

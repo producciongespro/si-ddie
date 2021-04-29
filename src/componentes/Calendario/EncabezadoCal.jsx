@@ -37,15 +37,6 @@ export default function EncabezadoCal(props) {
       >
         ◀️
       </div>
-
-      <div className="col-sm-3 text-left">
-      <button
-        // onClick={props.vistaCalendario}
-        id="btnReservado"
-        role="button">
-         👁️ Semanal/Mes
-      </button>
-      </div>
       <div className="col-sm-8 text-left">
         <h2 className="text-center"> {mesActual && mesActual.titulo} </h2>
       </div>

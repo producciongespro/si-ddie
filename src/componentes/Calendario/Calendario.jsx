@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import CeldaDias from "./CeldasDias";
-// import CeldaDiasReserva from "./CeldasDiasReserva";
 import EncabezadoCal from "./EncabezadoCal";
 import {fecha} from 'gespro-utils/fecha';
 
@@ -19,7 +18,6 @@ hoy = fecha("objHoy");
 
 export default function Calendario(props) {
   const [idMes, setIdMes]= useState(hoy.mes);
-  const [vistaReserva,setVistaReserva] = useState(false)
 
   useEffect(()=>{
     props.obtenerIdMes(idMes);
@@ -29,14 +27,10 @@ export default function Calendario(props) {
     setIdMes(id);
     //console.log(mesActual);    
   }
-  const handlerVista =()=> {
-    setVistaReserva(!vistaReserva);
-    //console.log(mesActual);    
-  }
 
   return (
     <>
-      <EncabezadoCal obtenerMes={obtenerMes} hoy={hoy} vistaCalendario={handlerVista}/>
+      <EncabezadoCal obtenerMes={obtenerMes} hoy={hoy} />
       <CeldaDias obtenerFecha={props.obtenerFecha} conf={props.conf} hoy={hoy} idMes={idMes} />
     </>
   );
