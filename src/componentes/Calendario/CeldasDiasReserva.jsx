@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Tabla from '../Tabla/Tabla';
-
 import dias from "./dias.json";
 import meses from "./meses.json";
 import referenciasJson from '../../data/referencias.json';
@@ -13,36 +11,41 @@ import "./celda_dias.css";
 import { isJSDoc } from "typescript";
 
 const referencias = referenciasJson[0];
-var arregloEventos = [{}],
-   consecutivo = [];
-   const confTabla = {
-    alterna: true,
-    oscura: false,
-    indice: false,
-    ver: false,
-    eliminar: false,
-    encabezado: ["Inicia", "Finaliza", "Responsable"], //Títulos de tabla (Primera fila encabezado)
-    campos: ["inicio", "fin", "funcionario"]  // Nombre de los cmapos del json
-  };
+var arregloEventos = [{}];
 
 
 export default function CeldasDias(props) {
   const [data, setData] = useState(null);
-  
-  //Bandera que indica que la solicitud y retorno de datos están resueltos
-  const [datosListos, setDatosListos] = useState(false);
 
   let mesMontado = filtrarId(meses, props.idMes);
-  // console.log("mesMontado", mesMontado);
+  console.log("mesMontado", mesMontado);
   for (let index = 0; index < parseInt(mesMontado.maximo) + 1; index++) {
-    arregloEventos[index] =  []
+    arregloEventos[index] = [];
   }
+  var consecutivo = [];
+  // arregloEventos = [];
 
   const claseTamano = "cal-" + props.conf.t;
 
-  const cargaDatos = () => {
-    //crea un arreglo con las reservaciones diarias
+  async function obtenerDatos(cb) {
+   
+    // // 1 Consultas       
+    let response1 = await fetch(urlIngresos);
+    tmpIngresos = await response1.json()
 
+       
+    // 2 Intervención
+    let response2 = await fetch(urlTipoIngresos);
+    tipoIngresos = await response2.json();
+
+    // 6 Eliminados
+    let response6 = await fetch(urlEliminadosIngresos);
+    tmpEliminados = await response6.json();
+
+    cb();   
+  };
+
+  const cargaDatos = ()=>{
     let mes = props.idMes;
     (parseInt(mes) < 10) && (mes = "0" + mes);
 
@@ -72,8 +75,9 @@ export default function CeldasDias(props) {
           elementFechaAnt = elementFecha;
           if (index === datos.length - 1) {
             const indice = parseInt(elementFecha.slice(elementFecha.length - 2, elementFecha.length + 1));
-            // console.log("indice", indice);
-            arregloEventos[indice] = element;
+            console.log("indice", indice);
+            arregloDiario[j] = element;
+            arregloEventos[indice] = arregloDiario;
           }
           else {
             j = 0;
@@ -82,46 +86,15 @@ export default function CeldasDias(props) {
             j++
           }
         }
-      };
-      crearGrilla(arregloEventos);
+      }
+      console.log("arregloEventos 8", arregloEventos[8][0]);
+      // console.log("Object.keys(arregloEventos)",Object.keys(arregloEventos));
     });
   }
 
-  const crearGrilla = (array) => {
-    consecutivo = [];
-    let contDia = 1;
-    for (let index = 0; index < 39; index++) {
-      let dataDia = { dia: 0, eventos: [] };
-      if (index >= mesMontado.inicio) {
-        if (contDia <= mesMontado.maximo) {
-          dataDia.dia = contDia;
-          dataDia.eventos = array[contDia];
-          consecutivo.push(dataDia);
-        } else {
-          consecutivo.push(dataDia);
-        }
-        contDia++;
-      } else {
-        consecutivo.push(dataDia);
-      }
-    }
-    console.log("consecutivo", consecutivo);
-    setDatosListos(true);
-  };
-
-   useEffect(() => {
-    for (let index = 0; index < parseInt(mesMontado.maximo) + 1; index++) {
-      arregloEventos[index] =  []
-    }
-    setDatosListos(false);
-    cargaDatos();
-   }, [mesMontado]);
-
-   useEffect(() => {
-    consecutivo = [];
-    cargaDatos();
-   },[]);
-
+  useEffect(() => {
+   cargaDatos();
+  }, [mesMontado]);
 
   const handleSelecFecha = (e) => {
     let celda = e.currentTarget;
@@ -135,15 +108,34 @@ export default function CeldasDias(props) {
     props.obtenerFecha(seleccion);
   };
 
-  const jsxCelda = (item, i) => {
-    let reservaciones = false;
-    let eventos = item.eventos;
-    // console.log("item Celdas", item);
-    // console.log("eventos",item.eventos);
-    // console.log("largo",item.eventos.length);
-    if (eventos.length> 0) {
-      reservaciones = true;
+  const crearGrilla = () => {
+    let contDia = { dia: 1, arreglo: [1, 2, 3, 4, 5] };
+    for (let index = 0; index < 39; index++) {
+      if (index >= mesMontado.inicio) {
+        if (contDia <= mesMontado.maximo) {
+          consecutivo.push(contDia);
+        } else {
+          consecutivo.push(0);
+        }
+        contDia++;
+      } else {
+        consecutivo.push(0);
+      }
     }
+    console.log(consecutivo);
+    console.log(arregloEventos[8][0]);
+  };
+
+  const dataDia = (item) => {
+    let i = parseInt(item);
+    console.log("arregloEventos datadia", arregloEventos[item][0]);
+    //  console.log("Object.keys(arregloEventos)",Object.keys(arregloEventos));
+    return item
+  };
+
+  const jsxCelda = (item, i) => {
+    // cargaEventos(item)
+    // console.log("item Celdas", item);
     let claseCelda = null;
     if (props.hoy.dia === item && props.hoy.mes === parseInt(mesMontado.id)) {
       claseCelda = "celda-hoy";
@@ -164,18 +156,7 @@ export default function CeldasDias(props) {
         role="button"
         ref={props.agregarRefs}
       >
-        {item.dia}
-        {reservaciones &&
-          < >
-          {/* <p>inicio fin  Funcionario</p>
-          {eventos.map((item, i) =>
-           <p>{item.inicio}{item.fin}{item.funcionario} </p>  
-            )}
-            */}
-            <Tabla conf={confTabla} array={eventos} />
-        
-        </>
-        }
+        {item}
       </div>
     );
 
@@ -191,12 +172,15 @@ export default function CeldasDias(props) {
         className={claseCelda + " " + claseTamano}
         role="button"
         ref={props.agregarRefs}
-      > {item.dia}
+      >
+        {item}
       </div>
     );
 
-    return item.dia <= 9 ? tmpCeldaCero : tmpCelda;
+    return item <= 9 ? tmpCeldaCero : tmpCelda;
   };
+
+  crearGrilla();
 
   return (
     <div className="contenedor fondo-calendario">
@@ -208,22 +192,13 @@ export default function CeldasDias(props) {
         ))}
       </div>
       <div className="row">
-        {datosListos 
-        ?
-        <>
         {consecutivo.map((item, i) =>
-          item.dia > 0 ? (
+          item > 0 ? (
             jsxCelda(item, i)
           ) : (
             <div key={"grid" + i} className="celda-des"></div>
           )
         )}
-        </>
-        :    
-        <>
-          <div>Cargando datos...</div>
-        </>
-      }
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export default function Loguin() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   // const onSubmit = data => console.log(data);
 
-  console.log(watch("example")); // watch input value by passing the name of it
+  // console.log(watch("example")); // watch input value by passing the name of it
 
 
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export default function Loguin() {
 
   const onSubmit = (data) => {
     // const onSubmit = (data,e) =>
-     console.log("data",data);
+    //  console.log("data",data);
     // e.preventDefault();
     axios.post(referencias.login, data)
       .then(function (response) {

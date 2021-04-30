@@ -19,7 +19,7 @@ export default function Reservaciones() {
 
   const obtenerIdMes = (mes) => {
     idMes = mes;
-    console.log("idMes", idMes);
+    // console.log("idMes", idMes);
   };
 
   const handleReservaciones = () => {
@@ -33,7 +33,7 @@ export default function Reservaciones() {
 useEffect(() => {
   obtener(consulta, function (datos) {
     arrayDatos = datos;
-    console.log("data", arrayDatos);
+    // console.log("data", arrayDatos);
   })
 }, []);
 

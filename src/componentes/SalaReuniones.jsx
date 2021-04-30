@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import { useForm } from 'react-hook-form';
 
 import MyContext from '../modulos/MyContext';
 
@@ -7,12 +8,10 @@ import 'alertifyjs/build/css/alertify.min.css';
 import 'alertifyjs/build/css/themes/default.min.css';
 
 import ContCalendario from "./Calendario/ContCalendario";
-// import ContTabla from './Tabla/ContTabla';
 
 import GModal from "./Modal/GModal";
 import Tabla from './Tabla/Tabla';
 import obtener from '../modulos/obtener';
-// import enviar from '../modulos/enviar';
 
 import { filtrarKey } from "gespro-utils/filtrar_array";
 import { sendData } from 'gespro-utils/akiri';
@@ -32,6 +31,7 @@ var selectHoraInicio = null,
   filtrofecha = null,
   ocupada = false,
   mensaje = "",
+  formulario = null,
   arrayDatos = null,
   horas = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"],
   horasVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
@@ -39,19 +39,14 @@ var selectHoraInicio = null,
 const referencias = referenciasJson[0];
 
 
-// //Configuraciones de calendario y de tabla
-// const confCalendario = {
-//   t: "m",
-// };
-
 const confTabla = {
   alterna: true,
   oscura: false,
   indice: false,
   ver: false,
   eliminar: true,
-  encabezado: ["Inicia", "Finaliza", "Responsable"], //Títulos de tabla (Primera fila encabezado)
-  campos: ["horainicio", "horafin", "funcionario"]  // Nombre de los cmapos del json
+  encabezado: ["Inicia", "Finaliza", "Solicitante", "Direccion/Depto"], //Títulos de tabla (Primera fila encabezado)
+  campos: ["horainicio", "horafin", "nombre", "instancia"]  // Nombre de los cmapos del json
 };
 
 //Objeto reserva con fecha, hora de inicio, etc para ser almacenados en BD
@@ -63,13 +58,29 @@ var reserva = null;
 export default function SalaReuniones(props) {
 
   const { usuario, setUsuario } = useContext(MyContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearError,
+    reset
+  } = useForm();
+
+  const onSubmit = (data, e) => {
+    // alert(JSON.stringify(data));
+    reserva = data;
+    formulario = e.target;
+    handleValidarReserva(e);
+  };
+
 
   // console.log("usuario", usuario.idUsuario);
   // console.log("correo", usuario.correo);
 
   const [show, setShow] = useState(false);
   const [verMensual, setVerMensual] = useState(false);
-  const [activaHoraFinal, setActivaHoraFinal] = useState(false);
+  // const [activaHoraFinal, setActivaHoraFinal] = useState(false);
   const [data, setData] = useState(null);
   const [cargado, setCargado] = useState(false);
 
@@ -94,15 +105,17 @@ export default function SalaReuniones(props) {
       setData(datos);
       arrayDatos = datos;
       setCargado(true);
-      console.log("data", arrayDatos);
+      // console.log("data", arrayDatos);
     })
   }, []);
 
 
   const obtenerFecha = (fecha) => {
-    // console.log("data", data);
+    // console.log("fecha", fecha);
     fechaseleccionada = fecha;
+    // console.log("fechaseleccionada",fechaseleccionada);
     filtrofecha = filtrarKey(data, "fecha", fecha.id);
+    // console.log("filtrofecha", filtrofecha);
     for (let index = 0; index < filtrofecha.length; index++) {
       // eliminar milisegundos de los campos alias de 12 horas, tipo time  08:30:00 a 08:30
       const element1 = filtrofecha[index].horainicio;
@@ -120,12 +133,18 @@ export default function SalaReuniones(props) {
       fecha: fecha.id,
       inicio: "",
       fin: "",
-      funcionario: "",
+      correo: "",
+      asunto: "",
+      instancia: "",
+      nombre: "",
+      cantidad: "",
+      nombre: "",
+      telefono: "",
       idUsuario: usuario.idUsuario
     };
   };
 
-  const handleValidarReserva = () => {
+  const handleValidarReserva = (e) => {
     // toma la posición en horas del valor de reserva inicio y fin
     // para trabajar con la posición y no con el valor
     const indiceInicio = horas.indexOf(reserva.inicio),
@@ -133,8 +152,6 @@ export default function SalaReuniones(props) {
 
     ocupada = false;
     mensaje = "";
-    // console.log("reserva", reserva);
-    // console.log("filtrado", filtrados);
 
     // revisa que el hora final no sea menor que el inicio
     if (indiceInicio >= indiceFin) {
@@ -152,10 +169,6 @@ export default function SalaReuniones(props) {
           mensaje = "La sala está ocupada en ese horario ☠️";
           break;
         }
-        // console.log("indice inicio reserva: ", indiceInicio);
-        // console.log("indice fin reserva: ", indiceFin);
-        // console.log("indice inicio fitrados: ", elementI);
-        // console.log("indice fin filtrados: ", elementF);
 
         if (indiceInicio <= elementI && indiceFin <= elementI) {
           ocupada = false;
@@ -174,21 +187,17 @@ export default function SalaReuniones(props) {
           };
       };
     };
-    if (reserva.inicio === "" || reserva.fin === "" || reserva.funcionario === "") {
-      ocupada = true;
-      mensaje = "No hay datos para enviar, o está incompleto"
-    }
     if (ocupada) {
       alertify.alert("⚠ Aviso", mensaje);
-      //TODO: Utilizar alerrtify en lugar de alert
     } else {
-      enviarDatos(reserva)
+      enviarDatos(reserva);
+      e.target.reset();
     }
   };
 
   const enviarDatos = (reserva) => {
     let url = referencias.agregareserva;
-    console.log("data reserva", reserva);
+
     // reserva
     // console.log("url", url);
     let hora = reserva.inicio;
@@ -198,6 +207,10 @@ export default function SalaReuniones(props) {
     hora = reserva.fin;
     indice = horas.indexOf(hora);
     reserva.fin = horasVC[indice];
+
+    reserva.fecha = fechaseleccionada.id;
+    reserva.idUsuario = usuario.idUsuario;
+    // console.log("data reserva", reserva);
 
     // console.log("De 24 final:",horasVC[indice]);
 
@@ -224,7 +237,7 @@ export default function SalaReuniones(props) {
 
   const actualizaDatos = () => {
     obtener(consulta, function (datas) {
-      console.log("datas", datas, "fechaseleccionada", fechaseleccionada.id);
+      // console.log("datas", datas, "fechaseleccionada", fechaseleccionada.id);
       setData(datas);
       filtrofecha = filtrarKey(datas, "fecha", fechaseleccionada.id);
       for (let index = 0; index < filtrofecha.length; index++) {
@@ -239,44 +252,28 @@ export default function SalaReuniones(props) {
       // console.log("filtrofecha", filtrofecha);
       setFiltrados(filtrofecha);
       setCargado(true);
-      if (refHoraInicio.current) {
-        refHoraInicio.current.value = "";
-      }
-      if (refHoraFinal.current) {
-        refHoraFinal.current.value = "";
-      }
-      if (refFuncionario.current) {
-        refFuncionario.current.value = "";
-      }
     });
   }
 
-  const handleObtenerInicio = (e) => {
-    reserva.inicio = e.target.value;
-  };
-
-  const handleObtenerfin = (e) => {
-    reserva.fin = e.target.value;
-  };
 
   const handlerVistaMensual = (e) => {
     setVerMensual(!verMensual);
   }
 
   const handleEliminarId = (idBorrar) => {
-    console.log(idBorrar);
+    // console.log(idBorrar);
     let url = referencias.cambiaBorradoReserva;
     let regEliminar = {
       id_usuario: usuario.idUsuario,
       id_registro: idBorrar,
       valor_borrado: 1
     }
-    console.log("registro", regEliminar);
-    console.log("url", url);
+    // console.log("registro", regEliminar);
+    // console.log("url", url);
 
     sendData(url, regEliminar)
       .then(respuesta => {
-        console.log("respuesta.error", respuesta.error);
+        // console.log("respuesta.error", respuesta.error);
         if (!respuesta.error) {
           console.log("entré if");
           alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
@@ -295,119 +292,134 @@ export default function SalaReuniones(props) {
         }
       })
   };
-
-  const handleObtenerFuncionario = (e) => {
-    reserva.funcionario = e.target.value;
-  };
-
-  selectHoraInicio = (
-    <>
-      <div className="col-sm-6">
-        <div className="input-group">
-          <select
-            onChange={handleObtenerInicio}
-            className="form-control"
-            id="horaInicio"
-            ref={refHoraInicio}
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Selecciona la hora inicial
-        </option>
-            {horasInicio.map((item, i) => (
-              <option key={"inicio" + i}
-                id={i}
-                value={item}
-              // disabled="false"
-              >
-                {item}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </>
-  );
-
-  selectHoraFinal = (
-    <>
-      <div className="col-sm-6">
-        <div className="input-group">
-          <select
-            onChange={handleObtenerfin}
-            className="form-control Disabled"
-            id="horaInicio"
-            ref={refHoraFinal}
-            defaultValue=""
-          >
-            <option value="" disabled>
-              {" "}Selecciona la hora final{" "}
-            </option>
-            {horasFin.map((item, i) => (
-              <option
-                key={"inicio" + i}
-                id={i}
-                value={item}
-              >
-                {item}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </>
-  );
-
   const JsxFormModal = () => {
     return (
       <>
         <div className="row">
           <div className="col-sm-12">
             {cargado
-              ? <Tabla conf={confTabla} array={filtrados} eliminarId={handleEliminarId} />
+              ? <Tabla conf={confTabla} array={filtrados} obtenerId={handleEliminarId} />
               : <p>Actualizando datos </p>
             }
           </div>
         </div>
         <hr />
+        <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          {selectHoraInicio}
-          {selectHoraFinal}
-
-        </div>
-        <div className="row">
-          <div className="col-sm-12 mt-3">
-
-            <input
-              className="form-control"
-              placeholder="Correo del funcionario"
-              onChange={handleObtenerFuncionario}
-              ref={refFuncionario}
-              type="text"
-            />
+            <div className="col-sm-3 offset-sm-9 float-right mb-3">
+              <input className="btn btn-outline-info btn-block" type="reset" />
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-12 mt-3">
-            <button
-              onClick={handleValidarReserva}
-              className="btn btn-outline-info btn-block"
-            >
-              Guardar
-            </button>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="input-group">
+                <select
+                  className="form-control"
+                  {...register("inicio")}
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Selecciona la hora inicial
+                  </option>
+                  {horasInicio.map((item, i) => (
+                    <option key={"inicio" + i}
+                      id={i}
+                      value={item}
+                    >
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="input-group">
+                <select
+                  className="form-control"
+                  {...register("fin")}
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    {" "}Selecciona la hora final{" "}
+                  </option>
+                  {horasFin.map((item, i) => (
+                    <option
+                      key={"inicio" + i}
+                      id={i}
+                      value={item}
+                    >
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
+          <div className="row">
+            <div className="col-sm-12 mt-3">
+              <input className="form-control" placeholder="Nombre del funcionario" {...register("nombre", { required: true })} />
+              {errors.nombre && "Este campo es requerido"}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12 mt-3">
+              <input className="form-control" placeholder="Correo del funcionario" {...register("correo", { required: true })} />
+              {errors.correo && "Este campo es requerido"}
+
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12 mt-3">
+              <input className="form-control" placeholder="Dirección o departamento" {...register("instancia", { required: true })} />
+              {errors.instancia && "Este campo es requerido"}
+
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-12 mt-3">
+              <input className="form-control" placeholder="Asunto" {...register("asunto", { required: true })} />
+              {errors.asunto && "Este campo es requerido"}
+
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6 mt-3">
+              <input className="form-control" placeholder="Teléfono" {...register("telefono", { required: true })} />
+              {errors.telefono && "Este campo es requerido"}
+            </div>
+            <div className="col-sm-6 mt-3">
+              <input className="form-control" type="number" placeholder="Cantidad de asistentes" {...register("cantidad", { required: true })} />
+              {errors.cantidad && "Este campo es requerido y debe ser numérico"}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12 mt-3">
+              <input className="btn btn-outline-info btn-block" type="submit" />
+            </div>
+          </div>
+        </form>
       </>
     );
   };
 
   return (
     <>
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <button className="btn btn-info" onClick={props.handleMes}>
+              Reservas por mes
+          </button>
+          </div>
+        </div>
+      </div>
       <ContCalendario
-             obtenerIdMes={props.obtenerIdMes}
-             volverCalendario={props.volverCalendario}
-             obtenerFecha = {obtenerFecha}
-        />
+        obtenerIdMes={props.obtenerIdMes}
+        volverCalendario={props.volverCalendario}
+        obtenerFecha={obtenerFecha}
+      />
 
       <GModal
         show={show}

@@ -2,8 +2,8 @@ let claseBoostrap = "table ";
 
 export default function Tabla(props) {
   const conf = props.conf;
-  conf.oscura && (claseBoostrap = claseBoostrap + " table-dark ");
-  conf.alterna && (claseBoostrap = claseBoostrap + " table-striped ");
+  conf.oscura && (claseBoostrap = claseBoostrap + " table-dark  table-responsive");
+  conf.alterna && (claseBoostrap = claseBoostrap + " table-striped table-responsive");
   //console.log(claseBoostrap);
 
   const handleVerDetalles = (i) => {

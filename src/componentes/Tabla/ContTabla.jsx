@@ -6,8 +6,8 @@ const confTabla = {
   indice: true,
   ver: true,
   eliminar: true,
-  encabezado: ["Fecha", "Inicio", "Fin", "Solicitante"], //Títulos de tabla (Primera fila encabezado)
-  campos: ["fecha", "horainicio", "horafin", "funcionario"], // Nombre de los cmapos del json
+  encabezado: ["Fecha", "Inicio", "Fin", "Solicitante","Dirección/Depto."], //Títulos de tabla (Primera fila encabezado)
+  campos: ["fecha", "horainicio", "horafin", "correo","instancia"], // Nombre de los cmapos del json
 };
 
 const obtenerItemTabla = (item) => {
@@ -16,6 +16,7 @@ const obtenerItemTabla = (item) => {
 
 const obtenerIdItemTabla = (id) => {
   console.log("ID de Item a eliminar:", id);
+  props.
 };
 
 const filtrarPorMes = (idMes, array) => {
@@ -23,7 +24,7 @@ const filtrarPorMes = (idMes, array) => {
   for (let index = 0; index < array.length; index++) {
     //extrae el mes del campo fecha:
     const mes = array[index].fecha.split("-")[1];
-    console.log(mes);
+    // console.log(mes);
     //compara el mes extraido del objeto y lo cmpara con el mes asignado en props
     if (parseInt(mes) === idMes) {
       //si se da la condición agrega en el arreglo tempora el objeto
@@ -33,27 +34,13 @@ const filtrarPorMes = (idMes, array) => {
   return tmpArray;
 };
 
-
-const ordenarPorInicio =(array, propiedad )=> {    
-  function compare(a, b) {
-      if (a[propiedad] < b[propiedad]){
-        return -1;
-      }
-      if (a[propiedad] > b[propiedad]){
-        return 1;
-      }
-      return 0;
-    }      
-    return array.sort(compare);
-}
-
-
 export default function ContTabla(props) {
-  console.log("idMes de sde ContTabla", props.idMes);
-  console.log("reservas", props.reservas);
+  // console.log("idMes de sde ContTabla", props.idMes);
+  // console.log("reservas", props.reservas);
   const reservasFiltradas = filtrarPorMes(props.idMes, props.reservas);
-  const reservasOrdenadas = ordenarPorInicio (reservasFiltradas, "inicio");
-
+  // const reservasOrdenadas = ordenarPorInicio (reservasFiltradas, "fecha");
+  // console.log("reservasFiltradas",reservasFiltradas);
+// console.log("reservasOrdenadas",reservasOrdenadas);
   return (
     <>
     <div className="row">
@@ -71,7 +58,8 @@ export default function ContTabla(props) {
       obtenerItem={obtenerItemTabla}
       //Propiedades requeridas:
       conf={confTabla}
-      array={reservasOrdenadas}
+      array={reservasFiltradas}
+      // array={reservasOrdenadas}
     />
     </>
   );
