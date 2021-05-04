@@ -32,7 +32,6 @@ var selectHoraInicio = null,
   ocupada = false,
   mensaje = "",
   formulario = null,
-  arrayDatos = null,
   horas = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"],
   horasVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
 
@@ -103,19 +102,49 @@ export default function SalaReuniones(props) {
   useEffect(() => {
     obtener(consulta, function (datos) {
       setData(datos);
-      arrayDatos = datos;
       setCargado(true);
-      // console.log("data", arrayDatos);
     })
   }, []);
 
+  const eliminarRegistro = (idBorrar) => {
+    // console.log("Id del elemento a borrar", idBorrar);
+     let url = referencias.cambiaBorradoReserva;
+    let regEliminar = {
+      id_usuario: usuario.idUsuario,
+      id_registro: idBorrar,
+      valor_borrado: 1
+    }
+    // console.log("registro", regEliminar);
+    // console.log("url", url);
+
+    sendData(url, regEliminar)
+      .then(respuesta => {
+        // console.log("respuesta.error", respuesta.error);
+        if (!respuesta.error) {
+          // console.log("entré if");
+          alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
+          setCargado(false);
+          actualizaDatos();
+        }
+        else {
+          let msjServer;
+          if (respuesta.error) {
+            msjServer = respuesta.msj;
+          }
+          else {
+            msjServer = "Problemas de conexión con la base de datos. Error 405"
+          }
+          alertify.alert("Error", msjServer);
+        }
+      })
+  };
 
   const obtenerFecha = (fecha) => {
     // console.log("fecha", fecha);
     fechaseleccionada = fecha;
     // console.log("fechaseleccionada",fechaseleccionada);
     filtrofecha = filtrarKey(data, "fecha", fecha.id);
-    // console.log("filtrofecha", filtrofecha);
+    // console.log("filtrofecha largo", filtrofecha.length);
     for (let index = 0; index < filtrofecha.length; index++) {
       // eliminar milisegundos de los campos alias de 12 horas, tipo time  08:30:00 a 08:30
       const element1 = filtrofecha[index].horainicio;
@@ -260,45 +289,13 @@ export default function SalaReuniones(props) {
     setVerMensual(!verMensual);
   }
 
-  const handleEliminarId = (idBorrar) => {
-    // console.log(idBorrar);
-    let url = referencias.cambiaBorradoReserva;
-    let regEliminar = {
-      id_usuario: usuario.idUsuario,
-      id_registro: idBorrar,
-      valor_borrado: 1
-    }
-    // console.log("registro", regEliminar);
-    // console.log("url", url);
-
-    sendData(url, regEliminar)
-      .then(respuesta => {
-        // console.log("respuesta.error", respuesta.error);
-        if (!respuesta.error) {
-          console.log("entré if");
-          alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
-          setCargado(false);
-          actualizaDatos();
-        }
-        else {
-          let msjServer;
-          if (respuesta.error) {
-            msjServer = respuesta.msj;
-          }
-          else {
-            msjServer = "Problemas de conexión con la base de datos. Error 405"
-          }
-          alertify.alert("Error", msjServer);
-        }
-      })
-  };
   const JsxFormModal = () => {
     return (
       <>
         <div className="row">
           <div className="col-sm-12">
             {cargado
-              ? <Tabla conf={confTabla} array={filtrados} obtenerId={handleEliminarId} />
+              ? <Tabla conf={confTabla} array={filtrados} obtenerId={eliminarRegistro}/>
               : <p>Actualizando datos </p>
             }
           </div>

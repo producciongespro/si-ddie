@@ -7,6 +7,8 @@ export default function Tabla(props) {
   //console.log(claseBoostrap);
 
   const handleVerDetalles = (i) => {
+    console.log("props.array",props.array);
+    console.log("props.array[i]", props.array[i]);
     props.obtenerItem && props.obtenerItem(props.array[i]);
   };
 

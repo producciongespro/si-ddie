@@ -10,14 +10,8 @@ const confTabla = {
   campos: ["fecha", "horainicio", "horafin", "correo","instancia"], // Nombre de los cmapos del json
 };
 
-const obtenerItemTabla = (item) => {
-  console.log("Item:", item);
-};
+let datos;
 
-const obtenerIdItemTabla = (id) => {
-  console.log("ID de Item a eliminar:", id);
-  props.
-};
 
 const filtrarPorMes = (idMes, array) => {
   let tmpArray = [];
@@ -35,9 +29,20 @@ const filtrarPorMes = (idMes, array) => {
 };
 
 export default function ContTabla(props) {
-  // console.log("idMes de sde ContTabla", props.idMes);
-  // console.log("reservas", props.reservas);
-  const reservasFiltradas = filtrarPorMes(props.idMes, props.reservas);
+
+  const obtenerIdItemTabla = (id) => {
+    console.log("ID de Item a eliminar desde ContTabla:", id);
+  
+    props.obtenerIdItem(id);
+ };
+
+ const obtenerItemTabla = (item) => {
+  console.log("Item:", item);
+  props.obtenerItem(item);
+};
+ 
+ 
+  const reservasFiltradas = filtrarPorMes(props.idMes, props.array);
   // const reservasOrdenadas = ordenarPorInicio (reservasFiltradas, "fecha");
   // console.log("reservasFiltradas",reservasFiltradas);
 // console.log("reservasOrdenadas",reservasOrdenadas);
@@ -58,8 +63,8 @@ export default function ContTabla(props) {
       obtenerItem={obtenerItemTabla}
       //Propiedades requeridas:
       conf={confTabla}
+
       array={reservasFiltradas}
-      // array={reservasOrdenadas}
     />
     </>
   );
