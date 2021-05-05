@@ -96,71 +96,28 @@ export default function Reservaciones() {
   const editarRegistro = (itemEditar) => {
     setActualizado(false);
     console.log("Item editar", itemEditar);
+    // registro = {
+    //   fecha: itemEditar.fecha,
+    //   inicio: itemEditar.inicio,
+    //   fin: itemEditar.fin,
+    //   correo: itemEditar.correo,
+    //   asunto: itemEditar.asunto,
+    //   instancia: itemEditar.instancia,
+    //   nombre: itemEditar.nombre,
+    //   cantidad: itemEditar.cantidad,
+    //   nombre: itemEditar.nombre,
+    //   telefono: itemEditar.telefono,
+    //   idUsuario: itemEditar.idUsuario
+    // };
     registro =  itemEditar;
     console.log("registro", registro);
     setActualizado(true);
     handleShow();
   }
 
-  
-
-  const eliminarRegistro = (idBorrar) => {
-    // console.log("Id del elemento a borrar", idBorrar);
-    let url = referencias.cambiaBorradoReserva;
-    let regEliminar = {
-      id_usuario: usuario.idUsuario,
-      id_registro: idBorrar,
-      valor_borrado: 1
-    }
-    // console.log("registro", regEliminar);
-    // console.log("url", url);
-
-    sendData(url, regEliminar)
-      .then(respuesta => {
-        // console.log("respuesta.error", respuesta.error);
-        if (!respuesta.error) {
-          // console.log("entré if");
-          alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
-          setCargado(false);
-          obtener(consulta, function (datos) {
-            arrayDatos = datos;
-            setData(datos);
-            setCargado(true);
-          });
-        }
-        else {
-          let msjServer;
-          if (respuesta.error) {
-            msjServer = respuesta.msj;
-          }
-          else {
-            msjServer = "Problemas de conexión con la base de datos. Error 405"
-          }
-          alertify.alert("Error", msjServer);
-        }
-      })
-  };
-
-
-  return (
-    <React.Fragment>
-      {vistaMes ? (
-        cargado
-          ? <ContTabla array={data} idMes={idMes} handleReservaciones={handleReservaciones} obtenerIdItem={eliminarRegistro} obtenerItem={editarRegistro} />
-          : <p>Actualizando datos </p>
-
-      ) : (
-        <SalaReuniones handleMes={handleMes} obtenerIdMes={obtenerIdMes} eliminarElemento={eliminarRegistro} />
-      )
-      }
-      <GModal
-        show={show}
-        // size="lg"
-        handleClose={handleClose}
-        title="Reserva de sala"
-        footer=""
-      >
-       {actualizado
+  jsxFormModal = (
+    <>
+      {actualizado
         ?
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* <div className="row">
@@ -263,6 +220,66 @@ export default function Reservaciones() {
         </form>
         : <h1>Actualizando datos...</h1>
       }
+    </>
+  );
+
+  const eliminarRegistro = (idBorrar) => {
+    // console.log("Id del elemento a borrar", idBorrar);
+    let url = referencias.cambiaBorradoReserva;
+    let regEliminar = {
+      id_usuario: usuario.idUsuario,
+      id_registro: idBorrar,
+      valor_borrado: 1
+    }
+    // console.log("registro", regEliminar);
+    // console.log("url", url);
+
+    sendData(url, regEliminar)
+      .then(respuesta => {
+        // console.log("respuesta.error", respuesta.error);
+        if (!respuesta.error) {
+          // console.log("entré if");
+          alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
+          setCargado(false);
+          obtener(consulta, function (datos) {
+            arrayDatos = datos;
+            setData(datos);
+            setCargado(true);
+          });
+        }
+        else {
+          let msjServer;
+          if (respuesta.error) {
+            msjServer = respuesta.msj;
+          }
+          else {
+            msjServer = "Problemas de conexión con la base de datos. Error 405"
+          }
+          alertify.alert("Error", msjServer);
+        }
+      })
+  };
+
+
+  return (
+    <React.Fragment>
+      {vistaMes ? (
+        cargado
+          ? <ContTabla array={data} idMes={idMes} handleReservaciones={handleReservaciones} obtenerIdItem={eliminarRegistro} obtenerItem={editarRegistro} />
+          : <p>Actualizando datos </p>
+
+      ) : (
+        <SalaReuniones handleMes={handleMes} obtenerIdMes={obtenerIdMes} eliminarElemento={eliminarRegistro} />
+      )
+      }
+      <GModal
+        show={show}
+        // size="lg"
+        handleClose={handleClose}
+        title="Reserva de sala"
+        footer=""
+      >
+        {jsxFormModal}
       </GModal>
 
     </React.Fragment>

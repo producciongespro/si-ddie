@@ -95,7 +95,8 @@ export default function SalaReuniones(props) {
 
   var consulta = referencias.consultareserva,
     SelectHoraInicio = null,
-    SeletHoraFinal = null;
+    SeletHoraFinal = null,
+    jsxFormModal = null;
 
 
 
@@ -108,7 +109,7 @@ export default function SalaReuniones(props) {
 
   const eliminarRegistro = (idBorrar) => {
     // console.log("Id del elemento a borrar", idBorrar);
-     let url = referencias.cambiaBorradoReserva;
+    let url = referencias.cambiaBorradoReserva;
     let regEliminar = {
       id_usuario: usuario.idUsuario,
       id_registro: idBorrar,
@@ -158,19 +159,21 @@ export default function SalaReuniones(props) {
     setFiltrados(filtrofecha);
     setCargado(true);
     handleShow();
-    reserva = {
-      fecha: fecha.id,
-      inicio: "",
-      fin: "",
-      correo: "",
-      asunto: "",
-      instancia: "",
-      nombre: "",
-      cantidad: "",
-      nombre: "",
-      telefono: "",
-      idUsuario: usuario.idUsuario
-    };
+    reserva = {};
+    reserva.fecha = fecha.id;
+    // reserva = {
+    //   fecha: fecha.id,
+    //   inicio: "",
+    //   fin: "",
+    //   correo: "",
+    //   asunto: "",
+    //   instancia: "",
+    //   nombre: "",
+    //   cantidad: "",
+    //   nombre: "",
+    //   telefono: "",
+    //   idUsuario: usuario.idUsuario
+    // };
   };
 
   const handleValidarReserva = (e) => {
@@ -229,6 +232,10 @@ export default function SalaReuniones(props) {
 
     // reserva
     // console.log("url", url);
+
+    // reserva.fecha = fecha.id;
+    reserva.idUsuario = usuario.idUsuario;
+
     let hora = reserva.inicio;
     let indice = horas.indexOf(hora);
     reserva.inicio = horasVC[indice];
@@ -236,10 +243,11 @@ export default function SalaReuniones(props) {
     hora = reserva.fin;
     indice = horas.indexOf(hora);
     reserva.fin = horasVC[indice];
+    // reserva.fin = "hola";
 
     reserva.fecha = fechaseleccionada.id;
     reserva.idUsuario = usuario.idUsuario;
-    // console.log("data reserva", reserva);
+    console.log("data reserva", reserva);
 
     // console.log("De 24 final:",horasVC[indice]);
 
@@ -287,119 +295,117 @@ export default function SalaReuniones(props) {
 
   const handlerVistaMensual = (e) => {
     setVerMensual(!verMensual);
-  }
+  };
 
-  const JsxFormModal = () => {
-    return (
-      <>
+  jsxFormModal = (
+    <>
+      <div className="row">
+        <div className="col-sm-12">
+          {cargado
+            ? <Tabla conf={confTabla} array={filtrados} obtenerId={eliminarRegistro} />
+            : <p>Actualizando datos </p>
+          }
+        </div>
+      </div>
+      <hr />
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <div className="col-sm-12">
-            {cargado
-              ? <Tabla conf={confTabla} array={filtrados} obtenerId={eliminarRegistro}/>
-              : <p>Actualizando datos </p>
-            }
+          <div className="col-sm-3 offset-sm-9 float-right mb-3">
+            <input className="btn btn-outline-info btn-block" type="reset" />
           </div>
         </div>
-        <hr />
-        <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-            <div className="col-sm-3 offset-sm-9 float-right mb-3">
-              <input className="btn btn-outline-info btn-block" type="reset" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="input-group">
-                <select
-                  className="form-control"
-                  {...register("inicio")}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Selecciona la hora inicial
+          <div className="col-sm-6">
+            <div className="input-group">
+              <select
+                className="form-control"
+                {...register("inicio")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Selecciona la hora inicial
                   </option>
-                  {horasInicio.map((item, i) => (
-                    <option key={"inicio" + i}
-                      id={i}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="input-group">
-                <select
-                  className="form-control"
-                  {...register("fin")}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    {" "}Selecciona la hora final{" "}
+                {horasInicio.map((item, i) => (
+                  <option key={"inicio" + i}
+                    id={i}
+                    value={item}
+                  >
+                    {item}
                   </option>
-                  {horasFin.map((item, i) => (
-                    <option
-                      key={"inicio" + i}
-                      id={i}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                ))}
+              </select>
             </div>
           </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Nombre del funcionario" {...register("nombre", { required: true })} />
-              {errors.nombre && "Este campo es requerido"}
+          <div className="col-sm-6">
+            <div className="input-group">
+              <select
+                className="form-control"
+                {...register("fin")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  {" "}Selecciona la hora final{" "}
+                </option>
+                {horasFin.map((item, i) => (
+                  <option
+                    key={"inicio" + i}
+                    id={i}
+                    value={item}
+                  >
+                    {item}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Correo del funcionario" {...register("correo", { required: true })} />
-              {errors.correo && "Este campo es requerido"}
+        </div>
+        <div className="row">
+          <div className="col-sm-12 mt-3">
+            <input className="form-control" placeholder="Nombre del funcionario" {...register("nombre", { required: true })} />
+            {errors.nombre && "Este campo es requerido"}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12 mt-3">
+            <input className="form-control" placeholder="Correo del funcionario" {...register("correo", { required: true })} />
+            {errors.correo && "Este campo es requerido"}
 
-            </div>
           </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Dirección o departamento" {...register("instancia", { required: true })} />
-              {errors.instancia && "Este campo es requerido"}
+        </div>
+        <div className="row">
+          <div className="col-sm-12 mt-3">
+            <input className="form-control" placeholder="Dirección o departamento" {...register("instancia", { required: true })} />
+            {errors.instancia && "Este campo es requerido"}
 
-            </div>
           </div>
+        </div>
 
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Asunto" {...register("asunto", { required: true })} />
-              {errors.asunto && "Este campo es requerido"}
+        <div className="row">
+          <div className="col-sm-12 mt-3">
+            <input className="form-control" placeholder="Asunto" {...register("asunto", { required: true })} />
+            {errors.asunto && "Este campo es requerido"}
 
-            </div>
           </div>
+        </div>
 
-          <div className="row">
-            <div className="col-sm-6 mt-3">
-              <input className="form-control" placeholder="Teléfono" {...register("telefono", { required: true })} />
-              {errors.telefono && "Este campo es requerido"}
-            </div>
-            <div className="col-sm-6 mt-3">
-              <input className="form-control" type="number" placeholder="Cantidad de asistentes" {...register("cantidad", { required: true })} />
-              {errors.cantidad && "Este campo es requerido y debe ser numérico"}
-            </div>
+        <div className="row">
+          <div className="col-sm-6 mt-3">
+            <input className="form-control" placeholder="Teléfono" {...register("telefono", { required: true })} />
+            {errors.telefono && "Este campo es requerido"}
           </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="btn btn-outline-info btn-block" type="submit" />
-            </div>
+          <div className="col-sm-6 mt-3">
+            <input className="form-control" type="number" placeholder="Cantidad de asistentes" {...register("cantidad", { required: true })} />
+            {errors.cantidad && "Este campo es requerido y debe ser numérico"}
           </div>
-        </form>
-      </>
-    );
-  };
+        </div>
+        <div className="row">
+          <div className="col-sm-12 mt-3">
+            <input className="btn btn-outline-info btn-block" type="submit" />
+          </div>
+        </div>
+      </form>
+    </>
+  );
 
   return (
     <>
@@ -425,7 +431,7 @@ export default function SalaReuniones(props) {
         title="Reserva de sala"
         footer=""
       >
-        {JsxFormModal()}
+        {jsxFormModal && jsxFormModal}
       </GModal>
     </>
   );
