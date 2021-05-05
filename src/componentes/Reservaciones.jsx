@@ -93,6 +93,14 @@ export default function Reservaciones() {
     })
   }, [vistaMes]);
 
+/*
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ something: '' });
+    }
+  }, [formState, submittedData, reset]);
+  */
+
   const editarRegistro = (itemEditar) => {
     setActualizado(false);
     console.log("Item editar", itemEditar);
