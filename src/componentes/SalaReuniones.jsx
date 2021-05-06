@@ -63,8 +63,17 @@ export default function SalaReuniones(props) {
     formState: { errors },
     setError,
     clearError,
-    reset
+    reset,
+    watch
   } = useForm();
+
+  const watchNombre = watch("nombre", ""); // you can supply default value as second argument
+  const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
+  const watchFields = watch(["nombre", "correo"]); // you can also target specific fields by their names
+
+  // console.log("nombre",watchNombre);
+  // console.log("watchAllFields",watchAllFields);
+  // console.log("watchFields",watchFields);
 
   const onSubmit = (data, e) => {
     // alert(JSON.stringify(data));
@@ -138,6 +147,7 @@ export default function SalaReuniones(props) {
           alertify.alert("Error", msjServer);
         }
       })
+
   };
 
   const obtenerFecha = (fecha) => {
@@ -161,19 +171,6 @@ export default function SalaReuniones(props) {
     handleShow();
     reserva = {};
     reserva.fecha = fecha.id;
-    // reserva = {
-    //   fecha: fecha.id,
-    //   inicio: "",
-    //   fin: "",
-    //   correo: "",
-    //   asunto: "",
-    //   instancia: "",
-    //   nombre: "",
-    //   cantidad: "",
-    //   nombre: "",
-    //   telefono: "",
-    //   idUsuario: usuario.idUsuario
-    // };
   };
 
   const handleValidarReserva = (e) => {
@@ -224,6 +221,9 @@ export default function SalaReuniones(props) {
     } else {
       enviarDatos(reserva);
       e.target.reset();
+      console.log("nombre",watchNombre);
+      console.log("watchAllFields",watchAllFields);
+      console.log("watchFields",watchFields);
     }
   };
 

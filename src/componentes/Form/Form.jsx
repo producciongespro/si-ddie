@@ -33,12 +33,17 @@ const handleGetCheck = (e) => {
 };
 
 const Form = (props) => {
+
   const [valInput, setValInput] = useState(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues : props.valoresDefault
+  });
+    
+  // } = useForm();
   //const { register, handleSubmit, errors } = useForm();
   const msjError = "Item requerido";
 

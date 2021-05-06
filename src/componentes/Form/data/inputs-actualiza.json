@@ -1,0 +1,125 @@
+[
+  {
+    "control": "input",
+    "id": "fecha",
+    "type": "date",
+    "label": "Fecha",
+    "placeholder": "Escriba la fecha",    
+    "required": true,
+    "defaultValue":""
+  },
+  {
+    "control": "select",
+    "id": "inicio",
+    "label":"Hora de inicio",
+    "required": true,
+    "opts":
+    [
+      {"text":"07:00", "value":"0"}, 
+      {"text":"07:30", "value":"1"},
+      {"text":"08:00", "value":"2"},
+      {"text":"08:30", "value":"3"},
+      {"text":"09:00", "value":"4"},
+      {"text":"09:30", "value":"5"},
+      {"text": "10:00","value":"6"},
+      {"text":"10:30", "value":"7"},
+      {"text":"11:00", "value":"8"},
+      {"text":"11:30", "value":"9|"},
+      {"text":"12:00", "value":"10"},
+      {"text":"12:30", "value":"11"},
+      {"text":"01:00", "value":"12"},
+      {"text":"01:30", "value":"13"},
+      {"text":"02:00", "value":"14"},
+      {"text":"02:30", "value":"15"},
+      {"text":"03:00", "value":"16"},
+      {"text":"03:30", "value":"17"}
+      ]
+  },
+  {
+    "control": "select",
+    "id": "fin",
+    "label":"Hora final",
+    "required": true,
+    "opts":
+    [
+      {"text":"07:30", "value":"0"},
+      {"text":"08:00", "value":"1"},
+      {"text":"08:30", "value":"2"},
+      {"text":"09:00", "value":"3"},
+      {"text":"09:30", "value":"4"},
+      {"text": "10:00","value":"5"},
+      {"text":"10:30", "value":"6"},
+      {"text":"11:00", "value":"7"},
+      {"text":"11:30", "value":"8"},
+      {"text":"12:00", "value":"9"},
+      {"text":"12:30", "value":"10"},
+      {"text":"01:00", "value":"11"},
+      {"text":"01:30", "value":"12"},
+      {"text":"02:00", "value":"13"},
+      {"text":"02:30", "value":"14"},
+      {"text":"03:00", "value":"15"},
+      {"text":"03:30", "value":"16"},
+      {"text":"04:00", "value":"17"}
+      ]
+  },
+  {
+    "control": "input",
+    "id": "nombre",
+    "type": "text",
+    "label": "Nombre:",
+    "placeholder": "Nombre del funcionario",
+    "maxLength": 100,
+    "defaultValue": "",
+    "required": true
+  },
+  {
+    "control": "input",
+    "id": "correo",
+    "type": "email",
+    "label": "Correo",    
+    "placeholder": "Escriba su correo",
+    "maxLength": 100,
+    "defaultValue": "",
+    "required": true
+  },
+  {
+    "control": "input",
+    "id": "instancia",
+    "type": "text",
+    "label": "Dirección o departamento:",
+    "placeholder": "Nombre de la instancia",
+    "maxLength": 100,
+    "defaultValue": "",
+    "required": true
+  },
+  {
+    "control": "input",
+    "id": "asunto",
+    "type": "text",
+    "label": "Asunto:",
+    "placeholder": "Actividad a realizarse",
+    "maxLength": 100,
+    "defaultValue": "",
+    "required": true
+  },
+  {
+    "control": "input",
+    "id": "telefono",
+    "type": "text",
+    "label": "Teléfono:",
+    "placeholder": "########",
+    "maxLength": 10,
+    "defaultValue": "",
+    "required": true
+  },
+  {
+    "control": "input",
+    "id": "cantidad",
+    "type": "number",
+    "label": "Cantidad",    
+    "min" : 0,
+    "max": 30,
+    "step": 0,
+    "defaultValue": 0
+  }
+]

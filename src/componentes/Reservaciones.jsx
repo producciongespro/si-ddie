@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useForm } from 'react-hook-form';
 import ContTabla from "./Tabla/ContTabla";
+// import ContForm from "./Form/ContForm";
 import SalaReuniones from "./SalaReuniones";
+import FormReservacion from "./FormReservacion";
 import GModal from "./Modal/GModal";
 
 import MyContext from '../modulos/MyContext';
@@ -20,9 +22,10 @@ import horasFin from "../data/horas-fin.json";
 const referencias = referenciasJson[0];
 
 var consulta = referencias.consultareserva,
-  arrayDatos = null,
+  valoresDefault= {},
   registro = {},
-  jsxFormModal = null;
+  jsxFormModal = null,
+  horas = ["06:30","07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"];
 
 let idMes;
 
@@ -44,8 +47,7 @@ export default function Reservaciones() {
     e.target.reset();
   };
 
-
-  //Estados para la navegación
+    //Estados para la navegación
   const [vistaMes, setVistaMes] = useState(null);
   const { usuario, setUsuario } = useContext(MyContext);
   const [cargado, setCargado] = useState(false);
@@ -72,9 +74,7 @@ export default function Reservaciones() {
 
   useEffect(() => {
     obtener(consulta, function (datos) {
-      arrayDatos = datos;
       setCargado(true);
-      // console.log("data", arrayDatos);
     })
   }, []);
 
@@ -103,14 +103,46 @@ export default function Reservaciones() {
 
   const editarRegistro = (itemEditar) => {
     setActualizado(false);
-    console.log("Item editar", itemEditar);
+    // console.log("Item editar", itemEditar);
     registro =  itemEditar;
-    console.log("registro", registro);
+    console.log("horainicio",registro.horainicio, "horafin",registro.horafin);
+    let hi =  registro.horainicio.slice(0, 5);
+    let hf = registro.horafin.slice(0, 5);
+    console.log("pos horainicio",horasInicio.indexOf(hi),"horas fin pos", horasFin.indexOf(hf));
+    // var mydate = new Date(registro.fecha);
+    // console.log(mydate.toDateString());
+    //  registro.fecha = mydate;
+     registro.inicio = horasInicio.indexOf(hi);
+     registro.fin = horasFin.indexOf(hf);
+     valoresDefault = {
+            nombre:registro.nombre,
+            asunto:registro.asunto,
+            inicio:registro.inicio,
+            fin:registro.fin,
+            fecha: registro.fecha,     
+            correo: registro.correo,
+            asunto:registro.asunto ,
+            telefono:registro.telefono,
+            cantidad:registro.cantidad,
+            instancia: registro.instancia
+      }
+
+      // validar que la fecha y hora estén disponbiles
+
+      // console.log("registro a enviarse", registro, registro.fin, registro.inicio);
     setActualizado(true);
     handleShow();
   }
 
-  
+  const getDataForm =  (data) => {
+//      data.id = registro.id;
+//      data.fecha = fecha
+//  idUsuario 
+
+console.log("Datos a enviar al servidor", data); 
+    
+    // handleClose();
+  };
 
   const eliminarRegistro = (idBorrar) => {
     // console.log("Id del elemento a borrar", idBorrar);
@@ -131,7 +163,6 @@ export default function Reservaciones() {
           alertify.alert('Aviso', 'El registro ha sido eliminado exitosamente');
           setCargado(false);
           obtener(consulta, function (datos) {
-            arrayDatos = datos;
             setData(datos);
             setCargado(true);
           });
@@ -169,106 +200,7 @@ export default function Reservaciones() {
         footer=""
       >
        {actualizado
-        ?
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* <div className="row">
-            <div className="col-sm-3 offset-sm-9 float-right mb-3">
-              <input className="btn btn-outline-info btn-block" type="reset" />
-            </div>
-          </div> */}
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="input-group">
-                <select
-                  className="form-control"
-                  {...register("inicio")}
-                  defaultValue={registro.inicio}
-                >
-                  <option value="" disabled>
-                    Selecciona la hora inicial
-                  </option>
-                  {horasInicio.map((item, i) => (
-                    <option key={"inicio" + i}
-                      id={i}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="input-group">
-                <select
-                  className="form-control"
-                  {...register("fin")}
-                  defaultValue={registro.fin}
-                >
-                  <option value="" disabled>
-                    {" "}Selecciona la hora final{" "}
-                  </option>
-                  {horasFin.map((item, i) => (
-                    <option
-                      key={"inicio" + i}
-                      id={i}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Nombre del funcionario" {...register("nombre", { required: true })} defaultValue={registro.nombre} />
-              {/* <input className="form-control" placeholder="Nombre del funcionario" {...register("nombre", { required: true })} />  */}
-              {errors.nombre && "Este campo es requerido"}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Correo del funcionario" {...register("correo", { required: true })}  defaultValue={registro.correo}/>
-              {/* <input className="form-control" placeholder="Correo del funcionario" {...register("correo", { required: true })} /> */}
-              {errors.correo && "Este campo es requerido"}
-
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Dirección o departamento" {...register("instancia", { required: true })} defaultValue={registro.instancia} />
-              {errors.instancia && "Este campo es requerido"}
-
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="form-control" placeholder="Asunto" {...register("asunto", { required: true })} defaultValue={registro.asunto}/>
-              {/* <input className="form-control" placeholder="Asunto" {...register("asunto", { required: true })} /> */}
-              {errors.asunto && "Este campo es requerido"}
-
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6 mt-3">
-              <input className="form-control" placeholder="Teléfono" {...register("telefono", { required: true })} defaultValue={registro.telefono} />
-              {errors.telefono && "Este campo es requerido"}
-            </div>
-            <div className="col-sm-6 mt-3">
-              <input className="form-control" type="number" placeholder="Cantidad de asistentes" {...register("cantidad", { required: true })} defaultValue={registro.cantidad} />
-              {errors.cantidad && "Este campo es requerido y debe ser numérico"}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12 mt-3">
-              <input className="btn btn-outline-info btn-block" value="Actualizar" type="submit" />
-            </div>
-          </div>
-        </form>
+        ? <FormReservacion valoresDefault = {valoresDefault} getDataForm={getDataForm} />       
         : <h1>Actualizando datos...</h1>
       }
       </GModal>

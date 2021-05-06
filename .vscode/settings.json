@@ -5,7 +5,7 @@
       "javascript" : "javascriptreact"
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 0,
+  "window.zoomLevel": 1,
   "workbench.iconTheme": "vscode-icons",
   "workbench.colorTheme": "Base16 Dark Twilight",
   "editor.tabSize": 2,

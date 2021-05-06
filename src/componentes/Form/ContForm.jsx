@@ -1,8 +1,8 @@
 import Form from "./Form";
-import controles from "./data/controles.json";
-import chekboxes from "./data/chekboxes.json";
-import inputs from "./data/inputs.json";
-import estudianteForm from "./data/estudianteForm.json";
+// import controles from "./data/controles.json";
+// import chekboxes from "./data/chekboxes.json";
+// import estudianteForm from "./data/estudianteForm.json";
+import inputs from "./data/inputs-actualiza.json";
 
 
 const getDataForm =  (data) => {
