@@ -98,6 +98,41 @@ const Form = (props) => {
     );
   };
 
+  const JsxInputControl = (item, key) => {
+    return (
+      <div className="form-group" key={key}>
+        <label
+          className={`item-negrilla ${errors[item.id] && "item-error"}`}
+          htmlFor={item.id}
+        >
+          {item.required && <span className="item-required">*</span>}
+          {item.label}
+          {item.type === "range" && <span> {valInput} </span>}
+        </label>
+        <input
+          onInput={item.type === "range" ? handleGetValue : undefined}
+          type={item.type}
+          className="form-control"
+          id={item.id}
+          name={item.id}
+          placeholder={item.placeholder}
+          maxLength={item.maxLength}
+          disabled={item.disabled}
+          readOnly={item.readOnly}
+          min={item.min}
+          max={item.max}
+          step={item.step}
+          onChange={alert("cambió")}
+          defaultValue={item.defaultValue && item.defaultValue}
+          {...register(item.id, {
+            required: item.required,
+            maxLength: item.max,
+          })}
+        />
+      </div>
+    );
+  };
+
   const JsxSelect = (item, key) => {
     return (
       <div className="input-group mb-3" key={key}>
@@ -123,7 +158,7 @@ const Form = (props) => {
         >
           <option value="">Seleccione una opción</option>
           {item.opts.map((opt) => (
-            <option key={"opt" + opt.value} value={opt.value}>
+            <option key={"opt" + opt.value} value={opt.value} disabled= {opt.disabled}>
               {opt.text}
             </option>
           ))}
@@ -216,6 +251,9 @@ const Form = (props) => {
       {props.array.map((item, i) => {
         if (item.control === "input") {
           return JsxInput(item, i);
+        }
+        if (item.control === "input-control") {
+          return JsxInputControl(item, i);
         }
         if (item.control === "select") {
           return JsxSelect(item, i);

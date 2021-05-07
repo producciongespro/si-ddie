@@ -513,6 +513,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ca5cc', end
   cursor: no-drop;
 }
 
+select option:disabled {
+  color: red;
+  font-weight: bold;
+}
+
+/* QUERIES */
 @media only screen and (max-width: 992px) 
 {
   .navbar-light .navbar-nav .nav-link {
