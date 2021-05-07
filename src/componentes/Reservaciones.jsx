@@ -14,6 +14,7 @@ import 'alertifyjs/build/css/themes/default.min.css';
 
 import obtener from '../modulos/obtener';
 import { sendData } from 'gespro-utils/akiri';
+import { filtrarKey } from "gespro-utils/filtrar_array";
 
 import referenciasJson from '../data/referencias.json';
 import horasInicio from "../data/horas-inicio.json";
@@ -22,10 +23,10 @@ import horasFin from "../data/horas-fin.json";
 const referencias = referenciasJson[0];
 
 var consulta = referencias.consultareserva,
-  valoresDefault= {},
+  valoresDefault = {},
   registro = {},
   jsxFormModal = null,
-  horas = ["06:30","07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"];
+  horas = ["06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"];
 
 let idMes;
 
@@ -47,7 +48,7 @@ export default function Reservaciones() {
     e.target.reset();
   };
 
-    //Estados para la navegación
+  //Estados para la navegación
   const [vistaMes, setVistaMes] = useState(null);
   const { usuario, setUsuario } = useContext(MyContext);
   const [cargado, setCargado] = useState(false);
@@ -93,54 +94,108 @@ export default function Reservaciones() {
     })
   }, [vistaMes]);
 
-/*
-  useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset({ something: '' });
-    }
-  }, [formState, submittedData, reset]);
-  */
+  /*
+    useEffect(() => {
+      if (formState.isSubmitSuccessful) {
+        reset({ something: '' });
+      }
+    }, [formState, submittedData, reset]);
+    */
 
   const editarRegistro = (itemEditar) => {
     setActualizado(false);
     // console.log("Item editar", itemEditar);
-    registro =  itemEditar;
-    console.log("horainicio",registro.horainicio, "horafin",registro.horafin);
-    let hi =  registro.horainicio.slice(0, 5);
+    registro = itemEditar;
+    // console.log("todos los datos", data);
+    var  objHorasInicio = {},
+         objHorasFin = {};
+    for (let index = 0; index < horasInicio.length; index++) {
+      const element1 = horasInicio[index],
+            element2 = horasFin[index];
+            objHorasInicio[index] =
+            {
+              elemento : element1,
+              estado : "active"
+            };
+            objHorasFin[index] =
+            {
+              elemento : element2,
+              estado : "active"
+            }
+    };
+    // console.log("objeto hora inicio", objHorasInicio);
+    // console.log("objeto horas fin", objHorasFin);
+    let idItemActual = itemEditar.id;
+    console.log("id del registro editado", idItemActual);
+    let fecha = itemEditar.fecha;
+    console.log("fechaseleccionada", fecha);
+    let array = filtrarKey(data, "fecha", fecha);
+    console.log("array filtrado por fecha", array);
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      if (element.id !== idItemActual) {
+        let hi = element.horainicio.slice(0, 5);
+        let hf = element.horafin.slice(0, 5);
+        console.log("id del registro", element.id);
+        console.log("hora inicio", hi);
+        console.log("hora fin", hf);
+        console.log("posiciones en horainicio", horasInicio.indexOf(hi), "horas fin pos", horasInicio.indexOf(hf));
+        console.log("posiciones en horafinf", horasFin.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
+        let posIhi = horasInicio.indexOf(hi),
+            posIhf = horasInicio.indexOf(hf),
+            posFhi = horasFin.indexOf(hi),
+            posFhf = horasFin.indexOf(hf);
+        (posIhf === -1) && (posIhf = horasInicio.length);
+        (posFhi === -1) && (posFhi = 1)
+        // (posFhf === horasFin.length) ?(posFhf = posFhf);
+        for (let index = posIhi; index < posIhf; index++) {
+          objHorasInicio[index].estado = "inactive"
+        };
+        for (let index = posFhi+1; index <= posFhf; index++) {
+          objHorasFin[index].estado = "inactive"
+        };
+      }
+    };
+    
+    console.log("objeto hora inicio", objHorasInicio);
+    console.log("objeto horas fin", objHorasFin);
+
+    // console.log("horainicio",registro.horainicio, "horafin",registro.horafin);
+    let hi = registro.horainicio.slice(0, 5);
     let hf = registro.horafin.slice(0, 5);
-    console.log("pos horainicio",horasInicio.indexOf(hi),"horas fin pos", horasFin.indexOf(hf));
+    console.log("pos horainicio", horasInicio.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
     // var mydate = new Date(registro.fecha);
     // console.log(mydate.toDateString());
     //  registro.fecha = mydate;
-     registro.inicio = horasInicio.indexOf(hi);
-     registro.fin = horasFin.indexOf(hf);
-     valoresDefault = {
-            nombre:registro.nombre,
-            asunto:registro.asunto,
-            inicio:registro.inicio,
-            fin:registro.fin,
-            fecha: registro.fecha,     
-            correo: registro.correo,
-            asunto:registro.asunto ,
-            telefono:registro.telefono,
-            cantidad:registro.cantidad,
-            instancia: registro.instancia
-      }
+    registro.inicio = horasInicio.indexOf(hi);
+    registro.fin = horasFin.indexOf(hf);
+    valoresDefault = {
+      nombre: registro.nombre,
+      asunto: registro.asunto,
+      inicio: registro.inicio,
+      fin: registro.fin,
+      fecha: registro.fecha,
+      correo: registro.correo,
+      asunto: registro.asunto,
+      telefono: registro.telefono,
+      cantidad: registro.cantidad,
+      instancia: registro.instancia
+    }
 
-      // validar que la fecha y hora estén disponbiles
+    // validar que la fecha y hora estén disponbiles
 
-      // console.log("registro a enviarse", registro, registro.fin, registro.inicio);
+    // console.log("registro a enviarse", registro, registro.fin, registro.inicio);
     setActualizado(true);
     handleShow();
   }
 
-  const getDataForm =  (data) => {
-//      data.id = registro.id;
-//      data.fecha = fecha
-//  idUsuario 
+  const getDataForm = (data) => {
+    //      data.id = registro.id;
+    //      data.fecha = fecha
+    //  idUsuario 
 
-console.log("Datos a enviar al servidor", data); 
-    
+    console.log("Datos a enviar al servidor", data);
+
     // handleClose();
   };
 
@@ -199,10 +254,10 @@ console.log("Datos a enviar al servidor", data);
         title="Reserva de sala"
         footer=""
       >
-       {actualizado
-        ? <FormReservacion valoresDefault = {valoresDefault} getDataForm={getDataForm} />       
-        : <h1>Actualizando datos...</h1>
-      }
+        {actualizado
+          ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} />
+          : <h1>Actualizando datos...</h1>
+        }
       </GModal>
 
     </React.Fragment>
