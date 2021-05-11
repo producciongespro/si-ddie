@@ -139,17 +139,13 @@ export default function Reservaciones() {
     for (let index = 0; index < array.length; index++) {
       const element = array[index];
       if (element.id !== idItemActual) {
-        let hi = element.horainicio.slice(0, 5);
-        let hf = element.horafin.slice(0, 5);
-        // console.log("id del registro", element.id);
-        // console.log("hora inicio", hi);
-        // console.log("hora fin", hf);
-        // console.log("posiciones en horainicio", horasInicio.indexOf(hi), "horas fin pos", horasInicio.indexOf(hf));
-        // console.log("posiciones en horafinf", horasFin.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
-        let posIhi = horasInicio.indexOf(hi),
+        let hi = element.horainicio.slice(0, 5),
+            hf = element.horafin.slice(0, 5),
+            posIhi = horasInicio.indexOf(hi),
             posIhf = horasInicio.indexOf(hf),
             posFhi = horasFin.indexOf(hi),
             posFhf = horasFin.indexOf(hf);
+
         (posIhf === -1) && (posIhf = horasInicio.length);
         (posFhi === -1) && (posFhi = 1)
         for (let index = posIhi; index < posIhf; index++) {
@@ -161,8 +157,8 @@ export default function Reservaciones() {
       }
     };
     
-    console.log("objeto hora inicio", objHorasInicio);
-    console.log("objeto horas fin", objHorasFin);
+    // console.log("objeto hora inicio", objHorasInicio);
+    // console.log("objeto horas fin", objHorasFin);
 
     // console.log("horainicio",registro.horainicio, "horafin",registro.horafin);
     let hi = registro.horainicio.slice(0, 5);

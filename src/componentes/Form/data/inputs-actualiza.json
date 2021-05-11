@@ -1,6 +1,6 @@
 [
   {
-    "control": "input-control",
+    "control": "inputfecha",
     "id": "fecha",
     "type": "date",
     "label": "Fecha",

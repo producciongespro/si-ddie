@@ -31,13 +31,13 @@ const filtrarPorMes = (idMes, array) => {
 export default function ContTabla(props) {
 
   const obtenerIdItemTabla = (id) => {
-    console.log("ID de Item a eliminar desde ContTabla:", id);
+    // console.log("ID de Item a eliminar desde ContTabla:", id);
   
     props.obtenerIdItem(id);
  };
 
  const obtenerItemTabla = (item) => {
-  console.log("Item:", item);
+  // console.log("Item:", item);
   props.obtenerItem(item);
 };
  

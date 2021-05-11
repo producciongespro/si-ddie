@@ -38,9 +38,10 @@ const Form = (props) => {
   const {
     register,
     handleSubmit,
+    onChange,
     formState: { errors },
   } = useForm({
-    defaultValues : props.valoresDefault
+     defaultValues : props.valoresDefault
   });
     
   // } = useForm();
@@ -55,14 +56,27 @@ const Form = (props) => {
     }
     props.getDataForm(data);
   };
-  console.log(errors);
-  console.log(errors.correo);
+  // console.log(errors);
+  // console.log(errors.correo);
 
   const handleGetValue = (e) => {
     const val = e.target.value;
     //console.log(val);
     setValInput(val);
   };
+  
+  // function valida(dato) {
+  //   // const val = e.target.value;
+  // console.log("datos",dato)
+  // (dato)
+  // return false
+  // };
+
+  const handleInputChange = (e) => {
+    // alert("hola")
+    console.log("e.target", e.target);
+  // {item.id === "fecha" && console.log("item tipo fecha")}
+  }
 
   const JsxInput = (item, key) => {
     return (
@@ -91,14 +105,14 @@ const Form = (props) => {
           defaultValue={item.defaultValue && item.defaultValue}
           {...register(item.id, {
             required: item.required,
-            maxLength: item.max,
+            maxLength: item.max
           })}
         />
       </div>
     );
   };
 
-  const JsxInputControl = (item, key) => {
+  const JsxInputFecha = (item, key) => {
     return (
       <div className="form-group" key={key}>
         <label
@@ -110,29 +124,22 @@ const Form = (props) => {
           {item.type === "range" && <span> {valInput} </span>}
         </label>
         <input
-          onInput={item.type === "range" ? handleGetValue : undefined}
+          onChange={console.log("cambiando...")}
           type={item.type}
           className="form-control"
           id={item.id}
           name={item.id}
           placeholder={item.placeholder}
-          maxLength={item.maxLength}
-          disabled={item.disabled}
-          readOnly={item.readOnly}
-          min={item.min}
-          max={item.max}
-          step={item.step}
-          onChange={alert("cambió")}
           defaultValue={item.defaultValue && item.defaultValue}
           {...register(item.id, {
             required: item.required,
-            maxLength: item.max,
           })}
         />
       </div>
     );
   };
 
+  
   const JsxSelect = (item, key) => {
     return (
       <div className="input-group mb-3" key={key}>
@@ -252,8 +259,9 @@ const Form = (props) => {
         if (item.control === "input") {
           return JsxInput(item, i);
         }
-        if (item.control === "input-control") {
-          return JsxInputControl(item, i);
+        if (item.control === "inputfecha") {
+          console.log("en inputfecha");
+          return JsxInputFecha(item, i);
         }
         if (item.control === "select") {
           return JsxSelect(item, i);
@@ -267,6 +275,7 @@ const Form = (props) => {
       })}
 
       <br />
+      <input className="" type="date" onChange={handleInputChange}/>
       <input className="btn btn-outline-info" type="submit" />
     </form>
   );
