@@ -113,20 +113,20 @@ export default function Reservaciones() {
     //      objHorasFin = {};
     for (let index = 0; index < horasInicio.length; index++) {
       const element1 = horasInicio[index],
-            element2 = horasFin[index];
-            let  indice = index.toString();
-            objHorasInicio[index] =
-            {
-              text : element1,
-              value: indice,
-              disabled : false
-            };
-            objHorasFin[index] =
-            {
-              text : element2,
-              value: indice,
-              disabled : false
-            }
+        element2 = horasFin[index];
+      let indice = index.toString();
+      objHorasInicio[index] =
+      {
+        text: element1,
+        value: indice,
+        disabled: false
+      };
+      objHorasFin[index] =
+      {
+        text: element2,
+        value: indice,
+        disabled: false
+      }
     };
     // console.log("objeto hora inicio", objHorasInicio);
     // console.log("objeto horas fin", objHorasFin);
@@ -140,23 +140,23 @@ export default function Reservaciones() {
       const element = array[index];
       if (element.id !== idItemActual) {
         let hi = element.horainicio.slice(0, 5),
-            hf = element.horafin.slice(0, 5),
-            posIhi = horasInicio.indexOf(hi),
-            posIhf = horasInicio.indexOf(hf),
-            posFhi = horasFin.indexOf(hi),
-            posFhf = horasFin.indexOf(hf);
+          hf = element.horafin.slice(0, 5),
+          posIhi = horasInicio.indexOf(hi),
+          posIhf = horasInicio.indexOf(hf),
+          posFhi = horasFin.indexOf(hi),
+          posFhf = horasFin.indexOf(hf);
 
         (posIhf === -1) && (posIhf = horasInicio.length);
         (posFhi === -1) && (posFhi = 1)
         for (let index = posIhi; index < posIhf; index++) {
           objHorasInicio[index].disabled = true;
         };
-        for (let index = posFhi+1; index <= posFhf; index++) {
-          objHorasFin[index].disabled  = true;
+        for (let index = posFhi + 1; index <= posFhf; index++) {
+          objHorasFin[index].disabled = true;
         };
       }
     };
-    
+
     // console.log("objeto hora inicio", objHorasInicio);
     // console.log("objeto horas fin", objHorasFin);
 
@@ -188,6 +188,57 @@ export default function Reservaciones() {
     setActualizado(true);
     handleShow();
   }
+
+  const getDataFecha = (fecha) => {
+
+    let consulta = referencias.obtenerfechasreserva + "?fecha='" + fecha + "'";
+    console.log("consulta", consulta);
+    obtener(consulta, function (datos) {
+      console.log("Datos con la fecha", datos);
+
+      let array = datos;
+      // console.log("array filtrado por fecha", array);
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        let hi = element.horainicio.slice(0, 5),
+          hf = element.horafin.slice(0, 5),
+          posIhi = horasInicio.indexOf(hi),
+          posIhf = horasInicio.indexOf(hf),
+          posFhi = horasFin.indexOf(hi),
+          posFhf = horasFin.indexOf(hf);
+
+        (posIhf === -1) && (posIhf = horasInicio.length);
+        (posFhi === -1) && (posFhi = 1)
+        for (let index = posIhi; index < posIhf; index++) {
+          objHorasInicio[index].disabled = true;
+        };
+        for (let index = posFhi + 1; index <= posFhf; index++) {
+          objHorasFin[index].disabled = true;
+        };
+      };
+      let hi = registro.horainicio.slice(0, 5);
+      let hf = registro.horafin.slice(0, 5);
+      // console.log("pos horainicio", horasInicio.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
+      // var mydate = new Date(registro.fecha);
+      // console.log(mydate.toDateString());
+      //  registro.fecha = mydate;
+      registro.inicio = 0;
+      registro.fin = 0;
+      valoresDefault = {
+        nombre: registro.nombre,
+        asunto: registro.asunto,
+        inicio: registro.inicio,
+        fin: registro.fin,
+        fecha: registro.fecha,
+        correo: registro.correo,
+        asunto: registro.asunto,
+        telefono: registro.telefono,
+        cantidad: registro.cantidad,
+        instancia: registro.instancia
+      };
+    })
+  };
+
 
   const getDataForm = (data) => {
     //      data.id = registro.id;
@@ -255,7 +306,7 @@ export default function Reservaciones() {
         footer=""
       >
         {actualizado
-          ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} selectInicio={objHorasInicio} selectFin={objHorasFin}/>
+          ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} getDataFecha={getDataFecha} selectInicio={objHorasInicio} selectFin={objHorasFin} />
           : <h1>Actualizando datos...</h1>
         }
       </GModal>

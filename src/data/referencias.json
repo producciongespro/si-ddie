@@ -17,6 +17,7 @@
        "consultareserva":       "http://pruebarecursos.mep.go.cr/webservices/si-ddie/consulta_reserva.php",
        "consultafechareserva":  "http://pruebarecursos.mep.go.cr/webservices/si-ddie/consulta_fecha_reserva.php",
        "agregareserva":         "http://pruebarecursos.mep.go.cr/webservices/si-ddie/agrega_reserva.php",
-       "cambiaBorradoReserva":    "http://pruebarecursos.mep.go.cr/webservices/si-ddie/actualiza_borrado_reservas.php"
+       "cambiaBorradoReserva":    "http://pruebarecursos.mep.go.cr/webservices/si-ddie/actualiza_borrado_reservas.php",
+       "obtenerfechasreserva":    "http://pruebarecursos.mep.go.cr/webservices/si-ddie/obtener_fechas_reserva.php"
     }
 ]

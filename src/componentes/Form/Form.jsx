@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { eliminar } from "gespro-utils/crud_array";
 import "./css/form.css";
@@ -38,12 +38,27 @@ const Form = (props) => {
   const {
     register,
     handleSubmit,
-    onChange,
+    watch,
     formState: { errors },
   } = useForm({
-     defaultValues : props.valoresDefault
+     defaultValues : props.valoresDefault,
   });
     
+  
+  const valueOfTest = watch('fecha');
+
+  useEffect(() => {
+     //consider this to be onchange function
+     doSomething(valueOfTest);
+  }, [valueOfTest]);
+
+const doSomething = (valor) =>{
+  (valor !== props.valoresDefault.fecha) &&
+  // console.log("array", props.valoresDefault.fecha);
+     alert("cambió!!!", valor)
+     props.getDataFecha(valor);
+}
+
   // } = useForm();
   //const { register, handleSubmit, errors } = useForm();
   const msjError = "Item requerido";
@@ -124,7 +139,6 @@ const Form = (props) => {
           {item.type === "range" && <span> {valInput} </span>}
         </label>
         <input
-          onChange={console.log("cambiando...")}
           type={item.type}
           className="form-control"
           id={item.id}
@@ -275,7 +289,6 @@ const Form = (props) => {
       })}
 
       <br />
-      <input className="" type="date" onChange={handleInputChange}/>
       <input className="btn btn-outline-info" type="submit" />
     </form>
   );
