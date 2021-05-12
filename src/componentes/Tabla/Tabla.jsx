@@ -44,7 +44,7 @@ export default function Tabla(props) {
                 <td className="text-center">
                   <button
                     onClick={() => handleVerDetalles(i)}
-                    className="btn btn-success btn-sm px-3"
+                    className="btn btn-regresar btn-sm px-3"
                   >
                     👁️
                   </button>
@@ -59,7 +59,7 @@ export default function Tabla(props) {
                   <button
                     id={item.id}
                     onClick={handleObtenerId}
-                    className="btn btn-info btn-sm px-3"
+                    className="btn btn-regresar btn-sm px-3"
                   >
                     🗑️
                   </button>

@@ -221,9 +221,9 @@ export default function SalaReuniones(props) {
     } else {
       enviarDatos(reserva);
       e.target.reset();
-      console.log("nombre",watchNombre);
-      console.log("watchAllFields",watchAllFields);
-      console.log("watchFields",watchFields);
+      // console.log("nombre",watchNombre);
+      // console.log("watchAllFields",watchAllFields);
+      // console.log("watchFields",watchFields);
     }
   };
 
@@ -412,12 +412,13 @@ export default function SalaReuniones(props) {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <button className="btn btn-info" onClick={props.handleMes}>
-              Reservas por mes
+            <button className="btn btn-regresar" onClick={props.handleMes}>
+              Reservas por mes 🗓
           </button>
           </div>
         </div>
       </div>
+      <hr />
       <ContCalendario
         obtenerIdMes={props.obtenerIdMes}
         volverCalendario={props.volverCalendario}

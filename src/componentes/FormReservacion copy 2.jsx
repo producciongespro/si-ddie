@@ -16,26 +16,23 @@ const getDataForm = (data) => {
 var
   objHorasInicio = [],
   objHorasFin = [],
-  defaultInicio = "",
-  defaultFin = ""
-//  const[ defaultFin;
+  oin = [],
+  ofi = [];
 
 
 export default function FormReservacion(props) {
-  var valoresDefault = props.valoresDefault,
-    registro = props.valoresDefault,
-    fechaDefault = valoresDefault.fecha.split("-").reverse().join("/");
+  oin = props.selectInicio;
+  ofi = props.selectFin;
+  var valoresDefault = props.valoresDefault;
+   
+   const[ optsInicio, setOptsInicio] = useState(props.selectInicio)
+   const[ optsFin, setOptsFin] = useState(props.selectFin);
+   const[ muestraSelects, setMuestraSelects] = useState(true);
 
-  // console.log("valores Default", registro);
-  // console.log("fecha con split",fechaDefault);
+  console.log("valores default", valoresDefault);
 
-  const [cambiaFecha, setCambiaFecha] = useState(false);
-  const [optsInicio, setOptsInicio] = useState(props.selectInicio)
-  const [optsFin, setOptsFin] = useState(props.selectFin);
-  const [muestraSelects, setMuestraSelects] = useState(true);
-  defaultInicio = registro.inicio;
-  defaultFin = registro.fin;
 
+  console.log("array Valores default", valoresDefault.fecha);
 
   const {
     register,
@@ -43,57 +40,34 @@ export default function FormReservacion(props) {
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      nombre: registro.nombre,
-      asunto: registro.asunto,
-      inicio: defaultInicio,
-      fin: defaultFin,
-      fecha: registro.fecha,
-      correo: registro.correo,
-      asunto: registro.asunto,
-      telefono: registro.telefono,
-      cantidad: registro.cantidad,
-      instancia: registro.instancia
-    }
+    defaultValues: valoresDefault,
   });
 
   const valueOfTest = watch('fecha');
 
 
   // useEffect(() => {
-  // setMuestraSelects(true);
+    // setMuestraSelects(true);
   // });  
 
   useEffect(() => {
-    setMuestraSelects(true);
+    //consider this to be onchange function
+    setMuestraSelects(false);
     getDataFecha(valueOfTest);
   }, [valueOfTest]);
 
 
   const onSubmit = (data) => {
-    // console.log(JSON.stringify(data));
-    // console.log("optsFin", optsFin[data.fin].disabled);
-    if (optsFin[data.fin].disabled || optsInicio[data.inicio].disabled) {
-      optsInicio[data.inicio].disabled && alert("Revisar la hora de inicio porque no está disponible")
-      optsFin[data.fin].disabled && alert("Revisar la hora final porque no está disponible")
-        (optsFin[data.fin].disabled && optsInicio[data.inicio].disabled) && alert("Revisar las horas, porque no están disponibles")
-    }
-    else {
-      props.getDataForm(data);
-    }
-
+    props.getDataForm(data);
   };
 
   const getDataFecha = (fecha) => {
-
-    // console.log("inicio", defaultInicio);
     if (fecha !== valoresDefault.fecha) {
-      setMuestraSelects(false)
-      // console.log("entré condicion fecha diferente");
+      console.log("entré condicion fecha diferente");
       let consulta = referencias.obtenerfechasreserva + "?fecha='" + fecha + "'";
-      // console.log("consulta", consulta);
+      console.log("consulta", consulta);
       obtener(consulta, function (datos) {
-        // console.log("registro con fecha", datos);
+        console.log("registro con fecha", datos);
         for (let index = 0; index < horasInicio.length; index++) {
           const element1 = horasInicio[index],
             element2 = horasFin[index];
@@ -111,7 +85,10 @@ export default function FormReservacion(props) {
             disabled: false
           }
         };
-        // console.log("Datos con la fecha", datos);
+
+
+
+        console.log("Datos con la fecha", datos);
 
         let array = datos;
         // console.log("array filtrado por fecha", array);
@@ -133,76 +110,90 @@ export default function FormReservacion(props) {
             objHorasFin[index].disabled = true;
           };
         };
-        // console.log("objHorasInicio", objHorasInicio);
-        // console.log("objHorasFin", objHorasFin);
+        console.log("objHorasInicio", objHorasInicio);
+        console.log("objHorasFin", objHorasFin);
         setOptsInicio(objHorasInicio);
         setOptsFin(objHorasFin);
+        oin = objHorasInicio;
+        ofi = objHorasFin;
+        valoresDefault.inicio = "";
+        valoresDefault.fin = "";
         setMuestraSelects(true);
+
+        // arrayInputs[1].opts = selectInicio;
+        // arrayInputs[2].opts = selectFin;
       })
     }
   };
 
   const msjError = "Item requerido";
 
-  const handlerEventClick = (e) => { setCambiaFecha(true) }
+  const handleInputChange = (e) => {
+    // alert("hola")
+    console.log("e.target", e.target);
+    // {item.id === "fecha" && console.log("item tipo fecha")}
+  }
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {
-        cambiaFecha === false
-          ?
+      <div className="input-group mb-3">
+        <div className="input-group-prepend">
+          <span className="input-group-text">Fecha</span>
+        </div>
+        <input className="form-control input-ingreso" type="date" placeholder="Fecha" {...register("fecha", { required: true })}/>
+        {errors.fecha && <span className="item-required">*</span>}
+      </div>
+    { muestraSelects
+    ?
+      <div className="row">
+        <div className="col-6">
           <div className="input-group mb-3">
             <div className="input-group-prepend">
-              <span className="input-group-text">Fecha: {fechaDefault}   </span> <button onClick={handlerEventClick}>Cambiar fecha</button>
+              <div className="input-group-prepend">
+                <span className="input-group-text">Hora inicio</span>
+              </div>
+              <select
+                className="custom-select"
+                {...register("inicio", { required: true, })}
+              >
+                {/* <option value="">Seleccione una opción</option> */}
+                {/* {optsInicio.map((opt) => ( */}
+                  {/* {oin.map((opt) => (
+                  <option key={"opt" + opt.value} value={opt.value} disabled={opt.disabled}>
+                    {opt.text}
+                  </option>
+                ))} */}
+                <Opciones opciones = {optsInicio}/>
+              </select>
             </div>
           </div>
-          :
+        </div>
+        <div className="col-6">
           <div className="input-group mb-3">
             <div className="input-group-prepend">
-              <span className="input-group-text">Fecha</span>
-            </div>
-            <input className="form-control" type="date" placeholder="Fecha" {...register("fecha", { required: true })} />
-            {errors.fecha && <span className="item-required">*</span>}
-          </div>
-      }
-      {
-        muestraSelects === true
-          ?
-          <div className="row">
-            <div className="col-6">
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">Hora inicio</span>
-                  </div>
-                  <select
-                    className="custom-select"
-                    {...register("inicio", { required: true })}
-                  >
-                    <Opciones opciones={optsInicio} />
-                  </select>
-                </div>
+              <div className="input-group-prepend">
+                <span className="input-group-text">Hora Fin</span>
               </div>
-            </div>
-            <div className="col-6">
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">Hora Fin</span>
-                  </div>
-                  <select
-                    className="custom-select"
-                    {...register("fin", { required: true, })}
-                  >
-                    <Opciones opciones={optsFin} />
-                  </select>
-                </div>
-              </div>
+              <select
+                className="custom-select"
+                {...register("fin", { required: true, })}
+              >
+                <Opciones opciones = {optsFin}/>
+                {/* <option value="">Seleccione una opción</option> */}
+                {/* {optsFin.map((opt) => ( */}
+                  {/* {ofi.map((opt) => (
+                  <option key={"opt" + opt.value} value={opt.value} disabled={opt.disabled}>
+                    {opt.text}
+                  </option>
+                ))} */}
+              </select>
             </div>
           </div>
-          : <div className="row"><p>Cargando</p></div>
+        </div>
+      </div>
+      : <div className="row"><p>Cargando datos</p></div>
       }
-
       <div className="row">
         <div className="col-sm-12 mt-3">
           <div className="input-group mb-3 input-group">

@@ -43,6 +43,15 @@ export default function ContTabla(props) {
  
  
   const reservasFiltradas = filtrarPorMes(props.idMes, props.array);
+  console.log("reservasFiltradas",reservasFiltradas)
+
+  for (let index = 0; index < reservasFiltradas.length; index++) {
+    const element = reservasFiltradas[index];
+    element.horainicio = element.horainicio.substr(0, 5);
+    element.horafin = element.horafin.substr(0, 5);
+  }
+
+  console.log("reservasFiltradas",reservasFiltradas)
   // const reservasOrdenadas = ordenarPorInicio (reservasFiltradas, "fecha");
   // console.log("reservasFiltradas",reservasFiltradas);
 // console.log("reservasOrdenadas",reservasOrdenadas);
@@ -51,11 +60,12 @@ export default function ContTabla(props) {
     <div className="row">
       <div className="col-12">
         <button
-        className="btn btn-info"
+        className="btn btn-regresar"
         onClick={props.handleReservaciones}
-        >Volver</button>
+        > 👈  Regresar</button>
       </div>
     </div>
+    <hr />
     <Tabla
       //Método para obtener el id del registro - se activa con el botón "eliminar" <<< Propiedad no requerida >>> :
       obtenerId={obtenerIdItemTabla}

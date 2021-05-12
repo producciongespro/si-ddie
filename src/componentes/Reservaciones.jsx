@@ -5,6 +5,7 @@ import ContTabla from "./Tabla/ContTabla";
 import SalaReuniones from "./SalaReuniones";
 import FormReservacion from "./FormReservacion";
 import GModal from "./Modal/GModal";
+import {fecha} from 'gespro-utils/fecha';
 
 import MyContext from '../modulos/MyContext';
 
@@ -28,27 +29,29 @@ var consulta = referencias.consultareserva,
   objHorasInicio = [],
   objHorasFin = [],
   jsxFormModal = null,
-  horas = ["06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"];
+  horas = ["06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00"],
+  horasInicioVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30"],
+  horasFinVC = ["07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
 
 let idMes;
 
 export default function Reservaciones() {
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    clearError,
-    reset
-    // } = useForm();
-  } = useForm();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  //   setError,
+  //   clearError,
+  //   reset
+  //   // } = useForm();
+  // } = useForm();
 
 
-  const onSubmit = (data, e) => {
-    alert(JSON.stringify(data));
-    e.target.reset();
-  };
+  // const onSubmit = (data, e) => {
+  //   alert(JSON.stringify(data));
+  //   e.target.reset();
+  // };
 
   //Estados para la navegación
   const [vistaMes, setVistaMes] = useState(null);
@@ -90,7 +93,12 @@ export default function Reservaciones() {
   useEffect(() => {
     // console.log("vistaMes", vistaMes);
     obtener(consulta, function (datos) {
+      // for (let index = 0; index < datos.length; index++) {
+      //   const element = array[index];
+        
+      // }
       setData(datos);
+
       // console.log("data", data);
       // console.log("propiedades",Object.keys(datos[0])); 
     })
@@ -189,65 +197,39 @@ export default function Reservaciones() {
     handleShow();
   }
 
-  const getDataFecha = (fecha) => {
-
-    let consulta = referencias.obtenerfechasreserva + "?fecha='" + fecha + "'";
-    console.log("consulta", consulta);
-    obtener(consulta, function (datos) {
-      console.log("Datos con la fecha", datos);
-
-      let array = datos;
-      // console.log("array filtrado por fecha", array);
-      for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        let hi = element.horainicio.slice(0, 5),
-          hf = element.horafin.slice(0, 5),
-          posIhi = horasInicio.indexOf(hi),
-          posIhf = horasInicio.indexOf(hf),
-          posFhi = horasFin.indexOf(hi),
-          posFhf = horasFin.indexOf(hf);
-
-        (posIhf === -1) && (posIhf = horasInicio.length);
-        (posFhi === -1) && (posFhi = 1)
-        for (let index = posIhi; index < posIhf; index++) {
-          objHorasInicio[index].disabled = true;
-        };
-        for (let index = posFhi + 1; index <= posFhf; index++) {
-          objHorasFin[index].disabled = true;
-        };
-      };
-      let hi = registro.horainicio.slice(0, 5);
-      let hf = registro.horafin.slice(0, 5);
-      // console.log("pos horainicio", horasInicio.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
-      // var mydate = new Date(registro.fecha);
-      // console.log(mydate.toDateString());
-      //  registro.fecha = mydate;
-      registro.inicio = 0;
-      registro.fin = 0;
-      valoresDefault = {
-        nombre: registro.nombre,
-        asunto: registro.asunto,
-        inicio: registro.inicio,
-        fin: registro.fin,
-        fecha: registro.fecha,
-        correo: registro.correo,
-        asunto: registro.asunto,
-        telefono: registro.telefono,
-        cantidad: registro.cantidad,
-        instancia: registro.instancia
-      };
-    })
-  };
-
-
   const getDataForm = (data) => {
-    //      data.id = registro.id;
-    //      data.fecha = fecha
-    //  idUsuario 
-
-    console.log("Datos a enviar al servidor", data);
-
-    // handleClose();
+    //actualización de registro
+    console.log("datos a enviar antes", data);
+    let url = referencias.actualizareservas;
+    data.id = registro.id;
+    data.idUsuario = usuario.idUsuario;
+    data.inicio = horasInicioVC[data.inicio];
+    data.fin = horasFinVC[data.fin]
+    
+    console.log("datos a enviar", data);
+    sendData(url, data)
+    .then(respuesta => {
+      if (!respuesta.error) {
+        // console.log("entré if");
+        alertify.alert('Aviso', 'El registro ha sido actualizado exitosamente');
+        setActualizado(false);
+        obtener(consulta, function (datos) {
+          setData(datos);
+          setActualizado(true);
+        });
+      }
+      else {
+        let msjServer;
+        if (respuesta.error) {
+          msjServer = respuesta.msj;
+        }
+        else {
+          msjServer = "Problemas de conexión con la base de datos. Error 405"
+        }
+        alertify.alert("Error", msjServer);
+      }
+    })
+     handleClose();
   };
 
   const eliminarRegistro = (idBorrar) => {
@@ -306,7 +288,8 @@ export default function Reservaciones() {
         footer=""
       >
         {actualizado
-          ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} getDataFecha={getDataFecha} selectInicio={objHorasInicio} selectFin={objHorasFin} />
+          // ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} getDataFecha={getDataFecha} selectInicio={objHorasInicio} selectFin={objHorasFin} />
+          ? <FormReservacion valoresDefault={valoresDefault} getDataForm={getDataForm} selectInicio={objHorasInicio} selectFin={objHorasFin} />
           : <h1>Actualizando datos...</h1>
         }
       </GModal>
