@@ -60,10 +60,6 @@ export default function FormReservacion(props) {
   const valueOfTest = watch('fecha');
 
 
-  // useEffect(() => {
-  // setMuestraSelects(true);
-  // });  
-
   useEffect(() => {
     setMuestraSelects(true);
     getDataFecha(valueOfTest);
