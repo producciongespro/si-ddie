@@ -154,19 +154,22 @@ export default function SalaReuniones(props) {
     // console.log("fecha", fecha);
     fechaseleccionada = fecha;
     // console.log("fechaseleccionada",fechaseleccionada);
-    filtrofecha = filtrarKey(data, "fecha", fecha.id);
-    // console.log("filtrofecha largo", filtrofecha.length);
-    for (let index = 0; index < filtrofecha.length; index++) {
-      // eliminar milisegundos de los campos alias de 12 horas, tipo time  08:30:00 a 08:30
-      const element1 = filtrofecha[index].horainicio;
-      const element2 = filtrofecha[index].horafin;
-      let cadena1 = element1.slice(0, 5);
-      let cadena2 = element2.slice(0, 5);
-      filtrofecha[index].horainicio = cadena1;
-      filtrofecha[index].horafin = cadena2;
-    }
+    if (data.length !== 0) {
 
-    setFiltrados(filtrofecha);
+      filtrofecha = filtrarKey(data, "fecha", fecha.id);
+      // console.log("filtrofecha largo", filtrofecha.length);
+      for (let index = 0; index < filtrofecha.length; index++) {
+        // eliminar milisegundos de los campos alias de 12 horas, tipo time  08:30:00 a 08:30
+        const element1 = filtrofecha[index].horainicio;
+        const element2 = filtrofecha[index].horafin;
+        let cadena1 = element1.slice(0, 5);
+        let cadena2 = element2.slice(0, 5);
+        filtrofecha[index].horainicio = cadena1;
+        filtrofecha[index].horafin = cadena2;
+      }
+      setFiltrados(filtrofecha);
+    }
+    else  setFiltrados([]);
     setCargado(true);
     handleShow();
     reserva = {};

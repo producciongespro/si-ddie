@@ -1,16 +1,11 @@
-import React from "react";
-
-var claseBoostrap = "table ",
-    fechaEnc = "",
-    cols = 0;
+let claseBoostrap = "table ";
 
 export default function Tabla(props) {
   const conf = props.conf;
   conf.oscura && (claseBoostrap = claseBoostrap + " table-dark  table-responsive");
   conf.alterna && (claseBoostrap = claseBoostrap + " table-striped table-responsive");
+  //console.log(claseBoostrap);
 
-  cols = conf.campos.lenght;
-  
   const handleVerDetalles = (i) => {
     // console.log("props.array",props.array);
     // console.log("props.array[i]", props.array[i]);
@@ -23,24 +18,11 @@ export default function Tabla(props) {
 
 
   
-  const encabezado = (item, i) => {
-  var muestra = false;
-    if (fechaEnc !== item.fecha)
-    {
-      fechaEnc = item.fecha
-      muestra = true
-    }
-    else muestra= false;
-    
-    if (muestra === true) {
+  const JsxEncabezado = (item, key) => {
     return (
-      <td colspan = {cols} className="text-center">
-          {item.fecha2}
-      </td>
+      console.log("item", item)
     )
-    }
-  };
-
+  }
   return (
     <table className={claseBoostrap}>
       <thead>
@@ -56,11 +38,10 @@ export default function Tabla(props) {
         </tr>
       </thead>
       <tbody>
-        {props.array.map((item, i) => (
-          <>
-           <tr scope="row" key={"encabezado"+i}>  
-            {conf.encdia && encabezado(item,i)}
-            </tr>
+        {props.array.map((item, i) => {
+               if (item.control === "input") {
+                return JsxEncabezado(item, i);
+              }
           <tr key={i}>
             {conf.indice && <th scope="row"> {i + 1} </th>}
             {conf.campos.map((campo, indice) => (
@@ -96,23 +77,8 @@ export default function Tabla(props) {
               )
             }
           </tr>
-          
-          {/* <tr>  {conf.encdia && (
-                <td className="text-center">
-                  <button
-                    id={item.id}
-                    onClick={handleObtenerId}
-                    className="btn btn-regresar btn-sm px-3"
-                  >
-                    🗑️
-                  </button>
-                </td>
-              )
-          }
-            </tr> */}
-           
-          </>
-        ))}
+        })
+       }
       </tbody>
     </table>
   );

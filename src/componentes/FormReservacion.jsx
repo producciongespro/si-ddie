@@ -71,21 +71,28 @@ export default function FormReservacion(props) {
 
 
   const onSubmit = (data) => {
+    let enviarDatos = true;
+    // const horasVC = ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
+    // const indiceInicio = horasVC.indexOf(optsInicio[data.inicio]),
+    // indiceFin = horas.indexOf(reserva.fin);
     // console.log(JSON.stringify(data));
     // console.log("optsFin", optsFin[data.fin].disabled);
+    if (data.fin < data.inicio){
+      alert("La hora final es mayor que inicial, por favor revisar");
+      enviarDatos = false
+    }
     if (optsFin[data.fin].disabled || optsInicio[data.inicio].disabled) {
-      optsInicio[data.inicio].disabled && alert("Revisar la hora de inicio porque no está disponible")
-      optsFin[data.fin].disabled && alert("Revisar la hora final porque no está disponible")
-        (optsFin[data.fin].disabled && optsInicio[data.inicio].disabled) && alert("Revisar las horas, porque no están disponibles")
-    }
-    else {
-      props.getDataForm(data);
-    }
+        optsInicio[data.inicio].disabled && alert("Revisar la hora de inicio porque no está disponible");
+        optsFin[data.fin].disabled && alert("Revisar la hora final porque no está disponible");
+        (optsFin[data.fin].disabled && optsInicio[data.inicio].disabled) && alert("Revisar las horas, porque no están disponibles");
+        enviarDatos = false;
 
+    }
+    enviarDatos && props.getDataForm(data);
   };
 
   const getDataFecha = (fecha) => {
-
+ 
     // console.log("inicio", defaultInicio);
     if (fecha !== valoresDefault.fecha) {
       setMuestraSelects(false)
@@ -123,15 +130,25 @@ export default function FormReservacion(props) {
             posIhf = horasInicio.indexOf(hf),
             posFhi = horasFin.indexOf(hi),
             posFhf = horasFin.indexOf(hf);
-
-          (posIhf === -1) && (posIhf = horasInicio.length);
-          (posFhi === -1) && (posFhi = 1)
-          for (let index = posIhi; index < posIhf; index++) {
-            objHorasInicio[index].disabled = true;
-          };
-          for (let index = posFhi + 1; index <= posFhf; index++) {
-            objHorasFin[index].disabled = true;
-          };
+          
+          // Construcción objeto para select Horas Inicio
+          (posIhf === -1) && (posIhf = horasInicio.length - 1); //si hora final es -1 entonces es 4 y debe colocarse en última posición
+          if (posIhi === posIhf)
+            objHorasInicio[posIhi].disabled = true
+          else
+            for (let index = posIhi; index < posIhf; index++) {
+              console.log("index horas inicio", index);
+              objHorasInicio[index].disabled = true;
+            };
+          
+          // Construcción objeto  para select Horas Fin
+          (posFhi === -1) && (posFhi = 0)
+          if (posFhf === posFhi + 1)
+            objHorasFin[posFhf].disabled = true
+          else
+            for (let index = posFhi + 1; index <= posFhf; index++) {
+              objHorasFin[index].disabled = true;
+            };
         };
         // console.log("objHorasInicio", objHorasInicio);
         // console.log("objHorasFin", objHorasFin);

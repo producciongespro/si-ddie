@@ -6,8 +6,9 @@ const confTabla = {
   indice: true,
   ver: true,
   eliminar: true,
+  encdia : true,
   encabezado: ["Fecha", "Inicio", "Fin", "Solicitante","Dirección/Depto."], //Títulos de tabla (Primera fila encabezado)
-  campos: ["fecha", "horainicio", "horafin", "correo","instancia"], // Nombre de los cmapos del json
+  campos: ["fecha2", "horainicio", "horafin", "correo","instancia"], // Nombre de los cmapos del json
 };
 
 let datos;
@@ -43,18 +44,17 @@ export default function ContTabla(props) {
  
  
   const reservasFiltradas = filtrarPorMes(props.idMes, props.array);
-  console.log("reservasFiltradas",reservasFiltradas)
+  // console.log("reservasFiltradas",reservasFiltradas)
 
   for (let index = 0; index < reservasFiltradas.length; index++) {
     const element = reservasFiltradas[index];
     element.horainicio = element.horainicio.substr(0, 5);
     element.horafin = element.horafin.substr(0, 5);
+    element.fecha2 = element.fecha.split("-").reverse().join("/");
   }
 
-  console.log("reservasFiltradas",reservasFiltradas)
-  // const reservasOrdenadas = ordenarPorInicio (reservasFiltradas, "fecha");
-  // console.log("reservasFiltradas",reservasFiltradas);
-// console.log("reservasOrdenadas",reservasOrdenadas);
+  // console.log("reservasFiltradas",reservasFiltradas)
+
   return (
     <>
     <div className="row">

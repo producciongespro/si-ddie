@@ -19,7 +19,11 @@ const referencias = referenciasJson[0];
 
 export default function Basededatos() {
 
-  const { register, handleSubmit, errors, clearError } = useForm();
+  // const { register, handleSubmit, errors, clearError } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors } } = useForm();
 
   const { usuario, setUsuario } = useContext(MyContext);
 
@@ -63,13 +67,13 @@ export default function Basededatos() {
 
   const handleSeleccionarIngreso = (e) => {
     //obtenr el valor de seleccion
-    clearError();
+    // clearError();
     setIngresoSel(parseInt(e.target.value));
   }
 
   const handleMonthSelect = (e) => {
     //obtenr el valor de seleccion
-    clearError();
+    // clearError();
     let mesActual = parseInt(e.target.value);
     setMesSel(mesActual);
   }
@@ -82,7 +86,7 @@ export default function Basededatos() {
           <div className="row">
             <div className="form-group col-sm-6 ">
               <label className="font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
-              <select className="custom-select" defaultValue="" onChange={handleSeleccionarIngreso} name="id_ingreso" ref={register({ required: true })}>
+              <select className="custom-select" defaultValue="" onChange={handleSeleccionarIngreso} name="id_ingreso"  {...register("id_ingreso", { required: true })} >
                 {errors.id_ingreso && <p className="errors">Este campo es requerido</p>}
                 <option value="" disabled>Seleccione...</option>
                 {
@@ -93,15 +97,17 @@ export default function Basededatos() {
               </select>
             </div>
             <div className="form-group col-sm-6 my-2">
-              <InputItem elementClass="col-sm-6 my-2 form-group" placeholderText="Descriptor" tipo="text" nombre="descriptor" textlabel="Descriptor" referencia={register({ required: true })} />
-              {errors.descriptor && <p className="errors">Este campo es requerido</p>}
+            <input type="text" className="col-sm-6 my-2 form-group" placeholder="Descriptor" {...register("descriptor", { required: true })} />
+            {errors.descriptor && "Este campo es requerido"}
+              {/* <InputItem elementClass="col-sm-6 my-2 form-group" placeholderText="Descriptor" tipo="text" nombre="descriptor" textlabel="Descriptor" referencia={register({ required: true })} />
+              {errors.descriptor && <p className="errors">Este campo es requerido</p>} */}
             </div>
           </div>
           {ingresoSel === 3 &&
             <div className="row">
               <div className="col-sm-6">
                 <label className="font-len" htmlFor="mes">Mes:</label>
-                <select className="custom-select" defaultValue="" onChange={handleMonthSelect} name="mes" id="mes" ref={register({ required: true })}>
+                <select className="custom-select" defaultValue="" onChange={handleMonthSelect} name="mes" id="mes" {...register("mes", { required: true })}>
                   {errors.mes && <p className="errors">Este campo es requerido</p>}
                   <option value="" disabled>Seleccione...</option>
                   {
@@ -111,7 +117,8 @@ export default function Basededatos() {
                 </select>
               </div>
               <div className="col-sm-6">
-                <InputItem tipo="number" nombre="anno" placeholderText="Escriba el año" textlabel="Año:" referencia={register({ required: true })} />
+              <input type="number" className="col-sm-6 my-2 form-group" placeholder="Escriba el año" {...register("anno", { required: true })} />
+                {/* <InputItem tipo="number" nombre="anno" placeholderText="Escriba el año" textlabel="Año:" referencia={register({ required: true })} /> */}
                 {errors.anno && <p className="errors">Este campo es requerido</p>}
               </div>
             </div>
@@ -120,12 +127,13 @@ export default function Basededatos() {
             <React.Fragment>
               <div className="row">
                 <div className="form-group col-sm-6 my-2">
-                  <InputItem placeholderText="Número..." tipo="text" nombre="registro" textlabel="Número de registro" referencia={register({ required: true })} />
+                <input type="text" className="col-sm-6 my-2 form-group" placeholder="Número de registro" {...register("registro", { required: true })} />
+                  {/* <InputItem placeholderText="Número..." tipo="text" nombre="registro" textlabel="Número de registro" referencia={register({ required: true })} /> */}
                   {errors.registro && <p className="errors">Este campo es requerido</p>}
                 </div>
                 <div className="form-group col-sm-6 my-2">
                   <label className="font-len" htmlFor="nota">Ingrese las notas:</label>
-                  <textarea className="form-control" placeholderText="Ingrese las notas" name="nota" ref={register({ required: true })} />
+                  <textarea className="form-control" placeholderText="Ingrese las notas" name="nota" {...register("nota",{ required: true })} />
                   {errors.nota && <p className="errors">Este campo es requerido</p>}
                 </div>
               </div>
@@ -135,12 +143,13 @@ export default function Basededatos() {
            <React.Fragment>
             <div className="row">
               <div className="form-group col-sm-6 my-2">
-                <InputItem placeholderText="Número...." tipo="text" nombre="modificado_reg_antiguo" textlabel="Número registro antiguo" referencia={register({ required: true })} />
+              <input type="text" className="col-sm-6 my-2 form-group" placeholder="Número de registro antiguo" {...register("modificado_reg_antiguo", { required: true })} />
+                {/* <InputItem placeholderText="Número...." tipo="text" nombre="modificado_reg_antiguo" textlabel="Número registro antiguo" referencia={register({ required: true })} /> */}
                 {errors.modificado_reg_antiguo && <p className="errors">Este campo es requerido</p>}
               </div>
               <div className="form-group col-sm-6 my-2">
                 <p><label className="font-len" htmlFor="modificado_datos_corregidos">Ingrese los datos corregidos:</label> </p>
-                <textarea className="form-control" name="modificado_datos_corregidos" id="modificado_datos_corregidos" ref={register({ required: true })} />
+                <textarea className="form-control" name="modificado_datos_corregidos" id="modificado_datos_corregidos" {...register("modificado_datos_corregidos",{ required: true })} />
                 {errors.modificado_datos_corregidos && <p className="errors">Este campo es requerido</p>}
               </div>
             </div>
@@ -148,22 +157,26 @@ export default function Basededatos() {
           }
           <div className="row">
             <div className="form-group col-sm-6 my-2">
-              <InputItem tipo="number" nombre="portada" textlabel="Portada:" placeholderText="No. portada" referencia={register({ required: true })} />
+            <input type="text" className="col-sm-6 my-2 form-group" placeholder="Portada" {...register("portada", { required: true })} />
+              {/* <InputItem tipo="number" nombre="portada" textlabel="Portada:" placeholderText="No. portada" referencia={register({ required: true })} /> */}
               {errors.portada && <p className="errors">Este campo es requerido</p>}
             </div>
             <div className="form-group col-sm-6 my-2">
-              <InputItem tipo="number" nombre="texto_completo" textlabel="Texto completo:" placeholderText="No. del texto" referencia={register({ required: true })} />
+            <input type="text" className="col-sm-6 my-2 form-group" placeholder="No. del texto" {...register("texto_completo", { required: true })} />
+              {/* <InputItem tipo="number" nombre="texto_completo" textlabel="Texto completo:" placeholderText="No. del texto" referencia={register({ required: true })} /> */}
               {errors.texto_completo && <p className="errors">Este campo es requerido</p>}
             </div>
           </div>
 
           <div className="row">
             <div className="form-group col-sm-6 my-2">
-              <InputItem tipo="number" nombre="enlace" textlabel="Enlace:" placeholderText="No. enlace" referencia={register({ required: true })} />
+            <input type="text" className="col-sm-6 my-2 form-group" placeholder="Número de registro antiguo" {...register("modificado_reg_antiguo", { required: true })} />
+              {/* <InputItem tipo="number" nombre="enlace" textlabel="Enlace:" placeholderText="No. enlace" referencia={register({ required: true })} /> */}
               {errors.enlace && <p className="errors">Este campo es requerido</p>}
             </div>
             <div className="form-group col-sm-6 my-2">
-              <InputItem tipo="date" nombre="fecha" textlabel="Fecha:" referencia={register({ required: true })} />
+            <input type="text" className="col-sm-6 my-2 form-group" placeholder="Número de registro antiguo" {...register("modificado_reg_antiguo", { required: true })} />
+              {/* <InputItem tipo="date" nombre="fecha" textlabel="Fecha:" referencia={register({ required: true })} /> */}
               {errors.fecha && <p className="errors">Este campo es requerido</p>}
             </div>
           </div>

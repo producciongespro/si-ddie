@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useForm } from 'react-hook-form';
 import ContTabla from "./Tabla/ContTabla";
-// import ContForm from "./Form/ContForm";
 import SalaReuniones from "./SalaReuniones";
 import FormReservacion from "./FormReservacion";
 import GModal from "./Modal/GModal";
-import {fecha} from 'gespro-utils/fecha';
+import { fecha } from 'gespro-utils/fecha';
+
+// import ContForm from "./Form/ContForm";
+// import { useForm } from 'react-hook-form';
 
 import MyContext from '../modulos/MyContext';
 
@@ -95,7 +96,7 @@ export default function Reservaciones() {
     obtener(consulta, function (datos) {
       // for (let index = 0; index < datos.length; index++) {
       //   const element = array[index];
-        
+
       // }
       setData(datos);
 
@@ -154,27 +155,29 @@ export default function Reservaciones() {
           posFhi = horasFin.indexOf(hi),
           posFhf = horasFin.indexOf(hf);
 
-        (posIhf === -1) && (posIhf = horasInicio.length);
-        (posFhi === -1) && (posFhi = 1)
-        for (let index = posIhi; index < posIhf; index++) {
-          objHorasInicio[index].disabled = true;
-        };
-        for (let index = posFhi + 1; index <= posFhf; index++) {
-          objHorasFin[index].disabled = true;
-        };
+        // Construcción objeto para select Horas Inicio
+        (posIhf === -1) && (posIhf = horasInicio.length - 1);
+        if (posIhi === posIhf)
+          objHorasInicio[posIhi].disabled = true
+        else
+          for (let index = posIhi; index < posIhf; index++) {
+            objHorasInicio[index].disabled = true;
+          };
+
+        // Construcción objeto  para select Horas Fin
+        (posFhi === -1) && (posFhi = 0)
+        if (posFhf === posFhi + 1)
+          objHorasFin[posFhf].disabled = true
+        else
+          for (let index = posFhi + 1; index <= posFhf; index++) {
+            objHorasFin[index].disabled = true;
+          };
       }
     };
 
-    // console.log("objeto hora inicio", objHorasInicio);
-    // console.log("objeto horas fin", objHorasFin);
-
-    // console.log("horainicio",registro.horainicio, "horafin",registro.horafin);
     let hi = registro.horainicio.slice(0, 5);
     let hf = registro.horafin.slice(0, 5);
-    // console.log("pos horainicio", horasInicio.indexOf(hi), "horas fin pos", horasFin.indexOf(hf));
-    // var mydate = new Date(registro.fecha);
-    // console.log(mydate.toDateString());
-    //  registro.fecha = mydate;
+
     registro.inicio = horasInicio.indexOf(hi);
     registro.fin = horasFin.indexOf(hf);
     valoresDefault = {
@@ -197,39 +200,39 @@ export default function Reservaciones() {
     handleShow();
   }
 
-  const getDataForm = (data) => {
-    //actualización de registro
-    console.log("datos a enviar antes", data);
+  const getDataForm = (data) => {    //actualización de registro
+    
+    // console.log("datos a enviar antes", data);
     let url = referencias.actualizareservas;
     data.id = registro.id;
     data.idUsuario = usuario.idUsuario;
     data.inicio = horasInicioVC[data.inicio];
     data.fin = horasFinVC[data.fin]
-    
-    console.log("datos a enviar", data);
+
+    // console.log("datos a enviar", data);
     sendData(url, data)
-    .then(respuesta => {
-      if (!respuesta.error) {
-        // console.log("entré if");
-        alertify.alert('Aviso', 'El registro ha sido actualizado exitosamente');
-        setActualizado(false);
-        obtener(consulta, function (datos) {
-          setData(datos);
-          setActualizado(true);
-        });
-      }
-      else {
-        let msjServer;
-        if (respuesta.error) {
-          msjServer = respuesta.msj;
+      .then(respuesta => {
+        if (!respuesta.error) {
+          // console.log("entré if");
+          alertify.alert('Aviso', 'El registro ha sido actualizado exitosamente');
+          setActualizado(false);
+          obtener(consulta, function (datos) {
+            setData(datos);
+            setActualizado(true);
+          });
         }
         else {
-          msjServer = "Problemas de conexión con la base de datos. Error 405"
+          let msjServer;
+          if (respuesta.error) {
+            msjServer = respuesta.msj;
+          }
+          else {
+            msjServer = "Problemas de conexión con la base de datos. Error 405"
+          }
+          alertify.alert("Error", msjServer);
         }
-        alertify.alert("Error", msjServer);
-      }
-    })
-     handleClose();
+      })
+    handleClose();
   };
 
   const eliminarRegistro = (idBorrar) => {
