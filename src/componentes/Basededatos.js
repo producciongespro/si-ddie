@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 import obtener from '../modulos/obtener';
-import meses from "../data/meses.json";
-// import moment from 'moment';
-// import 'moment/locale/es';
 
 import MyContext from '../modulos/MyContext';
 
@@ -31,9 +28,6 @@ export default function Basededatos() {
          id_usuario: usuario.idUsuario} 
       });
 
-
-
-
   //Estado para controlar la carga del json de ingresos:
   const [ingreso, setIngreso] = useState(null);
 
@@ -49,13 +43,13 @@ export default function Basededatos() {
   const meses = ["enero", "febrero", "marzo", "abril", "may", "junio", "julio", "agosto", "setiemre", "octubre", "noviembre", "diciembre"];
 
   const onSubmit = (data, e) => {
-    console.log("data", data);
-    console.log(JSON.stringify(data));
+    // console.log("data", data);
+    // console.log(JSON.stringify(data));
 
     let url = referencias.guardaconsulta + "?tabla_destino=ingresos";
 
     enviar(url, data, function (resp) {
-      console.log("resp", resp);
+      // console.log("resp", resp);
       mostrarAlerta("Alerta", resp.data.mensaje);
     });
     setIngresoSel(0);
@@ -78,17 +72,17 @@ export default function Basededatos() {
   const valueOfIngreso = watch('id_ingreso');
 
 
-  const handleSeleccionarIngreso = (e) => {
-    //obtenr el valor de seleccion
-    // clearError();
-    console.log("Select ingreso", e);
-    setIngresoSel(parseInt(e));
-  }
+  // const handleSeleccionarIngreso = (e) => {
+  //   //obtenr el valor de seleccion
+  //   // clearError();
+  //   console.log("Select ingreso", e);
+  //   setIngresoSel(parseInt(e));
+  // }
 
   const handleMonthSelect = (e) => {
     //obtenr el valor de seleccion
     // clearError();
-    console.log("Cambio en select mes", e.target.value);
+    // console.log("Cambio en select mes", e.target.value);
     let mesActual = parseInt(e.target.value);
     setMesSel(mesActual);
   }
@@ -101,7 +95,7 @@ export default function Basededatos() {
           <div className="row">
             <div className="form-group col-sm-6 ">
               <label className="item-negrilla font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
-              <select className="custom-select form-control" defaultValue="" onChange={handleSeleccionarIngreso}  {...register("id_ingreso", { required: true })} >
+              <select className="custom-select form-control" {...register("id_ingreso", { required: true })} >
                 <option value="" disabled>Seleccione...</option>
                 {
                   ingreso.map((item, i) => (
@@ -197,7 +191,7 @@ export default function Basededatos() {
             </div>
           </div>
           <div className={"form-group d-none"}>
-            <input type="text" className="form-control" {...register("id_usuario")} />
+            
           </div>
           <div className="row">
             <div className="col-md-4 center">

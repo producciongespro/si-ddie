@@ -15,7 +15,14 @@ const referencias = referenciasJson[0];
 export default function Consultas() {
 
 
-  const { register, handleSubmit, errors, clearError } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors } } = useForm({
+      defaultValues : {
+         id_usuario: usuario.idUsuario} 
+      });
 
   const { usuario, setUsuario } = useContext(MyContext);
 
@@ -43,6 +50,7 @@ export default function Consultas() {
   const [respuesta, setRespuesta] = useState(null);
 
   const onSubmit = (data, e) => {
+    console.log(JSON.stringify(data));
     data.fecha_respuesta === "" && delete data["fecha_respuesta"];
     data.id_respuesta === "" && delete data["id_respuesta"];
     let url = referencias.guardaconsulta + "?tabla_destino=consultas";
