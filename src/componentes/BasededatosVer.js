@@ -67,7 +67,7 @@ export default function BasededatosVer() {
   //Estado para ocultar o mostrar un modal
   const [show, setShow] = useState(false);
 
-  const meses = ["enero", "febrero", "marzo", "abril", "may", "junio", "julio", "agosto", "setiemre", "octubre", "noviembre", "diciembre"];
+  const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
 
   //cerrar modal
   const handleClose = () => setShow(true);

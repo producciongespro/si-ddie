@@ -23,10 +23,7 @@ export default function Basededatos() {
     register,
     handleSubmit,
     watch,
-    formState: { errors } } = useForm({
-      defaultValues : {
-         id_usuario: usuario.idUsuario} 
-      });
+    formState: { errors } } = useForm();
 
   //Estado para controlar la carga del json de ingresos:
   const [ingreso, setIngreso] = useState(null);
@@ -40,11 +37,15 @@ export default function Basededatos() {
   //Cargado se cambia a True cuando se termina la carga de json del servidor
   const [cargado, setCargado] = useState(false);
 
-  const meses = ["enero", "febrero", "marzo", "abril", "may", "junio", "julio", "agosto", "setiemre", "octubre", "noviembre", "diciembre"];
+  const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
 
   const onSubmit = (data, e) => {
-    // console.log("data", data);
+    
     // console.log(JSON.stringify(data));
+    
+    data.id_usuario =  usuario.idUsuario
+
+     console.log("data", data);
 
     let url = referencias.guardaconsulta + "?tabla_destino=ingresos";
 
@@ -80,9 +81,6 @@ export default function Basededatos() {
   // }
 
   const handleMonthSelect = (e) => {
-    //obtenr el valor de seleccion
-    // clearError();
-    // console.log("Cambio en select mes", e.target.value);
     let mesActual = parseInt(e.target.value);
     setMesSel(mesActual);
   }
@@ -95,7 +93,8 @@ export default function Basededatos() {
           <div className="row">
             <div className="form-group col-sm-6 ">
               <label className="item-negrilla font-len" htmlFor="id_ingreso">Nuevo ingreso:&nbsp;&nbsp;</label>
-              <select className="custom-select form-control" {...register("id_ingreso", { required: true })} >
+              <select className="custom-select form-control" defaultValue="" {...register("id_ingreso", { required: true })} >
+              {errors.id_ingreso && <p className="item-error">Este campo es requerido</p>}
                 <option value="" disabled>Seleccione...</option>
                 {
                   ingreso.map((item, i) => (
@@ -116,7 +115,7 @@ export default function Basededatos() {
               <div className="form-group col-sm-6">
                 <label className="item-negrilla font-len" htmlFor="mes">Mes:&nbsp;&nbsp;</label>
                 <select className="custom-select form-control" defaultValue="" onChange={handleMonthSelect} name="mes" id="mes" {...register("mes", { required: true })}>
-                  {errors.descriptor && <p className="item-error">Este campo es requerido</p>}
+                  {errors.mes && <p className="item-error">Este campo es requerido</p>}
                   <option value="" disabled>Seleccione...</option>
                   {
                     meses.map((label, i) => (
@@ -191,7 +190,7 @@ export default function Basededatos() {
             </div>
           </div>
           <div className={"form-group d-none"}>
-            
+
           </div>
           <div className="row">
             <div className="col-md-4 center">

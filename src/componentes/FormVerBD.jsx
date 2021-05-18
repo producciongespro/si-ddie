@@ -28,10 +28,10 @@ export default function FormVerBD(props) {
       itemEditar.id_ingreso =  itemEditar.id_ingreso;
     });
   // const valueOfIngreso = watch('id_ingreso');
-  console.log("watch id_ingreso", watch('id_ingreso'));
+  // console.log("watch id_ingreso", watch('id_ingreso'));
 
   const onSubmit = (data, e) => {
-    console.log("enviando...",JSON.stringify(data));
+    // console.log("enviando...",JSON.stringify(data));
     props.handlerEnviarEdicion(data)
   }
 
@@ -61,7 +61,7 @@ export default function FormVerBD(props) {
           <div className="col-sm-6">
             <label className="item-negrilla font-len" htmlFor="mes">Mes:&nbsp;&nbsp;</label>
             <select className="custom-select form-control" defaultValue="" onChange={handleMonthSelect} name="mes" id="mes" {...register("mes", { required: true })} defaultValue={itemEditar.mes} >
-              {errors.descriptor && <p className="item-error">Este campo es requerido</p>}
+              {errors.mes && <p className="item-error">Este campo es requerido</p>}
               <option value="" disabled>Seleccione...</option>
               {
                 meses.map((label, i) => (

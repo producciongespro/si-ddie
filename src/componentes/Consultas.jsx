@@ -19,10 +19,9 @@ export default function Consultas() {
     register,
     handleSubmit,
     watch,
-    formState: { errors } } = useForm({
-      defaultValues : {
-         id_usuario: usuario.idUsuario} 
-      });
+    formState: { errors } } = useForm();
+
+  const valueOfSolicitante = watch('id_solicitante');
 
   const { usuario, setUsuario } = useContext(MyContext);
 
@@ -50,15 +49,16 @@ export default function Consultas() {
   const [respuesta, setRespuesta] = useState(null);
 
   const onSubmit = (data, e) => {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     data.fecha_respuesta === "" && delete data["fecha_respuesta"];
     data.id_respuesta === "" && delete data["id_respuesta"];
+    data.id_usuario = usuario.idUsuario
     let url = referencias.guardaconsulta + "?tabla_destino=consultas";
-    console.log("url desde submit", url);
-    console.log("data", data);
+    // console.log("url desde submit", url);
+    // console.log("data", data);
 
     enviar(url, data, function (resp) {
-       console.log(resp);
+      console.log(resp);
     });
     setIntervencion(0);
     e.target.reset(); // reset after form submit
@@ -96,30 +96,7 @@ export default function Consultas() {
     })
   }, []);
 
-  const handlerSeleccion = (e) => {
-    clearError();
-    parseInt(e.target.value);
-    switch (e.target.name) {
-      case "id_intervencion":
-        setIntervencion(parseInt(e.target.value));
-        break;
-      case "id_solicitud":
-        setSolicitud(parseInt(e.target.value));
-        break;
-      case "id_solicitante":
-        setSolicitante(parseInt(e.target.value));
-        break;
-      case "tipo_respuesta":
-        setRespuesta(parseInt(e.target.value));
-        break;
-      default:
-        break;
-    }
-
-    setIntervencion(parseInt(e.target.value));
-  }
-
-  return (
+ return (
     cargado ?
       (
         <div className="col-12">
@@ -127,12 +104,11 @@ export default function Consultas() {
             <h1 className="header-1">Agregar consulta</h1><hr />
             <div className="row">
               <div className="form-group col-sm-12 ">
-                <label className="font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label>
-                <select className="custom-select" key="iditervencion" defaultValue="" onChange={handlerSeleccion} name="id_intervencion" ref={register({ required: true })}>
-                  {errors.id_intervencion && <p className="errors">Este campo es requerido</p>}
+                <label className="item-negrilla font-len" htmlFor="id_intervencion">Tipo de intervención:&nbsp;&nbsp;</label>
+                <select className="custom-select form-control" defaultValue="" {...register("id_intervencion", { required: true })} >
+                {errors.id_intervencion && <p className="item-error">Este campo es requerido</p>}
                   <option value="" disabled>Seleccione...</option>
                   {
-
                     tipo_intervencion.map((item, i) => (
                       <option key={"intervencion" + i} value={item.id}>{item.tipo}</option>
                     ))
@@ -142,12 +118,11 @@ export default function Consultas() {
             </div>
             <div className="row">
               <div className="form-group col-sm-12 ">
-                <label className="font-len" htmlFor="id_solicitante">Tipo de solicitante:</label>
-                <select className="custom-select" key="idsolicitante" defaultValue="" onChange={handlerSeleccion} name="id_solicitante" ref={register({ required: true })}>
-                  {errors.id_solicitante && <p className="errors">Este campo es requerido</p>}
+                <label className="item-negrilla font-len" htmlFor="id_solicitante">Tipo de solicitante:&nbsp;&nbsp;</label>
+                <select className="custom-select form-control" defaultValue="" {...register("id_solicitante", { required: true })} >
+                {errors.id_solicitante && <p className="item-error">Este campo es requerido</p>}
                   <option value="" disabled>Seleccione...</option>
                   {
-
                     tipo_solicitante.map((item, i) => (
                       <option key={"solicitante" + i} value={item.id}>{item.tipo}</option>
                     ))
@@ -155,23 +130,23 @@ export default function Consultas() {
                 </select>
               </div>
             </div>
-            {solicitante === 5 &&
+            {valueOfSolicitante === "5" &&
               <div className="row">
                 <div className="form-group col-sm-12">
-                  <label className="font-len" htmlFor="solicitante_otro">Descripción:</label>
-                  <input className="form-control" type="text" placeholder="Escriba el otro tipo de solicitante" id="solicitante_otro" name="solicitante_otro" ref={register({ required: true })} />
-                  {errors.solicitante_otro && <p className="errors">Este campo es requerido</p>}
+                  <label className="item-negrilla font-len" htmlFor="solicitante_otro">Descripción:&nbsp;&nbsp;</label>
+                  <input type="text" className="form-control" placeholder="Escriba el otro tipo de solicitante" {...register("solicitante_otro", { required: true })} />
+                  {errors.solicitante_otro && <p className="item-error">Este campo es requerido</p>}
                 </div>
               </div>
             }
             <div className="row">
               <div className="form-group col-sm-12 ">
-                <label className="font-len" htmlFor="id_solicitud">Tipo de solicitud:</label>
-                <select className="custom-select" key="idsolicitud" defaultValue="" onChange={handlerSeleccion} name="id_solicitud" ref={register({ required: true })}>
-                  {errors.id_solicitud && <p className="errors">Este campo es requerido</p>}
+
+                <label className="item-negrilla font-len" htmlFor="id_solicitud">Tipo de solicitud:&nbsp;&nbsp;</label>
+                <select className="custom-select form-control" defaultValue="" {...register("id_solicitud", { required: true })} >
+                {errors.id_solicitud && <p className="item-error">Este campo es requerido</p>}
                   <option value="" disabled>Seleccione...</option>
                   {
-
                     id_solicitud.map((item, i) => (
                       <option key={"solicitud" + i} value={item.id}>{item.tipo}</option>
                     ))
@@ -181,16 +156,17 @@ export default function Consultas() {
             </div>
             <div className="row">
               <div className="form-group col-sm-12">
-                <label className="font-len" htmlFor="tema">Tema:</label>
-                <input className="form-control" type="text" id="tema" name="tema" ref={register({ required: true })} />
-                {errors.tema && <p className="errors">Este campo es requerido</p>}
+                <label className="item-negrilla font-len" htmlFor="tema">Tema:&nbsp;&nbsp;</label>
+                <input type="text" className="form-control" placeholder="Tema" {...register("tema", { required: true })} />
+                {errors.tema && <p className="item-error">Este campo es requerido</p>}
               </div>
             </div>
             <div className="row">
               <div className="form-group col-sm-12">
-                <label className="font-len" htmlFor="fecha_solicitud">Fecha:</label>
-                <input type="date" className="form-control" id="fecha_solicitud" name="fecha_solicitud" placeholder="Digite la fecha" ref={register({ required: true })} />
-                {errors.fecha_solicitud && <p className="errors">Este campo es requerido</p>}
+
+                <label className="item-negrilla font-len" htmlFor="fecha_solicitud">Fecha:&nbsp;&nbsp;</label>
+                <input type="date" className="form-control" placeholder="Digite la fecha" {...register("fecha_solicitud", { required: true })} />
+                {errors.fecha_solicitud && <p className="item-error">Este campo es requerido</p>}
               </div>
             </div>
             <br />
@@ -198,10 +174,11 @@ export default function Consultas() {
             <hr />
             <div className="row">
               <div className="form-group col-sm-12 ">
-                <label className="font-len" htmlFor="id_respuesta">Tipo de respuesta:</label>
-                <select className="custom-select" key="id_respuesta" defaultValue="" onChange={handlerSeleccion} name="id_respuesta" ref={register}>
-                  {errors.id_respuesta && <p className="errors">Este campo es requerido</p>}
-                  <option value="" disabled>Seleccione...</option>
+
+                <label className="item-negrilla font-len" htmlFor="id_respuesta">Tipo de respuesta:&nbsp;&nbsp;</label>
+                <select className="custom-select form-control" defaultValue="" {...register("id_respuesta")} >
+                {errors.id_respuesta && <p className="item-error">Este campo es requerido</p>}
+                <option value="" disabled>Seleccione...</option>
                   {
                     tipo_respuesta.map((item, i) => (
                       <option key={"solicitud" + i} value={item.id}>{item.tipo}</option>
@@ -212,14 +189,11 @@ export default function Consultas() {
             </div>
             <div className="row">
               <div className="form-group col-sm-12">
-                <label className="font-len" htmlFor="fecha_respuesta">Fecha:</label>
-                <input type="date" className="form-control" id="fecha_respuesta" name="fecha_respuesta" placeholder="Digite la fecha" ref={register} />
-                {errors.fecha_respuesta && <p className="errors">Este campo es requerido</p>}
+                <label className="item-negrilla font-len" htmlFor="fecha_respuesta">Fecha:&nbsp;&nbsp;</label>
+                <input type="date" className="form-control" placeholder="Digite la fecha" {...register("fecha_respuesta")} />
               </div>
             </div>
-            <div className="form-group d-none">
-              <input type="text" className="form-control" name="id_usuario" id="id_usuario" defaultValue={usuario.idUsuario} ref={register} />
-            </div>
+
             <div className="row">
               <div className="col-md-4 center">
                 <input className="btn btn-block btn-main" type="submit" value="Guardar registro" />
