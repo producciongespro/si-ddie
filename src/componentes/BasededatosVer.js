@@ -399,7 +399,7 @@ export default function BasededatosVer() {
           >
               <Modal.Header className="modal-header-edicion">
                 <Modal.Title ><h1>Edición - Ingresos</h1></Modal.Title>
-                <button type="button" class="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
+                <button type="button" className="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
               </Modal.Header>
               <Modal.Body>
                   <FormVerBD datos ={itemEditar} meses = {meses} handlerEnviarEdicion = {handlerEnviarEdicion} handleMonthSelect={handleMonthSelect} tipoIngresos = {tipoIngresos} id_ingreso = {itemEditar.id_ingreso}/>

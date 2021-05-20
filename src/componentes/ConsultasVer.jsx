@@ -103,8 +103,8 @@ export default function ConsultasVer() {
     data.id_usuario = usuario.idUsuario;
 
     let url = referencias.actualizaconsulta + "?tabla_destino=consultas&id=" + idConsulta + "";
-    console.log("data a enviar con cambios", data);
-    console.log("url desde submit", url);
+    // console.log("data a enviar con cambios", data);
+    // console.log("url desde submit", url);
     setEsperando(true);
     enviar(url, data, function (resp) {
       handleClose();
@@ -278,7 +278,7 @@ export default function ConsultasVer() {
             actualizaDatosEliminados(function () {
               setDatosEliminados(tmpEliminados);
             })
-            console.log("LARGO", tmpEditar.lenght);
+            // console.log("LARGO", tmpEditar.lenght);
             setDatosFiltrados(tmpEditar);
             setEsperando(false);
           })
@@ -431,7 +431,7 @@ export default function ConsultasVer() {
           >
             <Modal.Header className="modal-header-edicion">
               <Modal.Title ><h1>Edición</h1></Modal.Title>
-              <button type="button" class="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
+              <button type="button" className="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
             </Modal.Header>
             <Modal.Body>
                 <FormVerConsulta datos={itemEditar} handlerEnviarEdicion={handlerEnviarEdicion} tipoIntervencion = {tipoIntervencion} tipoSolicitante = {tipoSolicitante} idSolicitud = {idSolicitud } tipoRespuesta = {tipoRespuesta}/>

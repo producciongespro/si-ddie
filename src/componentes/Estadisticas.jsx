@@ -19,7 +19,6 @@ export default function Estadisticas() {
   const [tipoIngreso, setTipoIngreso] = useState(null);
   const [tipoProducto, setTipoProducto] = useState(null);
   const [opcionGrafico, setOpcionGrafico] = useState(null);
-  const { register, handleSubmit, errors, clearError } = useForm();
 
   async function obtener() {
     var url = referencias.consultaestadistica,
@@ -48,20 +47,13 @@ export default function Estadisticas() {
   }
 
   const handlerSeleccion = (e) => {
-    clearError();
     let opcion = parseInt(e.target.value);
     setOpcionGrafico(opcion);
-
-    // setNombreTabla(parseInt(e.target.value));
   }
 
   useEffect(() => {
     obtener();
   }, []);
-
-  useEffect(() => {
-    
-  })
 
   return (
     <div className="container">
@@ -70,8 +62,7 @@ export default function Estadisticas() {
       <hr/>
         <div className="form-group col-sm-4 ">
           <label className="font-len" htmlFor="id_intervencion">Seleccionar el gráfico:&nbsp;&nbsp;</label>
-          <select className="custom-select" key="id_intervencion" defaultValue="0" onChange={handlerSeleccion} name="id_intervencion" ref={register({ required: true })}>
-            {errors.id_intervencion && <p className="errors">Este campo es requerido</p>}
+          <select className="custom-select" key="id_intervencion" defaultValue="0" onChange={handlerSeleccion} name="id_intervencion">
             {
               opcionesGraficos.map((item, i) => (
                 <option key={"opcion" + i} value={item.id}>{item.etiqueta}</option>

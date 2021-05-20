@@ -45,7 +45,7 @@ export default function Basededatos() {
     
     data.id_usuario =  usuario.idUsuario
 
-     console.log("data", data);
+    //  console.log("data", data);
 
     let url = referencias.guardaconsulta + "?tabla_destino=ingresos";
 
@@ -53,8 +53,8 @@ export default function Basededatos() {
       // console.log("resp", resp);
       mostrarAlerta("Alerta", resp.data.mensaje);
     });
-    setIngresoSel(0);
     e.target.reset(); // reset after form submit
+    setIngresoSel(0);    
   };
   // console.log("errors", errors);
 
@@ -71,14 +71,6 @@ export default function Basededatos() {
 
 
   const valueOfIngreso = watch('id_ingreso');
-
-
-  // const handleSeleccionarIngreso = (e) => {
-  //   //obtenr el valor de seleccion
-  //   // clearError();
-  //   console.log("Select ingreso", e);
-  //   setIngresoSel(parseInt(e));
-  // }
 
   const handleMonthSelect = (e) => {
     let mesActual = parseInt(e.target.value);
@@ -140,7 +132,7 @@ export default function Basededatos() {
               </div>
               <div className="form-group col-sm-6 my-2">
                 <label className="item-negrilla font-len" htmlFor="nota">Ingrese las notas:</label>
-                <textarea className="form-control" placeholderText="Ingrese las notas" {...register("nota", { required: true })} />
+                <textarea className="form-control" placeholder="Ingrese las notas" {...register("nota", { required: true })} />
                 {errors.nota && <p className="item-error">Este campo es requerido</p>}
               </div>
             </div>

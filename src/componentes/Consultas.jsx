@@ -60,8 +60,8 @@ export default function Consultas() {
     enviar(url, data, function (resp) {
       console.log(resp);
     });
-    setIntervencion(0);
     e.target.reset(); // reset after form submit
+    setIntervencion(0);    
   };
   // console.log("errors",errors);
 

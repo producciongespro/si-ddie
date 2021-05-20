@@ -32,7 +32,9 @@ export default function FormVerBD(props) {
 
   const onSubmit = (data, e) => {
     // console.log("enviando...",JSON.stringify(data));
-    props.handlerEnviarEdicion(data)
+    let datos = data;
+    e.target.reset(); // reset after form submit
+    props.handlerEnviarEdicion(datos)
   }
 
   return (
@@ -85,7 +87,7 @@ export default function FormVerBD(props) {
           </div>
           <div className="form-group col-sm-6 my-2">
             <label className="item-negrilla font-len" htmlFor="nota">Ingrese las notas:</label>
-            <textarea className="form-control" placeholderText="Ingrese las notas" {...register("nota", { required: true })} defaultValue={itemEditar.nota} />
+            <textarea className="form-control" placeholder="Ingrese las notas" {...register("nota", { required: true })} defaultValue={itemEditar.nota} />
             {errors.nota && <p className="item-error">Este campo es requerido</p>}
           </div>
         </div>

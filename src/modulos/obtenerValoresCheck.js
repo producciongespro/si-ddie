@@ -2,7 +2,7 @@ const obtenerValoresCheck =(nombre)=>{
   let listaAnnos = [];
   let poblaciones = [];
   const chk  = document.getElementsByName(nombre);
-  // console.log("chk", chk);
+  console.log("chk", chk);
   var chkPoblacion ="";
   for (let index = 0; index < chk.length; index++) { 
     if (chk[index].checked ) {
@@ -16,7 +16,7 @@ const obtenerValoresCheck =(nombre)=>{
     }
      
   }
-  // console.log("listaAnnos", listaAnnos);
+  console.log("listaAnnos", listaAnnos);
   
   return JSON.stringify(listaAnnos);
 }

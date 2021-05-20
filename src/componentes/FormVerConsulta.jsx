@@ -34,7 +34,10 @@ export default function FormVerConsulta(props) {
 
   const onSubmit = (data, e) => {
     // console.log("enviando...", JSON.stringify(data));
-    props.handlerEnviarEdicion(data)
+    let datos = data;
+    e.target.reset(); // reset after form submit
+    props.handlerEnviarEdicion(datos);
+
   }
 
   const valor = () => {

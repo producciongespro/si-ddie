@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'react-bootstrap';
-import GrupoCheck from './GrupoCheck';
+
 import Tabla from './Tabla';
+import { eliminar } from "gespro-utils/crud_array";
+import FormVerProduccion from './FormVerProduccion';
+
 
 import MyContext from '../modulos/MyContext';
 
@@ -21,11 +24,8 @@ import Imagen from './Imagen';
 import papeleraVacia from '../images/papelera-vacia.png';
 import papelera from '../images/papelera-full.png';
 
-import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
-import InputItem from './InputItem';
+// import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 
-import moment from 'moment';
-import 'moment/locale/es';
 
 import "../css/form.css";
 
@@ -36,314 +36,354 @@ const contenidos = contenidosJson[2];
 const referencias = referenciasJson[0];
 
 var tmpProductos = null,
-    tipoProducto = null,
-    tipoPoblacion = null,
-    idProducto = null,
-    tmpEditar = null,
-    tmpEliminados = null,
-    productosFiltrados = null,
-    productoId = null,
-    originalIdTipoProducto = null,
-    mensaje = "";
+  tipoProducto = null,
+  tipoPoblacion = null,
+  idProducto = null,
+  tmpEditar = null,
+  tmpEliminados = null,
+  productosFiltrados = null,
+  productoId = null,
+  originalIdTipoProducto = null,
+  mensaje = "",
+  itemEditar = {},
+  valoresCheck = [];
 
 // carga de los JSON de los selects
 var urlProductos = referencias.consultageneral + "?tabla=productos",
-    urlEliminadosConsultas = referencias.consultaeliminados + "?tabla=productos",
-    urlTipoProductos = referencias.consultageneral + "?tabla=tipo_productos",
-    urlPoblacion = referencias.consultageneral+"?tabla=productos_poblacion_meta";
-    
+  urlEliminadosConsultas = referencias.consultaeliminados + "?tabla=productos",
+  urlTipoProductos = referencias.consultageneral + "?tabla=tipo_productos",
+  urlPoblacion = referencias.consultageneral + "?tabla=productos_poblacion_meta";
+
 export default function ProduccionVer() {
-    // grupo de datos filtrados 
-    const [datosFiltrados, setDatosFiltrados] = useState(null);
+  // grupo de datos filtrados 
+  const [datosFiltrados, setDatosFiltrados] = useState(null);
 
-    // grupo de datos eliminados que se mantienen actualizados
-    const [datosEliminados, setDatosEliminados] = useState(null);
+  // grupo de datos eliminados que se mantienen actualizados
+  const [datosEliminados, setDatosEliminados] = useState(null);
 
-    //Bandera que indica que la solicitud y retorno de datos están resueltos
-    const [datosListos, setDatosListos] = useState(false);
-
-
-    const { register, handleSubmit, errors, clearError } = useForm();
+  //Bandera que indica que la solicitud y retorno de datos están resueltos
+  const [datosListos, setDatosListos] = useState(false);
 
 
-    const { usuario, setUsuario } = useContext(MyContext);
+  const { register, handleSubmit, errors, clearError } = useForm();
+
+
+  const { usuario, setUsuario } = useContext(MyContext);
 
   //Bandera que se utiliza para tiempo en espera de recuperar un json cuando se ha borrado un registro
-    const [esperando, setEsperando] = useState(false);
+  const [esperando, setEsperando] = useState(false);
 
-    // Estado que indica el desplegar la tabla en modo papelera
-    const [modoVisor, setModoVisor] = useState(true);
+  // Estado que indica el desplegar la tabla en modo papelera
+  const [modoVisor, setModoVisor] = useState(true);
 
-    //Estado para ocultar o mostrar un modal
-    const [show, setShow] = useState(false);
+  //Estado para ocultar o mostrar un modal
+  const [show, setShow] = useState(false);
 
-    //cerrar modal
-    const handleClose = () => setShow(false);
+  //cerrar modal
+  const handleClose = () => setShow(false);
 
-    const onCloseModal = () => {
-      setShow(false);
-      setEsperando(false);  
-    };
+  const onCloseModal = () => {
+    setShow(false);
+    setEsperando(false);
+  };
 
-    const handlePapelera = () => setModoVisor(false);
+  const handlePapelera = () => setModoVisor(false);
 
-    //controla si las consultas están filtradas o no  
-    const[sinFiltro, setSinFiltro] = useState(true); 
+  //controla si las consultas están filtradas o no  
+  const [sinFiltro, setSinFiltro] = useState(true);
 
-    //Estado que maneja  la seleccion del usuario
-    const [productoSel, setProductoSel] = useState(null);
-
-
-// ----------------------
-
-    //Estado para controlar la carga del json de productos:
-    const [productos, setProductos] = useState(null);
-    
-    //Estado que maneja el producto seleccionado por el usuario
-    const [producto, setProducto] = useState(null);
-
-    //Estado que maneja el mes seleccionado por el usuario
-    const [mesSel, setMesSel] = useState(null);
-
-    //Estado que carga las poblaciones del json del servidor
-    const [poblaciones, setPoblaciones] = useState(null);
-
-    //Cargado se cambia a True cuando se termina la carga de json del servidor
-    const [cargado, setCargado] = useState(false);
-
-      //Cargado se cambia a True cuando se termina la carga de json del servidor
-    const [otraPoblacion, setOtraPoblacion] = useState(false);
+  //Estado que maneja  la seleccion del usuario
+  const [productoSel, setProductoSel] = useState(null);
 
 
-    const onSubmit = (data, e) => {
-      let idProducto = tmpEditar[0].id;
-      if( originalIdTipoProducto ===  null){
-        originalIdTipoProducto = data['id_producto'];
+  // ----------------------
+
+  //Estado para controlar la carga del json de productos:
+  const [productos, setProductos] = useState(null);
+
+  //Estado que maneja el producto seleccionado por el usuario
+  const [producto, setProducto] = useState(null);
+
+  //Estado que maneja el mes seleccionado por el usuario
+  const [mesSel, setMesSel] = useState(null);
+
+  //Estado que carga las poblaciones del json del servidor
+  const [poblaciones, setPoblaciones] = useState(null);
+
+  //Cargado se cambia a True cuando se termina la carga de json del servidor
+  const [cargado, setCargado] = useState(false);
+
+  //Cargado se cambia a True cuando se termina la carga de json del servidor
+  const [otraPoblacion, setOtraPoblacion] = useState(false);
+
+  const handlerEnviarEdicion = (data) => {
+
+    let idProducto = tmpEditar[0].id;
+    if (originalIdTipoProducto === null) {
+      originalIdTipoProducto = data['id_producto'];
+    }
+console.log('data recibida',data);
+console.log("poblacion recibida",data.poblacion);
+    // data.poblacion = JSON.stringify(valoresCheck);
+
+    // if (valoresCheck.length > 0) {
+    //   data.poblacion = JSON.stringify(valoresCheck);
+    // }
+    // else
+    // {
+    //   console.log("viene vacío y entré eb ekse");
+    //   data.poblacion = JSON.stringify(valoresCheck);
+    // }
+
+    // let arrayPoblacion = obtenerValoresCheck("beneficiario");
+
+    // delete data["beneficiario"]; //borrar el check
+
+    // data.poblacion = arrayPoblacion;
+    data.id_usuario = usuario.idUsuario;
+
+    let url = referencias.actualizar + "?tabla_destino=productos&id=" + idProducto + "&idAnterior=" + originalIdTipoProducto + "";
+
+    setEsperando(true);
+    enviar(url, data, function (resp) {
+      handleClose();
+      mostrarAlerta("Alerta", resp.data.mensaje);
+      if (!resp.data.error) {
+        setShow(false);
+        valoresCheck = [];
       }
-
-      let arrayPoblacion = obtenerValoresCheck("beneficiario");
-      delete data["beneficiario"]; //borrar el check
-      data.poblacion = arrayPoblacion;
-      let url = referencias.actualizar + "?tabla_destino=productos&id="+idProducto + "&idAnterior=" + originalIdTipoProducto + "";
-      
-      setEsperando(true);
-      enviar(url, data, function (resp) {
-        handleClose();  
-        mostrarAlerta("Alerta", resp.data.mensaje);
-        if(!resp.data.error) {
-          setShow(false);
+      actualizaDatos(function () {
+        if (sinFiltro) {
+          tmpEditar = tmpProductos;
         }
-        actualizaDatos(function () {
-          if(sinFiltro){
-            tmpEditar=tmpProductos;
-          }
-          else {
-            tmpEditar = filtrar(tmpProductos, "id_producto", productoId);
-          }        
-          originalIdTipoProducto=null;
-          setDatosFiltrados(tmpEditar);
-          setEsperando(false);
+        else {
+          tmpEditar = filtrar(tmpProductos, "id_producto", productoId);
+        }
+        originalIdTipoProducto = null;
+        setDatosFiltrados(tmpEditar);
+        setEsperando(false);
       });
-      });
-    };
+    });
+  };
 
-    async function actualizaDatos(cb) {     
-      let response1 = await fetch(urlProductos);
-      tmpProductos = await response1.json();    
-      cb();    
-    }
-  
-    async function actualizaDatosEliminados(cb) {     
-      let response1 = await fetch(urlEliminadosConsultas);
-      tmpEliminados = await response1.json();    
-      // setDatosEliminados(tmpEliminados)
-      cb();    
-    }
+  async function actualizaDatos(cb) {
+    let response1 = await fetch(urlProductos);
+    tmpProductos = await response1.json();
+    cb();
+  }
 
-    async function obtenerDatos(cb) {
-   
-      // // 1 Consultas       
-      let response1 = await fetch(urlProductos);
-      tmpProductos = await response1.json()
-           
-      // 2 Intervención
-      let response2 = await fetch(urlTipoProductos);
-      tipoProducto = await response2.json();
-    
-      // 3 Población
-      let response3 = await fetch(urlPoblacion);
-      tipoPoblacion = await response3.json();
+  async function actualizaDatosEliminados(cb) {
+    let response1 = await fetch(urlEliminadosConsultas);
+    tmpEliminados = await response1.json();
+    // setDatosEliminados(tmpEliminados)
+    cb();
+  }
 
-      // 4 Eliminados
-      let response4 = await fetch(urlEliminadosConsultas);
-      tmpEliminados = await response4.json();
-      
-      cb();   
-  
-    };
+  async function obtenerDatos(cb) {
+
+    // // 1 Consultas       
+    let response1 = await fetch(urlProductos);
+    tmpProductos = await response1.json()
+
+    // 2 Intervención
+    let response2 = await fetch(urlTipoProductos);
+    tipoProducto = await response2.json();
+
+    // 3 Población
+    let response3 = await fetch(urlPoblacion);
+    tipoPoblacion = await response3.json();
+
+    // 4 Eliminados
+    let response4 = await fetch(urlEliminadosConsultas);
+    tmpEliminados = await response4.json();
+
+    cb();
+
+  };
 
 
-    useEffect(() => {
-      moment.locale('es');
-      obtenerDatos(function () {
-        setProductos(tipoProducto);
-        setPoblaciones(tipoPoblacion);
-        setDatosListos(true);
-        setDatosFiltrados(tmpProductos);     
+  useEffect(() => {
+    obtenerDatos(function () {
+      setProductos(tipoProducto);
+      setPoblaciones(tipoPoblacion);
+      setDatosListos(true);
+      setDatosFiltrados(tmpProductos);
     });
     actualizaDatosEliminados(function () {
       setDatosEliminados(tmpEliminados)
     });
   }, []);
 
-  
-    const handleSeleccionarProducto =(e)=>{
-        //obtiene el valor de selección
-        
-        productoId = parseInt(e.target.value);
-        productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);        
-        setDatosFiltrados(productosFiltrados);
-        setSinFiltro(false);
 
-    }
- 
-    const handleCambiarProducto = (e) => {
-      clearError();
-      if (parseInt(e.target.value) === 1) {   //no tiene población
-        let arrayPoblacion = obtenerValoresCheck("beneficiario");
-      }
-      setProductoSel(parseInt(e.target.value));
-    }
+  const handleSeleccionarProducto = (e) => {
+    //obtiene el valor de selección
 
-    const handleMonthSelect =(e)=>{
-      //obtiene el valor de seleccion
-      clearError();
-      setMesSel(parseInt(e.target.value));
-    }
+    productoId = parseInt(e.target.value);
+    productosFiltrados = filtrar(tmpProductos, "id_producto", productoId);
+    setDatosFiltrados(productosFiltrados);
+    setSinFiltro(false);
 
-  
-function handleDefaultMes ( ) {
-  let mesActual;
-  if(tmpEditar[0].mes_revista){
-    mesActual = tmpEditar[0].mes_revista
   }
-  else {
-    mesActual = ""
-  }
-  return mesActual;
-}
-    
-    const handleChangeCheck =(e)=>{
-        (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
-    }
 
-    const handleModoVisor = () => {
-      setModoVisor(true); 
-      obtenerDatos(
-        function () {
+  // const handleCambiarProducto = (e) => {
+  //   if (parseInt(e.target.value) === 1) {   //no tiene población
+  //     let arrayPoblacion = obtenerValoresCheck("beneficiario");
+  //   }
+  //   setProductoSel(parseInt(e.target.value));
+  // }
+
+  // const handleMonthSelect =(e)=>{
+  //   //obtiene el valor de seleccion
+  //   setMesSel(parseInt(e.target.value));
+  // }
+
+
+  // function handleDefaultMes ( ) {
+  //   let mesActual;
+  //   if(tmpEditar[0].mes_revista){
+  //     mesActual = tmpEditar[0].mes_revista
+  //   }
+  //   else {
+  //     mesActual = ""
+  //   }
+  //   return mesActual;
+  // }
+
+  // const handleChangeCheck =(e)=>{
+  //     (e.target.checked)?setOtraPoblacion(true):setOtraPoblacion(false);
+  // }
+
+  const handleGetCheck = (e) => {
+    const item = e.target;
+    (item.id === "12" && e.target.checked) ? setOtraPoblacion(true) : setOtraPoblacion(false);
+    if (item.checked) {
+      //si es vardadero simplemente lo agrega en el array:
+      const tmpObj = {
+        // nombre: item.name,
+        id: item.id,
+        // valor: item.checked,
+      };
+      valoresCheck.push(tmpObj);
+      //console.log(valoresCheck);
+    } else {
+      //Si es falso lo busca del array para eliminarlo
+      const itemEliminado = eliminar(item.id, valoresCheck);
+      //console.log("Objeto eliminado", itemEliminado);
+    }
+  };
+
+  const handleModoVisor = () => {
+    setModoVisor(true);
+    obtenerDatos(
+      function () {
         setDatosListos(true);
-        setDatosFiltrados(tmpProductos);     
+        setDatosFiltrados(tmpProductos);
       }
-      );
-    };
-    
-    const handleSinFiltro = (e) => {
-      if(e.target.checked){
-        setTimeout(() => { let element = document.getElementById("selectProducto");
-        element.value="";
+    );
+  };
+
+  const handleSinFiltro = (e) => {
+    if (e.target.checked) {
+      setTimeout(() => {
+        let element = document.getElementById("selectProducto");
+        element.value = "";
         setSinFiltro(true);
         setDatosFiltrados(tmpProductos);
       }, 500);
-      }
     }
+  }
 
-    const handleEditarProducto = (e) => {
-      let id = parseInt(e.target.id);
-      
-      tmpEditar = filtrar(tmpProductos, "id", id);
-      let array = JSON.parse(tmpEditar[0].poblacion);
-      for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        if (element.id === '12') {
-          setOtraPoblacion(true);
-        }        
-      }
-      
-      setProductoSel(parseInt(tmpEditar[0].id_producto));
-      setEsperando(true);
-      setShow(true);
-    }
-    
-    const handleEliminarProducto = (e) => {
-      const idProducto = e.target.id;
-      alertify.confirm('Eliminar', '¿Desea realmente eliminar este registro?',
-        function () {    
-          // var data = {};
-          let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idProducto + "";          
-          const data = {    
-            "borrado" : 1,
-            "id_usuario" : usuario.idUsuario
-          };
-          setEsperando(true);
-          enviar(url, data, function (resp) {                
-                  // alertify.success(resp.data.mensaje,2);
-                  alertify.success("El registro se ha eliminado exitosamente",2);
-                  actualizaDatos(function () {
-                    if(sinFiltro){
-                      tmpEditar=tmpProductos;
-                    }
-                    else {
-                      
-                      tmpEditar = filtrar(tmpProductos, "producto", productoId);
-                    }
-                    actualizaDatosEliminados(function(){setDatosEliminados(tmpEliminados);})
-                    setDatosFiltrados(tmpEditar);
-                    setEsperando(false);
-              })
-          });
-        }, function(){ })
-        .set('labels', {ok:'Aceptar', cancel:'Cancelar'});
-    }
-    
-    const handleRecuperarRegistro = (e) => {
-      let idRecuperar = e.target.id;
-      console.log("usuario.idUsuario", usuario.idUsuario)
-      const data = {    
-              "borrado" : 0,
-              "id_usuario" : usuario.idUsuario
-            };
-    
-      let url = referencias.actualizaconsulta + "?tabla_destino=productos&id="+idRecuperar + "";
-      setEsperando(true);
-      enviar(url, data, function (resp) {
-        mensaje =  resp.data.mensaje;  
-        actualizaDatosEliminados(function(){
-          setDatosEliminados(tmpEliminados);
-          if(tmpEliminados.length === 0){
-            mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
-            mostrarAlerta("Alerta",  mensaje);
-            actualizaDatos(function () {
-              tmpEditar=tmpProductos;
-              setDatosFiltrados(tmpEditar);
-              mensaje = "";
-              setSinFiltro(true);              
-              setEsperando(false);  
-              setModoVisor(true);
-            });         
-          }
-          else {
-            mensaje += ". Se ha recuperado el registro"
-            mostrarAlerta("Alerta", mensaje);
-            setEsperando(false);  
-          }
+  const handleEditarProducto = (e) => {
+    let id = parseInt(e.target.id);
+
+    tmpEditar = filtrar(tmpProductos, "id", id);
+    itemEditar = tmpEditar[0];
+
+    // console.log("registro a editar", tmpEditar);
+
+    // let array = JSON.parse(tmpEditar[0].poblacion);
+    // for (let index = 0; index < array.length; index++) {
+    //   const element = array[index];
+    //   if (element.id === '12') {
+    //     setOtraPoblacion(true);
+    //   }        
+    // }
+
+    setProductoSel(parseInt(tmpEditar[0].id_producto));
+    setEsperando(true);
+    setShow(true);
+  }
+
+  const handleEliminarProducto = (e) => {
+    const idProducto = e.target.id;
+    alertify.confirm('Eliminar', '¿Desea realmente eliminar este registro?',
+      function () {
+        // var data = {};
+        let url = referencias.actualizaconsulta + "?tabla_destino=productos&id=" + idProducto + "";
+        const data = {
+          "borrado": 1,
+          "id_usuario": usuario.idUsuario
+        };
+        setEsperando(true);
+        enviar(url, data, function (resp) {
+          // alertify.success(resp.data.mensaje,2);
+          alertify.success("El registro se ha eliminado exitosamente", 2);
+          actualizaDatos(function () {
+            if (sinFiltro) {
+              tmpEditar = tmpProductos;
+            }
+            else {
+
+              tmpEditar = filtrar(tmpProductos, "producto", productoId);
+            }
+            actualizaDatosEliminados(function () { setDatosEliminados(tmpEliminados); })
+            setDatosFiltrados(tmpEditar);
+            setEsperando(false);
+          })
         });
+      }, function () { })
+      .set('labels', { ok: 'Aceptar', cancel: 'Cancelar' });
+  }
+
+  const handleRecuperarRegistro = (e) => {
+    let idRecuperar = e.target.id;
+    console.log("usuario.idUsuario", usuario.idUsuario)
+    const data = {
+      "borrado": 0,
+      "id_usuario": usuario.idUsuario
+    };
+
+    let url = referencias.actualizaconsulta + "?tabla_destino=productos&id=" + idRecuperar + "";
+    setEsperando(true);
+    enviar(url, data, function (resp) {
+      mensaje = resp.data.mensaje;
+      actualizaDatosEliminados(function () {
+        setDatosEliminados(tmpEliminados);
+        if (tmpEliminados.length === 0) {
+          mensaje += ". Se ha recuperado el último registro y la papelera está vacía";
+          mostrarAlerta("Alerta", mensaje);
+          actualizaDatos(function () {
+            tmpEditar = tmpProductos;
+            setDatosFiltrados(tmpEditar);
+            mensaje = "";
+            setSinFiltro(true);
+            setEsperando(false);
+            setModoVisor(true);
+          });
+        }
+        else {
+          mensaje += ". Se ha recuperado el registro"
+          mostrarAlerta("Alerta", mensaje);
+          setEsperando(false);
+        }
       });
-    };  
+    });
+  };
 
 
 
-    return (
-      datosListos ?                  
+  return (
+    datosListos ?
       (
         <div className="col-12">
           <h1 className="header-1">Ver productos</h1><hr />
@@ -393,202 +433,74 @@ function handleDefaultMes ( ) {
               )
               :
               (
-              <>
-              <div className="row">
-                <div className="form-group col-sm-6 ">
-                  <label className="font-len" htmlFor="id_producto">Ver por tipo de producto:&nbsp;&nbsp;</label>
-                  <select id="selectProducto" className="custom-select" defaultValue="" onChange={handleSeleccionarProducto} name="id_producto">
-                    <option value="" disabled>Seleccione...</option>
-                    {
-                      tipoProducto.map((item, i) => (
-                        <option key={"ingreso" + i} value={item.id}>{item.tipo}</option>
-                      ))
-                    }
-                  </select>
-                </div>
+                <>
+                  <div className="row">
+                    <div className="form-group col-sm-6 ">
+                      <label className="font-len" htmlFor="id_producto">Ver por tipo de producto:&nbsp;&nbsp;</label>
+                      <select id="selectProducto" className="custom-select" defaultValue="" onChange={handleSeleccionarProducto} name="id_producto">
+                        <option value="" disabled>Seleccione...</option>
+                        {
+                          tipoProducto.map((item, i) => (
+                            <option key={"ingreso" + i} value={item.id}>{item.tipo}</option>
+                          ))
+                        }
+                      </select>
+                    </div>
 
-                {!sinFiltro &&
-                  <div className="col-sm-4">
-                    <div className="pretty p-switch p-fill">
-                      <input type="checkbox" value="" onChange={handleSinFiltro} />
-                      <div className="state">
-                        <label>Ver todos</label>
+                    {!sinFiltro &&
+                      <div className="col-sm-4">
+                        <div className="pretty p-switch p-fill">
+                          <input type="checkbox" value="" onChange={handleSinFiltro} />
+                          <div className="state">
+                            <label>Ver todos</label>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+
+                    }
                   </div>
+                  {esperando ?
+                    (
+                      <>
 
-                }
-              </div>
-              {esperando ?
-                (
-                  <>
-
-                    <div>
-                      <span className="spinner-grow spinner-grow-lg text-danger"></span>
-                      <span className=""> En proceso... Por favor espere.</span>
-                    </div>
-                    <Tabla array={datosFiltrados} contenidos={contenidos} clase="table table-striped sombreado" modo="visor" />
-                  </>
-                )
-                :
-                (
-                  <Tabla array={datosFiltrados} contenidos={contenidos} handleEliminarConsulta={handleEliminarProducto} handleEditarConsulta={handleEditarProducto} clase="table table-striped" modo="visor" />
-                )
-              }
-            </>
+                        <div>
+                          <span className="spinner-grow spinner-grow-lg text-danger"></span>
+                          <span className=""> En proceso... Por favor espere.</span>
+                        </div>
+                        <Tabla array={datosFiltrados} contenidos={contenidos} clase="table table-striped sombreado" modo="visor" />
+                      </>
+                    )
+                    :
+                    (
+                      <Tabla array={datosFiltrados} contenidos={contenidos} handleEliminarConsulta={handleEliminarProducto} handleEditarConsulta={handleEditarProducto} clase="table table-striped" modo="visor" />
+                    )
+                  }
+                </>
               )
           }
-       {<Modal
+          {<Modal
             show={show}
             onHide={handleClose}
             size="xl"
-            backdrop = "static"
-       >
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <Modal.Header className="modal-header-edicion">
+            backdrop="static"
+          >
+            <Modal.Header className="modal-header-edicion">
               <Modal.Title ><h1>Edición - Productos</h1></Modal.Title>
-              <button type="button" class="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
+              <button type="button" className="close" data-dismiss="modal" onClick={onCloseModal}>&times;</button>
             </Modal.Header>
             <Modal.Body>
-              {
-                <>
-                    {(tmpEditar && tmpEditar[0]) &&
-                      <React.Fragment>
-                        <div className="row">
-                          <div className="form-group col-sm-6 ">
-                            <label className="font-len" htmlFor="id_producto">Seleccione el tipo de producto:&nbsp;&nbsp;</label>
-                            <select className="custom-select" name="id_producto" id="id_producto" defaultValue={tmpEditar[0].id_producto} onChange={handleCambiarProducto} ref={register({required: true})}>
-                            {errors.id_producto && <p className="errors">Este campo es requerido</p>}
-                            <option value="" disabled>Seleccione...</option>
-                              {
-                                  
-                                  tipoProducto.map((item,i)=>(
-                                  <option key={"producto"+i} value={item.id}>{item.tipo}</option>
-                                  ))
-                              }
-                            </select>
-                          </div>
-
-                          {((productoSel > 1 && productoSel < 7)  || productoSel === 8 )&&
-                              <div className="form-group col-sm-6 my-2">
-                                <InputItem placeholderText="Digite el número consecutivo" defaultValor= {tmpEditar[0].numero_consecutivo} tipo="number" nombre= "numero_consecutivo" textlabel="Número consecutivo"  referencia={register({required: true})}/>
-                                {errors.numero_consecutivo && <p className="errors">Este campo es requerido</p>}
-                              </div>
-                              }
-                            {productoSel === 7 &&
-                              <div className="form-group col-sm-6 my-2">
-                                  <InputItem tipo="text" defaultValor= {tmpEditar[0].tema_video_divulgacion} placeholderText="Escriba el tema del video" nombre= "tema_video_divulgacion" textlabel="Tema del video"  referencia={register({required: true})} />
-                                  {errors.tema_video_divulgacion && <p className="errors">Este campo es requerido</p>}
-                              </div>
-                            }   
-
-                        </div>   
-
-                        {productoSel === 8 && 
-                          <div className="row">
-                            <div className="form-group col-sm-12 my-2">
-                              <InputItem  tipo="text" defaultValor= {tmpEditar[0].desc_otro} placeholderText="Describa el tipo de producto" nombre= "desc_otro" textlabel="Descripción"  referencia={register({required: true})} />
-                              {errors.desc_otro && <p className="errors">Este campo es requerido</p>}
-                            </div>
-                          </div> 
-                        }
-                        {productoSel > 1 && 
-                          <div className="row">
-                            <div className="form-group col-sm-12 my-2">
-                              <p className="font-len" >Población beneficiaria</p>
-                                <GrupoCheck  nombre="beneficiario" listaPoblacion={poblaciones} poblacion={tmpEditar[0].poblacion}  handleChange={handleChangeCheck} register={register} />
-                            </div>
-                          </div> }
-            
-                          {otraPoblacion && 
-                            <React.Fragment>
-                              <InputItem tipo="text" nombre= "poblacion_otro" defaultValor= {tmpEditar[0].poblacion_otro} placeholderText="Escriba el otro tipo de población" textlabel="Descripción"  referencia={register({required: true})} />
-                              {errors.poblacion_otro && <p className="errors">Este campo es requerido</p>}
-                            </React.Fragment>
-                          }
-
-                          {productoSel === 1 && (
-                            <React.Fragment>
-                              <div className="row">
-                                <div className="form-group col-sm-6 my-2">
-                                  <InputItem tipo="number" nombre= "volumen_revista" defaultValor= {tmpEditar[0].volumen_revista} placeholderText="No. volumen" textlabel="Volumen"  referencia={register({required: true})} />
-                                  {errors.volumen_revista && <p className="errors">Este campo es requerido</p>}
-                                </div>
-                                <div className="form-group col-sm-6 my-2">
-                                  <InputItem  tipo="number" nombre= "numero_revista"  defaultValor= {tmpEditar[0].numero_revista} placeholderText="No. revista" textlabel="Número"   referencia={register({required: true})} />
-                                  {errors.numero_revista && <p className="errors">Este campo es requerido</p>}
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="form-group col-sm-6 my-2">
-                                <label className="font-len" htmlFor="mes_revista">Mes:</label>
-                                    <select className="custom-select"  defaultValue= {handleDefaultMes()} onChange={handleMonthSelect} name="mes_revista" id="mes_revista" ref={register({required: true})}>
-                                    {errors.mes_revista && <p className="errors">Este campo es requerido</p>}
-                                      <option value="" disabled>Seleccione...</option>
-                                        {
-                                          moment.months().map((label, i) => (
-                                          <option key={"mes"+label} value={i+1}>{label}</option>
-                                          ))}
-                                    </select>
-                                </div>
-                                <div className="form-group col-sm-6 my-2">
-                                  <InputItem tipo="number" nombre= "anno_revista" defaultValor= {tmpEditar[0].anno_revista} textlabel="Año" placeholderText="Digite el año" referencia={register({required: true})}  />
-                                  {errors.anno_revista && <p className="errors">Este campo es requerido</p>}
-                                </div>
-                              </div>
-                            </React.Fragment>
-                            )
-                          }
-                          <div className="row">
-                            <div className="form-group col-sm-6">
-                              <label className="font-len" htmlFor="cantidad">Cantidad:</label>
-                              <input className="form-control" type="number" defaultValue={tmpEditar[0].cantidad} placeholder="Digite la cantidad" id="cantidad" name="cantidad" ref={register({required: true})} />
-                              {errors.cantidad && <p className="errors">Este campo es requerido</p>}
-                          </div>
-
-                          <div className="form-group col-sm-6">
-                            <label className="font-len" htmlFor="fecha">Fecha:</label>
-                            <input  type="date" className="form-control" defaultValue={tmpEditar[0].fecha} id="fecha" name="fecha" placeholder="Digite la fecha" ref={register({required: true})} />
-                            {errors.fecha && <p className="errors">Este campo es requerido</p>}
-                          </div>
-                          
-                        </div>
-                        <hr/>
-                        <div className="row">
-                          <div className="form-group col-sm-6">
-                            <label className="font-len" htmlFor="cantidad_beneficiarios">Cantidad de beneficiarios:</label>
-                            <input type="number" className="form-control" defaultValue={tmpEditar[0].cantidad_beneficiarios}  id="cantidad_beneficiarios" name="cantidad_beneficiarios" placeholder="Digite la cantidad de beneficiarios" ref={register({required: true})} />
-                            {errors.cantidad_beneficiarios && <p className="errors">Este campo es requerido</p>}
-                          </div>
-                          <hr/>
-                        </div>
-
-                        <div className={"form-group d-none"}>
-                        {/* <div className="form-group col-sm-6 my-2"> */}
-                            <input type="text" className="form-control"  defaultValue={usuario.idUsuario}  name="id_usuario" id="id_usuario" ref={register}/>    
-                        </div>
-                        </React.Fragment>
-                        }
-                          </>
-                        }
-                      </Modal.Body>
-                      <Modal.Footer className="modal-footer-edicion">
-                        <div className="float-right">
-                          <input className="btn btn-main" type="submit" value="Guardar"></input>
-                        </div>
-                      </Modal.Footer>
-                
-
-                    </form>
-                    </Modal>}
-                  </div>
-                  )
-                  :
-                  ( 
-                    <div>
-                      <span className="spinner-grow spinner-grow-lg text-danger"></span>
-                      <span className=""> Cargando datos. Por favor espere...</span>
-                    </div>
-                  )
-                );     
-}  
+              <FormVerProduccion datos={itemEditar} handlerEnviarEdicion={handlerEnviarEdicion} productos={productos} poblaciones={poblaciones} handleGetCheck={handleGetCheck} />
+            </Modal.Body>
+            <Modal.Footer className="modal-footer-edicion"></Modal.Footer>
+          </Modal>}
+        </div>
+      )
+      :
+      (
+        <div>
+          <span className="spinner-grow spinner-grow-lg text-danger"></span>
+          <span className=""> Cargando datos. Por favor espere...</span>
+        </div>
+      )
+  );
+}

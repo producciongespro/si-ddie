@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import obtener from '../modulos/obtener';
-import obtenerValoresCheck from '../modulos/obtenerValoresCheck';
 
 import MyContext from '../modulos/MyContext';
 import { eliminar } from "gespro-utils/crud_array";
@@ -57,7 +56,6 @@ export default function Produccion() {
     };
     data.id_usuario = usuario.idUsuario
 
-
     let url = referencias.guardaconsulta + "?tabla_destino=productos";
 
     // console.log("url desde submit", url);
@@ -66,15 +64,12 @@ export default function Produccion() {
     enviar(url, data, function (resp) {
       mostrarAlerta("Alerta", resp.data.mensaje);
     });
+    e.target.reset(); // reset after form submit
     setProducto(0);
     setOtraPoblacion(false);
-    e.target.reset(); // reset after form submit
     valoresCheck = [];
-
-
-
   };
-  
+
 
   useEffect(() => {
     //Acción que se ejecuta una vez que se monta el componente
@@ -102,13 +97,7 @@ export default function Produccion() {
 
   const handleGetCheck = (e) => {
     const item = e.target;
-
-    console.log("item on change=", item.id);
-    // console.log(item.checked);
-    // console.log(item.name);
     (item.id === "12" && e.target.checked) ? setOtraPoblacion(true) : setOtraPoblacion(false);
-    // poblaciones = {"id": chkPoblacion};
-    // listaAnnos.push(poblaciones);   
     if (item.checked) {
       //si es vardadero simplemente lo agrega en el array:
       const tmpObj = {
@@ -123,8 +112,6 @@ export default function Produccion() {
       const itemEliminado = eliminar(item.id, valoresCheck);
       //console.log("Objeto eliminado", itemEliminado);
     }
-
-    //console.log(valoresCheck);
   };
 
 
@@ -136,7 +123,7 @@ export default function Produccion() {
             <h1 className="header-1">Producción</h1><br />
             <div className="row">
               <div className="col-sm-3 offset-sm-9 float-right">
-                <input className="btn btn-main btn-block" type="reset"/>
+                <input className="btn btn-main btn-block" type="reset" />
               </div>
             </div>
             <hr />
@@ -146,7 +133,6 @@ export default function Produccion() {
                 <select className="custom-select form-control" defaultValue="" {...register("id_producto", { required: true })} >
                   <option value="" disabled>Seleccione...</option>
                   {
-
                     productos.map((item, i) => (
                       <option key={"producto" + i} value={item.id}>{item.tipo}</option>
                     ))
@@ -162,12 +148,9 @@ export default function Produccion() {
               }
               {valueOfProducto === "7" &&
                 <div className="form-group col-sm-6 my-2">
-
                   <label className="item-negrilla font-len" htmlFor="tema_video_divulgacion">Tema del video":&nbsp;&nbsp;</label>
                   <input type="text" className="form-control" placeholder="Escriba el tema del video" {...register("tema_video_divulgacion", { required: true })} />
                   {errors.tema_video_divulgacion && <p className="item-error">Este campo es requerido</p>}
-                  {/* <InputItem tipo="text" placeholderText="Escriba el tema del video" nombre="tema_video_divulgacion" textlabel="Tema del video" referencia={register({ required: true })} />
-                  {errors.tema_video_divulgacion && <p className="errors">Este campo es requerido</p>} */}
                 </div>
               }
             </div>
@@ -177,8 +160,6 @@ export default function Produccion() {
                   <label className="item-negrilla font-len" htmlFor="desc_otro">Descripción:&nbsp;&nbsp;</label>
                   <input type="text" className="form-control" placeholder="Describa el tipo de producto" {...register("desc_otro", { required: true })} />
                   {errors.desc_otro && <p className="item-error">Este campo es requerido</p>}
-                  {/* <InputItem tipo="text" placeholderText="Describa el tipo de producto" nombre="desc_otro" textlabel="Descripción" referencia={register({ required: true })} />
-                  {errors.desc_otro && <p className="errors">Este campo es requerido</p>} */}
                 </div>
               </div>
             }
@@ -186,7 +167,6 @@ export default function Produccion() {
               <div className="row">
                 <div className="form-group col-sm-12 my-2">
                   <p className="font-len" >Población beneficiaria</p>
-                  {/* <CheckBox array={poblaciones} nombre="beneficiario" register={register} handleChange={handleChangeCheck} /> */}
                   {poblaciones.map((item, i) => (
                     <div className="custom-control custom-checkbox" key={"chk" + i} >
                       <div className="pretty p-switch p-fill p-smooth">
@@ -214,11 +194,8 @@ export default function Produccion() {
                 <label className="item-negrilla font-len" htmlFor="poblacion_otro">Descripción:&nbsp;&nbsp;</label>
                 <input type="text" className="form-control" placeholder="Escriba el otro tipo de población" {...register("poblacion_otro", { required: true })} />
                 {errors.poblacion_otro && <p className="item-error">Este campo es requerido</p>}
-                {/* <InputItem tipo="text" nombre="poblacion_otro" placeholderText="Escriba el otro tipo de población" textlabel="Descripción" referencia={register({ required: true })} />
-                {errors.poblacion_otro && <p className="errors">Este campo es requerido</p>} */}
               </React.Fragment>
             }
-
             {valueOfProducto === "1" && (
               <React.Fragment>
                 <div className="row">
@@ -226,24 +203,17 @@ export default function Produccion() {
                     <label className="item-negrilla font-len" htmlFor="volumen_revista">Volumen:&nbsp;&nbsp;</label>
                     <input type="number" className="form-control" placeholder="No. volumen" {...register("volumen_revista", { required: true })} />
                     {errors.volumen_revista && <p className="item-error">Este campo es requerido</p>}
-                    {/* <InputItem tipo="number" nombre="volumen_revista" placeholderText="No. volumen" textlabel="Volumen" referencia={register({ required: true })} />
-                    {errors.volumen_revista && <p className="errors">Este campo es requerido</p>} */}
                   </div>
                   <div className="form-group col-sm-6 my-2">
                     <label className="item-negrilla font-len" htmlFor="numero_revista">Número:&nbsp;&nbsp;</label>
                     <input type="number" className="form-control" placeholder="No. revista" {...register("numero_revista", { required: true })} />
                     {errors.numero_revista && <p className="item-error">Este campo es requerido</p>}
-                    {/* <InputItem tipo="number" nombre="numero_revista" placeholderText="No. revista" textlabel="Número" referencia={register({ required: true })} />
-                    {errors.numero_revista && <p className="errors">Este campo es requerido</p>} */}
                   </div>
                 </div>
                 <div className="row">
                   <div className="form-group col-sm-6 my-2">
                     <label className="item-negrilla font-len" htmlFor="mes_revista">Mes:&nbsp;&nbsp;</label>
                     <select className="custom-select form-control" defaultValue="" {...register("mes_revista", { required: true })} >
-                      {/* <label className="font-len" htmlFor="mes_revista">Mes:</label>
-                      <select className="custom-select" defaultValue="" onChange={handleMonthSelect} name="mes_revista" id="mes_revista" ref={register({ required: true })}>
-                        {errors.mes_revista && <p className="errors">Este campo es requerido</p>} */}
                       <option value="" disabled>Seleccione...</option>
                       {
                         meses.map((label, i) => (
@@ -252,12 +222,9 @@ export default function Produccion() {
                     </select>
                   </div>
                   <div className="form-group col-sm-6 my-2">
-
                     <label className="item-negrilla font-len" htmlFor="anno_revista">Año:&nbsp;&nbsp;</label>
                     <input type="number" className="form-control" placeholder="Digite el año" {...register("anno_revista", { required: true })} />
                     {errors.anno_revista && <p className="item-error">Este campo es requerido</p>}
-                    {/* <InputItem tipo="number" nombre="anno_revista" textlabel="Año" placeholderText="Digite el año" referencia={register({ required: true })} />
-                      {errors.anno_revista && <p className="errors">Este campo es requerido</p>} */}
                   </div>
                 </div>
               </React.Fragment>
@@ -292,7 +259,6 @@ export default function Produccion() {
             </div>
           </form>
         </div>
-
       )
       :
       (
