@@ -13,6 +13,7 @@ export default function FormVerProduccion(props) {
     poblaciones = props.poblaciones;
 
   console.log("registro a editar EN FORM", itemEditar);
+  console.log("Mes...",itemEditar.mes_revista);
   const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
 
   const {
@@ -42,7 +43,7 @@ export default function FormVerProduccion(props) {
     console.log("enviando...", JSON.stringify(data));
 
     let arrayPoblacion = obtenerValoresCheck("beneficiario");
-    console.log("arrayPoblación", arrayPoblacion);
+    // console.log("arrayPoblación", arrayPoblacion);
     let datos = data;
     datos.poblacion = arrayPoblacion;
 
@@ -126,7 +127,7 @@ export default function FormVerProduccion(props) {
           <div className="row">
             <div className="form-group col-sm-6 my-2">
               <label className="item-negrilla font-len" htmlFor="mes_revista">Mes:&nbsp;&nbsp;</label>
-              <select className="custom-select form-control" defaultValue={itemEditar.mes} {...register("mes_revista", { required: true })} >
+              <select className="custom-select form-control" defaultValue={itemEditar.mes_revista} {...register("mes_revista", { required: true })} >
                 <option value="" disabled>Seleccione...</option>
                 {
                   meses.map((label, i) => (

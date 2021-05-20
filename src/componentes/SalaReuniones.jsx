@@ -250,7 +250,7 @@ export default function SalaReuniones(props) {
 
     reserva.fecha = fechaseleccionada.id;
     reserva.idUsuario = usuario.idUsuario;
-    console.log("data reserva", reserva);
+    // console.log("data reserva", reserva);
 
     // console.log("De 24 final:",horasVC[indice]);
 

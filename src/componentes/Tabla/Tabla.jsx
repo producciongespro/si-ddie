@@ -34,7 +34,7 @@ export default function Tabla(props) {
     
     if (muestra === true) {
     return (
-      <td colspan = {cols} className="text-center">
+      <td key= {"encabezado"+i} colSpan = {cols} className="text-center">
           {item.fecha2}
       </td>
     )
