@@ -6,8 +6,8 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "window.zoomLevel": 1,
-  "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "Base16 Dark Twilight",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Deepdark Material Theme | Full Black Version",
   "editor.tabSize": 2,
   "editor.fontSize": 15,
   "editor.tabCompletion": "on"

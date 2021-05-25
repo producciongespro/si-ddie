@@ -88,7 +88,7 @@ export default function Loguin() {
 
         <div className="row">
           <div className="col-md-12 pt-4">
-            <input className="btn btn-ingreso float-right" type="submit" />
+            <input className="btn btn-ingreso float-right" type="submit"/>
           </div>
         </div>
 
