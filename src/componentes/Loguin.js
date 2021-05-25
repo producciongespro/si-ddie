@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 // context con los datos del usuario
 import MyContext from '../modulos/MyContext';
+import { sendData } from 'gespro-utils/akiri';
 
 //Librerias
 import alertify from 'alertifyjs';
@@ -34,38 +35,75 @@ export default function Loguin() {
       fecha: "",
       isAccesado: true
     };
-    // console.log("usuario LOGUEO", usuario);
-    // console.log("usuario nuevo", datosUsuario);
+    console.log("usuario LOGUEO", usuario);
+    console.log("usuario nuevo", datosUsuario);
     setUsuario(datosUsuario);
   }
 
+  
   const onSubmit = (data) => {
-    // const onSubmit = (data,e) =>
-    //  console.log("data",data);
-    // e.preventDefault();
-    axios.post(referencias.login, data)
-      .then(function (response) {
-        const mensajeError = response.data.error_msg;
-        // console.log("response",response/*  */)
-        if (response.data.error === false) {
-          sendDatas(response.data);
-        } else {
-          console.log("Error IF acceso usuario");
-          alertify
-            .alert("Aviso", mensajeError, function () {
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => {
-        // me.setState({
-        //   ajaxOcupado: false
-        // })
-      });
-
+    console.log("referencias.login", referencias.login);
+    console.log("data", data);
+    sendData(referencias.login, data)
+    .then(response => {
+      const mensajeError = response.data.error_msg;
+      console.log("response",response, "mensajeError",mensajeError)
+      if (!response.data.error) {
+        sendDatas(response.data);
+      } else {
+        console.log("Error IF acceso usuario");
+        alertify
+          .alert("Aviso", mensajeError, function () {
+          });
+      }
+      
+    });
   }
+    //   if (!respuesta.error) {
+    //     // console.log("entré if");
+    //     alertify.alert('Aviso', 'El registro ha sido actualizado exitosamente');
+    //     setActualizado(false);
+    //     obtener(consulta, function (datos) {
+    //       setData(datos);
+    //       setActualizado(true);
+    //     });
+    //   }
+    //   else {
+    //     let msjServer;
+    //     if (respuesta.error) {
+    //       msjServer = respuesta.msj;
+    //     }
+    //     else {
+    //       msjServer = "Problemas de conexión con la base de datos. Error 405"
+    //     }
+    //     alertify.alert("Error", msjServer);
+    //   }
+    // })
+
+
+    // axios.post(referencias.login, data)
+      // .then(function (response) {
+      //   const mensajeError = response.data.error_msg;
+      //   // console.log("response",response/*  */)
+      //   if (response.data.error === false) {
+      //     sendDatas(response.data);
+      //   } else {
+      //     console.log("Error IF acceso usuario");
+      //     alertify
+      //       .alert("Aviso", mensajeError, function () {
+      //       });
+      //   }
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // })
+      // .finally(() => {
+      //   // me.setState({
+      //   //   ajaxOcupado: false
+      //   // })
+      // });
+
+  // }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
