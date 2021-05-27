@@ -62,15 +62,12 @@ export default function Loguin() {
   // };
   
   const onSubmit = (data) => {
-    // const onSubmit = (data,e) =>
-    //  console.log("data",data);
-    // e.preventDefault();
     axios.post(referencias.login, data)
       .then(function (response) {
         const mensajeError = response.data.error_msg;
         // console.log("response",response/*  */)
         if (response.data.error === false) {
-          sendDatas(response.data);
+          enviarDatos(response.data);
         } else {
           console.log("Error IF acceso usuario");
           alertify
