@@ -50,10 +50,9 @@ class Ingreso extends Component {
                 <Tab className="" eventKey="ingresar" title="Ingresar">
                   <Loguin />
                 </Tab>
-                <Tab className="" eventKey="inscribir" title="Inscribirse">
-                  {/* <Registro handlerCerrarModal={this.props.handlerCerrarModal}/> */}
+                {/* <Tab className="" eventKey="inscribir" title="Inscribirse">
                   <Registro/>
-                </Tab>
+                </Tab> */}
                 <Tab className="" eventKey="recuperar" title="Recuperar contraseña">
                   <Recuperar />
                 </Tab>

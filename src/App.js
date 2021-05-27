@@ -123,7 +123,7 @@ const handleCargarComponentes = (e) => {
           <React.Fragment>
             <Ingreso />
               <div className="contModal row">
-                <div className="col-12">              </div>
+                <div className="col-12"> </div>
               </div>
           </React.Fragment>
       }

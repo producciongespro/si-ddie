@@ -41,50 +41,25 @@ export default function Loguin() {
   }
 
   
-  // const onSubmit = (data) => {
-  //   var mensajeError = "";
-  //   // console.log("referencias.login", referencias.login);
-  //   // console.log("data", data);
-  //   sendData(referencias.login, data)
-  //   .then(response => {
-  //     response.error && (mensajeError = response.data.error_msg);
-  //     // console.log("response",response, "mensajeError",mensajeError)
-  //     if (!response.error) {
-  //       enviarDatos(response);
-  //     } else {
-  //       console.log("Error IF acceso usuario");
-  //       alertify
-  //         .alert("Aviso", mensajeError, function () {
-  //         });
-  //     }
-      
-  //   });
-  // };
-  
   const onSubmit = (data) => {
-    axios.post(referencias.login, data)
-      .then(function (response) {
-        const mensajeError = response.data.error_msg;
-        // console.log("response",response/*  */)
-        if (response.data.error === false) {
-          enviarDatos(response.data);
-        } else {
-          console.log("Error IF acceso usuario");
-          alertify
-            .alert("Aviso", mensajeError, function () {
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => {
-        // me.setState({
-        //   ajaxOcupado: false
-        // })
-      });
-
-  }
+    var mensajeError = "";
+    // console.log("referencias.login", referencias.login);
+    // console.log("data", data);
+    sendData(referencias.login, data)
+    .then(response => {
+      response.error && (mensajeError = response.error_msg);
+      // console.log("response",response, "mensajeError",mensajeError)
+      if (!response.error) {
+        enviarDatos(response);
+      } else {
+        console.log("Error IF acceso usuario");
+        alertify
+          .alert("Aviso", mensajeError, function () {
+          });
+      }
+      
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,7 +82,8 @@ export default function Loguin() {
 
         <div className="row">
           <div className="col-md-12 pt-4">
-            <input className="btn btn-ingreso float-right" type="submit"/>
+            {/* <input className="btn btn-ingreso float-right" type="submit"/> */}
+            <input className="btn btn-ingreso float-right" type="submit" value="Enviar"></input>
           </div>
         </div>
 
