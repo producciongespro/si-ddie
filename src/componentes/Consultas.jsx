@@ -7,6 +7,7 @@ import MyContext from '../modulos/MyContext';
 
 import enviar from '../modulos/enviar';
 import obtener from '../modulos/obtener';
+import { getData } from 'gespro-utils/akiri';
 
 import referenciasJson from '../data/referencias.json';
 
@@ -14,6 +15,7 @@ const referencias = referenciasJson[0];
 
 export default function Consultas() {
 
+  const { usuario, setUsuario } = useContext(MyContext);
 
   const {
     register,
@@ -23,23 +25,24 @@ export default function Consultas() {
 
   const valueOfSolicitante = watch('id_solicitante');
 
-  const { usuario, setUsuario } = useContext(MyContext);
-
   //Cargado se cambia a True cuando se termina la carga de json del servidor
   const [cargado, setCargado] = useState(false);
 
   //Estado para controlar la carga del json respectivo
   const [tipo_intervencion, setTipoIntervencion] = useState(null);
+ 
   //Estado que maneja  la seleccion del usuario
-  const [intervencion, setIntervencion] = useState(null);
+  // const [intervencion, setIntervencion] = useState(null);
 
   //Estado para controlar la carga del json respectivo
   const [id_solicitud, setIdSolicitud] = useState(null);
+
   //Estado que maneja  la seleccion del usuario
   const [solicitud, setSolicitud] = useState(null);
 
   //Estado para controlar la carga del json respectivo
   const [tipo_solicitante, setTipoSolicitante] = useState(null);
+  
   //Estado que maneja  la seleccion del usuario
   const [solicitante, setSolicitante] = useState(null);
 
@@ -61,40 +64,69 @@ export default function Consultas() {
       console.log(resp);
     });
     e.target.reset(); // reset after form submit
-    setIntervencion(0);    
+    // setIntervencion(0);    
   };
   // console.log("errors",errors);
 
-  useEffect(() => {
-    //Acción que se ejecuta una vez que se monta el componente
-
+  async function asyncCallDatas() {
+    
     // carga de los JSON de los selects
     let urlIntervencion = referencias.consultageneral + "?tabla=tipo_intervencion",
-      urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
-      urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
-      urlRespuesta = referencias.consultageneral + "?tabla=tipo_respuesta";
+        urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
+        urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
+        urlRespuesta = referencias.consultageneral + "?tabla=tipo_respuesta";
 
-    obtener(urlIntervencion, function (data) {
-      // console.log("datos", data);
-      setTipoIntervencion(data);
-      //Carga el segundo select en el callback del primer "obtner":
-      obtener(urlSolicitante, function (data) {
-        //Callback del segundo obtener
-        setTipoSolicitante(data);
-        //Activa cargado para que meuistre el formulario:
-        obtener(urlSolicitud, function (data) {
-          //Callback del segundo obtener
-          setIdSolicitud(data);
-          obtener(urlRespuesta, function (data) {
-            //Callback del segundo obtener
-            setTipoRespuesta(data);
+    const _tipoIntervencion = await getData(urlIntervencion);
+      setTipoIntervencion(_tipoIntervencion);
 
-            setCargado(true)
-          });
-        });
-      })
-    })
+    const _tipoSolicitante = await getData(urlSolicitante) 
+    setTipoSolicitante(_tipoSolicitante);
+   
+    const _idSolicitud= await getData(urlSolicitud) 
+    setIdSolicitud(_idSolicitud);
+
+    const _tipoRespuesta= await getData(urlRespuesta);
+    setTipoRespuesta(_tipoRespuesta);
+
+    setCargado(true);
+  }
+
+  useEffect(() => {
+    //Acción que se ejecuta una vez que se monta el componente
+    asyncCallDatas();      
   }, []);
+
+  // CODIGO MODIFICADADO 05072021
+  // useEffect(() => {
+  //   //Acción que se ejecuta una vez que se monta el componente
+
+  //   // carga de los JSON de los selects
+  //   let urlIntervencion = referencias.consultageneral + "?tabla=tipo_intervencion",
+  //     urlSolicitante = referencias.consultageneral + "?tabla=tipo_solicitante",
+  //     urlSolicitud = referencias.consultageneral + "?tabla=tipo_solicitud",
+  //     urlRespuesta = referencias.consultageneral + "?tabla=tipo_respuesta";
+
+  //   obtener(urlIntervencion, function (data) {
+  //     // console.log("datos", data);
+  //     setTipoIntervencion(data);
+  //     //Carga el segundo select en el callback del primer "obtner":
+  //     obtener(urlSolicitante, function (data) {
+  //       //Callback del segundo obtener
+  //       setTipoSolicitante(data);
+  //       //Activa cargado para que meuistre el formulario:
+  //       obtener(urlSolicitud, function (data) {
+  //         //Callback del segundo obtener
+  //         setIdSolicitud(data);
+  //         obtener(urlRespuesta, function (data) {
+  //           //Callback del segundo obtener
+  //           setTipoRespuesta(data);
+
+  //           setCargado(true)
+  //         });
+  //       });
+  //     })
+  //   })
+  // }, []);
 
  return (
     cargado ?
