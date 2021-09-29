@@ -5,7 +5,7 @@
       "javascript" : "javascriptreact"
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 1,
+  "window.zoomLevel": 2,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.colorTheme": "Deepdark Material Theme | Full Black Version",
   "editor.tabSize": 2,

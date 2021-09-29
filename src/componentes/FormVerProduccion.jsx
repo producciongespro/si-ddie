@@ -12,8 +12,8 @@ export default function FormVerProduccion(props) {
     productos = props.productos,
     poblaciones = props.poblaciones;
 
-  console.log("registro a editar EN FORM", itemEditar);
-  console.log("Mes...",itemEditar.mes_revista);
+  // console.log("registro a editar EN FORM", itemEditar);
+  // console.log("Mes...",itemEditar.mes_revista);
   const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
 
   const {
